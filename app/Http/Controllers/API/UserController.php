@@ -37,8 +37,6 @@ class UserController extends Controller
     }
     public function index()
     {
-        //all users 
-
 
     }
 
