@@ -46,6 +46,6 @@ jobs:
         DB_DATABASE: gi1infoapp
         DB_USERNAME: gi1infoapp
         DB_PASSWORD: gi1infoapp
-        DB_HOST: localhost
+        DB_HOST: 127.0.0.1
         DB_PORT: 3306
       run: vendor/bin/phpunit
