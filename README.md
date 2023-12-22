@@ -1,2 +1,2 @@
-xnb*Hey there*
+*Hey there*
 
