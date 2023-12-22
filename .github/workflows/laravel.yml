@@ -25,6 +25,7 @@ jobs:
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
     - name: Create Database
+      run: php artisan config:cache
       run: php artisan migrate
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
