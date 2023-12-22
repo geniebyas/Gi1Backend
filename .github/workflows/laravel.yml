@@ -45,7 +45,6 @@ jobs:
         DB_CONNECTION: mysql
         DB_DATABASE: gi1infoapp
         DB_USERNAME: root
-        DB_PASSWORD: 
         DB_HOST: 127.0.0.1
         DB_PORT: 3306
       run: vendor/bin/phpunit
