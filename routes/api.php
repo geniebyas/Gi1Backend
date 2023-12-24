@@ -33,9 +33,11 @@ Route::get("/test",function(){
 //user group
 Route::prefix('user')->group(function(){
 Route::post('/register',[UserController::class,'store']);
+Route::put('/registration/{uid}',[UserController::class,'update']);
 Route::get('/users',[UserController::class,'getAllUsers']);
-Route::get('/{uid}',[UserController::class,'show']);
+// Route::get('/{uid}',[UserController::class,'show']);
 Route::delete('/{uid}',[UserController::class,'destroy']);
 Route::put('/{uid}',[UserController::class,'update']);
+Route::get('/checkuserexists/{uid}',[UserController::class,'checkUserExists']);
 
 });

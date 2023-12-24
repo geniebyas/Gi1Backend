@@ -18,7 +18,7 @@ class UserController extends Controller
 
     public function getAllUsers()
     {
-        $users = User::select('id','email', 'name','uid')->get();
+        $users = User::select('id', 'email', 'name', 'uid')->get();
         if (count($users) > 0) {
             //users exists
             $response = [
@@ -37,7 +37,25 @@ class UserController extends Controller
     }
     public function index()
     {
+    }
 
+
+    public function checkUserExists($uid)
+    {
+        if (User::where('uid', $uid)->exists()) {
+            $response = [
+                'message' => 'User Found',
+                'status' => 1,
+                'data' => User::where('uid', $uid)->get()->first()
+            ];
+        } else {
+            $response = [
+                'message' => 'User does not exist',
+                'status' => 0,
+                'data' => null
+            ];
+        }
+        return response()->json($response,200);
     }
 
     /**
@@ -53,12 +71,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
-
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'min:8'],
             'uid' => ['required', 'unique:users,uid']
         ]);
         if ($validator->fails()) {
@@ -67,7 +82,12 @@ class UserController extends Controller
             DB::beginTransaction();
             try {
                 $request['password'] = Hash::make($request->password);
-                $user = User::create($request->all());
+                $user = User::create([
+                    'email' => $request->email,
+                    'password' => $request->password,
+                    'name' => $request->name,
+                    'uid' => $request->uid
+                ]);
                 DB::commit();
             } catch (\Throwable $th) {
                 //throw $th;
@@ -77,14 +97,18 @@ class UserController extends Controller
             if ($user != null) {
                 return response()->json(
                     [
-                        "message" => "User registered successfully"
+                        "message" => "Signup successfully",
+                        "status" => 1,
+                        "data" => "success"
                     ],
                     200
                 );
             } else {
                 return response()->json(
                     [
-                        "message" => "Internal Server Error"
+                        'message' => "Signup failed",
+                        'status' => 0,
+                        'data' => "error"
                     ],
                     500
                 );
@@ -127,44 +151,43 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $uid)
     {
         //
-        $user = User::find($id);
-        if(is_null($user)){
+        $user = User::where('uid',$uid)->get()->first();
+        if (is_null($user)) {
             return response()->json(
                 [
                     'message' => 'User not found',
                     'status' => 0
                 ],
                 404
-                );
-        }else{
+            );
+        } else {
             DB::beginTransaction();
-            try{
-            $user->name = $request['name'];
-            $user->email = $request['email'];
-            $user->phone = $request['phone'];
-            $user->dob = $request['dob'];
-            $user->gender = $request['gender'];
-            $user->city = $request['city'];
-            $user->bio = $request['bio'];
-            $user->save();
-            DB::commit();      
-            
-            $response = [
-                'message' => 'User Updated Successfully',
-                'status' => 1,
-            ];
+            try {
+                $user->phone = $request['phone'];
+                $user->dob = $request['dob'];
+                $user->gender = $request['gender'];
+                $user->city = $request['city'];
+                $user->bio = $request['bio'];
+                $user->save();
+                DB::commit();
 
-            }catch(Throwable $th){
+                $response = [
+                    'message' => 'Registration Successfully',
+                    'status' => 1,
+                    'data' =>""
+                ];
+            } catch (Throwable $th) {
                 DB::rollback();
                 $response = [
                     'message' => $th->getMessage(),
-                    'status' => 0
+                    'status' => 0,
+                    'data' =>""
                 ];
             }
-            return response()->json($response,200);
+            return response()->json($response, 200);
         }
     }
 
@@ -198,12 +221,12 @@ class UserController extends Controller
                 DB::rollBack();
                 $response = [
                     'message' => "Internal Server Error",
-                    'status' =>1
+                    'status' => 1
                 ];
-                
-            $responseCode = 500;
+
+                $responseCode = 500;
             }
         }
-        return response()->json($response,$responseCode);
+        return response()->json($response, $responseCode);
     }
 }
