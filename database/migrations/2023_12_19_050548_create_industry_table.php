@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('industry', function (Blueprint $table) {
+        Schema::create('industries', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->string('img');
-            $table->
+            $table->string('thumbnail');
+            $table->string('file');
+            $table->string('type');
+            $table->boolean('ispinned')->dafault(false);
+            $table->boolean('status')->default(true);
+            $table->string('pinnedthumb');
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('industry');
+        Schema::dropIfExists('industries');
     }
 };

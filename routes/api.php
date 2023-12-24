@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\IndustryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 //test
-Route::get("/test",function(){
+Route::get("/test", function () {
     p("test called");
 });
 
@@ -31,13 +32,18 @@ Route::get("/test",function(){
 // }
 // );
 //user group
-Route::prefix('user')->group(function(){
-Route::post('/register',[UserController::class,'store']);
-Route::put('/registration/{uid}',[UserController::class,'update']);
-Route::get('/users',[UserController::class,'getAllUsers']);
-// Route::get('/{uid}',[UserController::class,'show']);
-Route::delete('/{uid}',[UserController::class,'destroy']);
-Route::put('/{uid}',[UserController::class,'update']);
-Route::get('/checkuserexists/{uid}',[UserController::class,'checkUserExists']);
+Route::prefix('user')->group(function () {
+    Route::post('/register', [UserController::class, 'store']);
+    Route::put('/registration/{uid}', [UserController::class, 'update']);
+    Route::get('/users', [UserController::class, 'getAllUsers']);
+    // Route::get('/{uid}',[UserController::class,'show']);
+    Route::delete('/{uid}', [UserController::class, 'destroy']);
+    Route::put('/{uid}', [UserController::class, 'update']);
+    Route::get('/checkuserexists/{uid}', [UserController::class, 'checkUserExists']);
+});
 
+//industry group
+Route::prefix('industry')->group(function () {
+    Route::post('/add', [IndustryController::class, 'create']);
+    Route::get('/active',[IndustryController::class, 'allActiveIndustries']);
 });
