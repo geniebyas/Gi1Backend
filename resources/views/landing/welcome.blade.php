@@ -25,4 +25,4 @@
     <h1 style="text-align: center;">Welcome to Gi1 Super App!</h1>
     <p style="text-align: center;">We have an exiting news for you <a href="https://gi1superapp.com">Click me.</a></p>
 </body>
-</html>̥
+</html>
