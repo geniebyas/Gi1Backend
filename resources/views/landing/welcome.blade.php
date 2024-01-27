@@ -8,7 +8,7 @@
 
 </head>
 <body style="width:100%;align-items:center;justify-content:center;">
-          <div style = "width:100%;align-items:center;justify-content-center;display:flex;flex-direction:center;">
+          <div style = "width:100%;align-items:center;justify-content-center;display:flex;flex-direction:row;">
             <img src="https://gi1superapp.com/images/logoelevated.jpg" alt="Logo" style="max-width: 50%;
             max-height: 50%;
             border-radius: 20px;
