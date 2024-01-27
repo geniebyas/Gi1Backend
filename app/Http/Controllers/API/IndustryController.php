@@ -22,13 +22,13 @@ class IndustryController extends Controller
         if (count($list) > 0) {
             //users exists
             $response = [
-                'message' => count($list) . ' users found',
+                'message' => count($list) . ' industries found',
                 'status' => 1,
                 'data' => $list
             ];
         } else {
             $response = [
-                'message' => count($list) . ' users found',
+                'message' => count($list) . ' industries found',
                 'status' => 1,
                 'data' => null
             ];
