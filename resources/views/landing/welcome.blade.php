@@ -8,13 +8,14 @@
 
 </head>
 <body style="width:100%;align-items:center;justify-content:center;">
-          <div>
+          <div style = "width:100%;align-items:center;">
             <img src="https://gi1superapp.com/images/logoelevated.jpg" alt="Logo" style="max-width: 50%;
             max-height: 50%;
             border-radius: 20px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);">
           </div>
-        <h3 class="text-center" style="
+        <h3 style="
+        text-align:center;
                   color: #ffffff;
                   font-weight: 100px;
                   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
