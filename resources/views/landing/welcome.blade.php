@@ -8,7 +8,7 @@
 
 </head>
 <body style="width:100%;align-items:center;justify-content:center;">
-          <div style = "width:100%;align-items:center;justify-content-center;display:flex;flex-direction:row;">
+          <div style = "width:100%;align-items:center;justify-content:center;display:flex;flex-direction:row;">
             <img src="https://gi1superapp.com/images/logoelevated.jpg" alt="Logo" style="max-width: 50%;
             max-height: 50%;
             border-radius: 20px;
@@ -25,4 +25,4 @@
     <h1 style="text-align: center;">Welcome to Gi1 Super App!</h1>
     <p style="text-align: center;">We have an exiting news for you <a href="https://gi1superapp.com">Click me.</a></p>
 </body>
-</html>̥
+</html>
