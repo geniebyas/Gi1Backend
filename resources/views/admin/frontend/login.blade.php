@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="{{url('public/frontend/css/admin_style.css')}}"/> 
 
  </head> 
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  <body> <!-- partial:index.partial.html --> 
 
