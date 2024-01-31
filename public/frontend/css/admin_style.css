@@ -180,3 +180,11 @@ input[type="submit"]:active
     height: calc(20vw - 2px);
   }
 }
+@media (max-width: 400px)
+{
+  section span 
+  {
+    width: calc(30vw - 2px);
+    height: calc(30vw - 2px);
+  }
+}
