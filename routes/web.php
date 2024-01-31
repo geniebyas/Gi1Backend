@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('landing/welcome');
+    return view('admin/frontend/login');
 });
 
 require __DIR__.'/auth.php';
