@@ -22,7 +22,6 @@
     <div class="content"> 
 
      <h2>Gi1 Admin Login</h2>  
-     <h2>Sign In</h2>  
 
      <div class="form"> 
 
