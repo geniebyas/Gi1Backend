@@ -9,7 +9,7 @@
 
   <title>Login || Gi1 Info App</title> 
 
-  <link rel="stylesheet" href="{{url('frontend/css/admin_style.css')}}"/> 
+  <link rel="stylesheet" href="{{url('public/frontend/css/admin_style.css')}}"/> 
 
  </head> 
 
