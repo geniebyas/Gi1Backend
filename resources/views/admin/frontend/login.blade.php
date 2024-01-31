@@ -21,7 +21,8 @@
 
     <div class="content"> 
 
-     <h2>Sign In</h2> 
+     <h2>Gi1 Admin Login</h2>  
+     <h2>Sign In</h2>  
 
      <div class="form"> 
 
@@ -37,7 +38,7 @@
 
       </div> 
 
-      <div class="links"> <a href="#">Forgot Password</a> <a href="#">Signup</a> 
+      <div class="links"> <a href="#">Forgot Password</a>
 
       </div> 
 
