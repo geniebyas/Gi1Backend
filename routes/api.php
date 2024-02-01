@@ -32,6 +32,8 @@ Route::get("/test", function () {
 // }
 // );
 //user group
+
+Route::group(['middleware'=>"api"],(function () {
 Route::prefix('user')->group(function () {
     Route::post('/register', [UserController::class, 'store']);
     Route::put('/registration/{uid}', [UserController::class, 'update']);
@@ -47,3 +49,5 @@ Route::prefix('industry')->group(function () {
     Route::post('/add', [IndustryController::class, 'create']);
     Route::get('/active',[IndustryController::class, 'allActiveIndustries']);
 });
+}));
+
