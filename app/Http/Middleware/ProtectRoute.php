@@ -25,7 +25,9 @@ class ProtectRoute
                 'data'  => null,
             ];
             return response()->json($response, 401);
-        } else {
+        } else if($request->path() == "register"){
+
+        }else{
             return $next($request);
         }
     }

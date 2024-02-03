@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\IndustryController;
+use App\Http\Controllers\API\FileUploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,7 @@ Route::get("/test", function () {
 //user group
 
 Route::group(['middleware'=>"api"],(function () {
+    Route::post('/upload',[FileUploadController::class,'fromApi']);
 Route::prefix('user')->group(function () {
     Route::post('/register', [UserController::class, 'store']);
     Route::put('/registration/{uid}', [UserController::class, 'update']);
