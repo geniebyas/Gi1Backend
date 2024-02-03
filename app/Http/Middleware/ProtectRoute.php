@@ -18,14 +18,18 @@ class ProtectRoute
     {
         $uid = $request->header('uid');
         $user = User::where('uid', $uid)->get()->first();
-        if (is_null($user)) {
+$path = $request->path();
+      if(str_contains($path,"checkuserexists") || str_contains($path,"register")){
+
+return $next($request);
+        } else if (is_null($user)) {
             $response = [
                 'message' => 'Unauthorized Access',
                 'status' => 0,
                 'data'  => null,
             ];
             return response()->json($response, 401);
-        } else {
+        } else{
             return $next($request);
         }
     }
