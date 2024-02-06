@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class FileUploadController extends Controller
 {
     public function fromApi(Request $request) {
+        $uid = $request->header('uid');
         $name = $request->name;
         $dir = $request->dir;
         if (!empty($request->file())) {
@@ -38,6 +39,8 @@ class FileUploadController extends Controller
             $fDb->extension = $file->getClientOriginalExtension();
             $fDb->size = filesize($result);
             $fDb->type = $dir;
+            $fDb->uid = $uid;
+        
             $fDb->save();
 
             // You can customize the response according to your needs

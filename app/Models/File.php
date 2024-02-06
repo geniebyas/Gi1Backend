@@ -15,6 +15,7 @@ class File extends Model
         'extension',
         'path',
         'size',
-        'type'
+        'type',
+        'by'
     ];
 }
