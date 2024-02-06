@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class FileUploadController extends Controller
 {
-    public function fromApi(Request $request)
-    {
+    public function fromApi(Request $request) {
         $name = $request->name;
         $dir = $request->dir;
         if (!empty($request->file())) {

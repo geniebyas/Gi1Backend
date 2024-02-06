@@ -171,6 +171,7 @@ class UserController extends Controller
                 $user->gender = $request['gender'];
                 $user->city = $request['city'];
                 $user->bio = $request['bio'];
+                $user->profile_pic = $request['profile_pic'];
                 $user->save();
                 DB::commit();
 
