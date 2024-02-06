@@ -3,15 +3,57 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FileUploadController extends Controller
 {
-    public function fromApi(Request $request){
+    public function fromApi(Request $request)
+    {
         $name = $request->name;
-        $file = $request->file("$name");
-        $result = $file->store("uploads/image");
-        return $result;
-    }
+        $dir = $request->dir;
+        $file = $request->file($name); // Get array of files
 
+        if (is_null($file)) {
+            $response = [
+                'message' => 'File not found',
+                'status' => 0,
+                'data'  => null,
+            ];
+            return response()->json($response, 404);
+        }
+
+        // Generate a unique filename based on the provided name and timestamp
+        $filename = $name . '_' . time() . '.' . $file->getClientOriginalExtension();
+
+        // Store the file in the specified directory
+        $result = $file->storeAs("public/uploads/$dir", $filename);
+        $imageUrl = url(Storage::url("public/uploads/$dir/$filename"));
+
+
+        $fDb = new File();
+        $fDb->name = $name;
+        $fDb->path = "uploads/".$dir."/". $filename;
+        $fDb->extension = $file->getClientOriginalExtension();
+        $fDb->size = filesize($request->file("$name")->getPathName());
+        $fDb->type = $dir;
+        $fDb->save();
+
+        // You can customize the response according to your needs
+        $response = [
+            'message' => 'File uploaded successfully',
+            'status' => 1,
+            'data' => [
+                'filename' => $filename,
+                'path' => $result,
+                'imageUrl' => $imageUrl,
+                'dbObject' => $fDb
+            ],
+        ];
+
+        return response()->json($response, 200);
+    }
 }
+
+
