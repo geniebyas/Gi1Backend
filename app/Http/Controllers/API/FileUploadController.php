@@ -37,7 +37,7 @@ class FileUploadController extends Controller
             $fDb->name = $name;
             $fDb->path = $imageUrl;
             $fDb->extension = $file->getClientOriginalExtension();
-            $fDb->size = filesize($request->file("$name")->getPathName());
+            $fDb->size = filesize($imageUrl);
             $fDb->type = $dir;
             // $fDb->save();
 
