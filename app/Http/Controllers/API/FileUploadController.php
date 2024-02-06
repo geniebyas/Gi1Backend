@@ -29,8 +29,8 @@ class FileUploadController extends Controller
             $filename = $name . '_' . time() . '.' . $file->getClientOriginalExtension();
 
             // Store the file in the specified directory
-            $result = $file->storeAs("public/uploads/$dir", $filename);
-            $imageUrl = asset("storage/uploads/$dir/$filename");
+            $result = $file->storeAs("uploads/$dir", $filename);
+            $imageUrl = asset("uploads/$dir/$filename");
 
 
             $fDb = new File();
