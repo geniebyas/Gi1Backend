@@ -47,12 +47,7 @@ class FileUploadController extends Controller
             $response = [
                 'message' => 'File uploaded successfully',
                 'status' => 1,
-                'data' => [
-                    'filename' => $filename,
-                    'path' => $result,
-                    'imageUrl' => $imageUrl,
-                    'dbObject' => $fDb
-                ],
+                'data' =>$fDb,
             ];
 
             return response()->json($response, 200);
