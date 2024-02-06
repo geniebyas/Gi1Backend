@@ -30,7 +30,7 @@ class FileUploadController extends Controller
 
             // Store the file in the specified directory
             $result = $file->storeAs("public/uploads/$dir", $filename);
-            $imageUrl = url(Storage::url("public/uploads/$dir/$filename"));
+            $imageUrl = asset("storage/uploads/$dir/$filename");
 
 
             $fDb = new File();
@@ -39,7 +39,7 @@ class FileUploadController extends Controller
             $fDb->extension = $file->getClientOriginalExtension();
             $fDb->size = filesize($request->file("$name")->getPathName());
             $fDb->type = $dir;
-            $fDb->save();
+            // $fDb->save();
 
             // You can customize the response according to your needs
             $response = [
