@@ -39,7 +39,7 @@ class FileUploadController extends Controller
             $fDb->extension = $file->getClientOriginalExtension();
             $fDb->size = filesize($result);
             $fDb->type = $dir;
-            // $fDb->save();
+            $fDb->save();
 
             // You can customize the response according to your needs
             $response = [
