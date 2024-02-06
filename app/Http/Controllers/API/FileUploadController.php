@@ -29,7 +29,7 @@ class FileUploadController extends Controller
             $filename = $name . '_' . time() . '.' . $file->getClientOriginalExtension();
 
             // Store the file in the specified directory
-            $result = $file->storeAs("uploads/$dir", $filename);
+            $result = $file->move(public_path() ."/uploads/$dir", $filename);
             $imageUrl = asset("uploads/$dir/$filename");
 
 
