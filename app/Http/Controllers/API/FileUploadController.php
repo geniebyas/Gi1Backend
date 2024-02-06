@@ -30,14 +30,14 @@ class FileUploadController extends Controller
 
             // Store the file in the specified directory
             $result = $file->move(public_path() ."/uploads/$dir", $filename);
-            $imageUrl = asset("uploads/$dir/$filename");
+            $imageUrl = asset("public/uploads/$dir/$filename");
 
 
             $fDb = new File();
             $fDb->name = $name;
             $fDb->path = $imageUrl;
             $fDb->extension = $file->getClientOriginalExtension();
-            $fDb->size = filesize($imageUrl);
+            $fDb->size = filesize($result);
             $fDb->type = $dir;
             // $fDb->save();
 
