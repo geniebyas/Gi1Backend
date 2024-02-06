@@ -9,7 +9,7 @@ class Industry extends Model
 {
     use HasFactory;
 
-    protected $tableName = 'industries';
+    protected $table = 'industries';
 
     protected $primaryKey = 'id';
     protected $fillable = [
