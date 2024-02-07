@@ -40,6 +40,13 @@ class IndustryController extends Controller
      */
     public function create(Request $request)
     {
+
+//$result = (new 
+//TestController)->exampleFunction();
+  
+      //  dd($result);
+  //  }
+
         $industry = $request->all();
         // $validator = Validator::make($request->all(), [
         //     'name' => 'required',
