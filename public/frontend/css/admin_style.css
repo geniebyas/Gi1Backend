@@ -32,7 +32,7 @@ section::before
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(#000,#0f0,#000);
+  background: linear-gradient(#000,#2c7fec,#000);
   animation: animate 5s linear infinite;
 }
 @keyframes animate 
@@ -52,13 +52,13 @@ section span
   display: block;
   width: calc(6.25vw - 2px);
   height: calc(6.25vw - 2px);
-  background: #181818;
+  background: #2c7fec;
   z-index: 2;
   transition: 1.5s;
 }
 section span:hover 
 {
-  background: #0f0;
+  background: #2c7fec;
   transition: 0s;
 }
 
@@ -88,7 +88,7 @@ section .signin .content
 section .signin .content h2 
 {
   font-size: 2em;
-  color: #0f0;
+  color: #2c7fec;
   text-transform: uppercase;
 }
 section .signin .content .form 
@@ -147,13 +147,13 @@ section .signin .content .form .inputBox i
 }
 .signin .content .form .links a:nth-child(2)
 {
-  color: #0f0;
+  color: #2c7fec;
   font-weight: 600;
 }
 .signin .content .form .inputBox input[type="submit"]
 {
   padding: 10px;
-  background: #0f0;
+  background: #2c7fec;
   color: #000;
   font-weight: 600;
   font-size: 1.35em;
