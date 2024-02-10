@@ -88,7 +88,7 @@ section .signin .content
 section .signin .content h2 
 {
   font-size: 2em;
-  color: #2c7fec;
+  color: #f8c53d;
   text-transform: uppercase;
 }
 section .signin .content .form 
@@ -147,7 +147,7 @@ section .signin .content .form .inputBox i
 }
 .signin .content .form .links a:nth-child(2)
 {
-  color: #2c7fec;
+  color: #f8c53d;
   font-weight: 600;
 }
 .signin .content .form .inputBox input[type="submit"]
