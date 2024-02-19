@@ -120,10 +120,10 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        //
-        $user = User::find($id);
+    
+        $user = User::where('uid',$request->uid)->get()->first();
         if (is_null($user)) {
             $response = [
                 'message' => 'User Not Found',
