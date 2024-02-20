@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CoinsController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\IndustryController;
 use App\Http\Controllers\API\FileUploadController;
@@ -57,4 +58,15 @@ Route::group(['middleware' => "api"], (function () {
         Route::post('/add', [IndustryController::class, 'create']);
         Route::get('/active', [IndustryController::class, 'allActiveIndustries']);
     });
+
+    //coins
+    Route::prefix('coins')->group(function () {
+        Route::post('/add',[CoinsController::class, 'create']);
+
+    });
+
+
+
+
+
 }));
