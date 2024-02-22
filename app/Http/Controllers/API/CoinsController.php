@@ -33,6 +33,10 @@ class CoinsController extends Controller
         foreach($trans as $t){
             $t->action = CoinsActions::find($t->action_id);
         }
+        if($wallet == null){
+            $wallet = new UserWallet();
+            $wallet->amount = 0.0;
+        }
         if($user != null){
                 return response()->json(
                     [
