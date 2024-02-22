@@ -5,21 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Coins extends Model
+class UserWallet extends Model
 {
     use HasFactory;
-
-    protected $table = 'coins_mst';
-    protected $primaryKey = 'id';
+    protected $table="user_wallet";
+    protected $primaryKey = "id";
     protected $fillable = [
         "uid",
-        "type",
-        "action_id"
+        "total_bal"
     ];
-
-    protected $casts = [
-        "action_id"=>'integer'
-    ];
-
-
 }

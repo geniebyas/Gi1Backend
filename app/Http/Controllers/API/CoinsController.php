@@ -4,6 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Coins;
+use App\Models\CoinsActions;
+use App\Models\User;
+use App\Models\UserWallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -21,13 +24,42 @@ class CoinsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
+
+     public function getCoinsDetailsForUser(Request $request){
+        $user = User::where("uid",$request->header("uid"))->first();
+        $trans = Coins::where("uid",$request->header("uid"))->get();
+        $wallet = UserWallet::where("uid",$request->header("uid"))->first();
+        foreach($trans as $t){
+            $t->action = CoinsActions::find($t->action_id);
+        }
+        if($user != null){
+                return response()->json(
+                    [
+                        "message" => "Success",
+                        "status" => 1,
+                        "data" => [
+                            "user"=>$user,
+                            "wallet"=>$wallet,
+                            "transactions"=>$trans
+                    ]
+                        ],
+                    200
+                );
+        }else{
+            return response()->json(["message"=>"User Not Found","status"=>0,"data"=>null],404);
+        }
+
+     }
+
+
     public function create(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
             'uid' => 'required',
             'type' => ['required', 'in:add,remove'],
-            'amount' => ['required']
+            'action_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -36,19 +68,29 @@ class CoinsController extends Controller
             DB::beginTransaction();
             $coin = null;
             try {
+                $wallet = UserWallet::where("uid",$request->uid)->first();
+                if($wallet == null){
+                    $wallet = new UserWallet();
+                    $wallet->total_bal = 0;
+                }
+                $action = CoinsActions::find($request->action_id);
                 $coin = new Coins();
                 $coin->uid = $request->uid;
                 $coin->type = $request->type;
-                $coin->amount = $request->amount;
+                $coin->action_id = $request->action_id;
                 $coin->save();
-                DB::commit();
-            } catch (\Throwable $e) {
-                DB::rollBack();
-                $coin = null;
+                if($action != null){
+                if($coin->type == "add"){
+                    $wallet->total_bal = intval($wallet->total_bal) + $action->amount;
+                }else{
+                    $wallet->total_bal = intval($wallet->total_bal) - $action->amount;
+                }
+                UserWallet::updateOrCreate(['uid'=>$request->uid],['total_bal'=>$wallet->total_bal]);
             }
-            if($coin != null){
-                if($coin->type == "add")  $msg = "Coins Added Successfully" ;
+                DB::commit();
+            if($coin->type == "add")  $msg = "Coins Added Successfully" ;
                 else $msg = "Coins Deducted Successfully" ;
+
                 return response()->json(
                     [
                         "message" => $msg,
@@ -57,12 +99,13 @@ class CoinsController extends Controller
                     ],
                     200
                 );
-            }else{
-                return response()->json(
+            } catch (\Throwable $e) {
+                DB::rollBack();
+            return response()->json(
                     [
                         'message' => "Transaction Failed",
-                        'status' => 500,
-                        'data' => "error"
+                        'status' => 0,
+                        'data' => $e->getMessage()
                     ],
                     500
                 );

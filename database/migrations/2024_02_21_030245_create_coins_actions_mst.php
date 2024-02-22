@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coins_mst', function (Blueprint $table) {
+        Schema::create('coins_actions_mst', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string("uid");
-            $table->string("type");
-            $table->integer("action_id");
+            $table->string("name");
+            $table->decimal("amount",15,2);
+            $table->string("description")->nullable();
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('coins_mst');
+        Schema::dropIfExists('coins_actions_mst');
     }
 };
