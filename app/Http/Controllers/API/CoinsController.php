@@ -35,7 +35,7 @@ class CoinsController extends Controller
         }
         if($wallet == null){
             $wallet = new UserWallet();
-            $wallet->amount = 0.0;
+            $wallet->total_bal = 0.0;
         }
         if($user != null){
                 return response()->json(
