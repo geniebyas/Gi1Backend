@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/delete', function () {
-    return view('admin/frontend/delete_user_ac');
+    return view('admin/frontend/delete/delete_user_ac');
 });
 
 
