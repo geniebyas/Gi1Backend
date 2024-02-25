@@ -1,3 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $APP_NAME; ?></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <!-- <link rel="stylesheet" href="/web/ui/css/style.css"> -->
+    <link rel="stylesheet" href="../ui/css/util.css">
+    <link rel="stylesheet" href="../ui/css/style.css">
+
+</head>
+<style>
+    html,
+    body {
+        @font-face {
+            font-family: Poppins-Medium;
+            src: url('Poppins-Medium.ttf');
+        }
+
+        height: 100%;
+        font-family:Poppins-Medium;
+    }
+
+    @font-face {
+        font-family: Poppins-Medium;
+        src: url('Poppins-Medium.ttf');
+    }
+
+    @font-face {
+        font-family: Poppins-Medium-bold;
+        font-weight: bold;
+        src: url('Poppins-Medium.ttf');
+    }
+</style>
+
+<body>
 <div class="card m-3">
     <h5 class="card-header text-center">Delete Account</h5>
     <div class="card-body align-items-center justify-content-center">
@@ -36,3 +76,5 @@
         </div>
     </div>
 </div>
+</body>
+</html>
