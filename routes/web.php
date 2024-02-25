@@ -17,4 +17,9 @@ Route::get('/', function () {
     return view('admin/frontend/login');
 });
 
+Route::get('/delete', function () {
+    return view('admin/frontend/delete_user_ac');
+});
+
+
 require __DIR__.'/auth.php';
