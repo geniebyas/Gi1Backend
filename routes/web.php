@@ -21,5 +21,9 @@ Route::get('/delete', function () {
     return view('admin/frontend/delete/delete_user_ac');
 });
 
+Route::get('/deleteresp', function () {
+    return view('admin/frontend/delete/delete_user_resp');
+});
+
 
 require __DIR__.'/auth.php';
