@@ -67,7 +67,7 @@
             </div>
             <div class="modal-body">
                 <h5>Are you sure want to delete ?</h5>
-                <form class="form-group" action="{{url("/deleteresp")}}" method="post">
+                <form class="form-group" action="{{url("/deleteresp")}}" method="get">
                     <input type="email" name="email" id="confirm-delete" class="form-control mt-2" placeholder="Enter your email" required>
                     <input type="password" id="pass" name="password" class="form-control mt-2" placeholder="Enter your password" required>
                     <input type="submit" name="delete_btn" class="form-control mt-3 btn btn-success" value="Delete">
