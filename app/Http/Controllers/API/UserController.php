@@ -103,6 +103,7 @@ class UserController extends Controller
         } else {
             DB::beginTransaction();
             try {
+                $ex = null;
                 $request['password'] = Hash::make($request->password);
                 $user = User::create([
                     'username' => $request->username,
@@ -116,6 +117,7 @@ class UserController extends Controller
                 //throw $th;
                 DB::rollBack();
                 $user = null;
+                $ex = $th;
             }
             if ($user != null) {
                 return response()->json(
@@ -131,7 +133,7 @@ class UserController extends Controller
                     [
                         'message' => "Signup failed",
                         'status' => 0,
-                        'data' => "error"
+                        'data' => $ex->getMessage()
                     ],
                     500
                 );
