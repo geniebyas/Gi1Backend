@@ -51,7 +51,7 @@ Route::group(['middleware' => "api"], (function () {
         Route::post('/deleteuserac', [UserController::class, 'destroy']);
         Route::put('/{uid}', [UserController::class, 'update']);
         Route::get('/checkuserexists/{uid}', [UserController::class, 'checkUserExists']);
-        Route::get('/isuniqueuser',[UserController::class,'isuniqueuser']);
+        Route::get('/isuniqueuser/{username}',[UserController::class,'isuniqueuser']);
     });
 
     //industry group

@@ -4,11 +4,13 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UsersSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Str;
 use Throwable;
 
 class UserController extends Controller
@@ -59,9 +61,8 @@ class UserController extends Controller
         return response()->json($response,200);
     }
 
-    public function isuniqueuser(Request $request)
+    public function isuniqueuser(Request $request,$username)
     {
-        $username = $request->$request->username;
         if (User::where('username',$username)->exists()) {
             $response = [
                 'message' => 'User Found',
@@ -193,6 +194,13 @@ class UserController extends Controller
                 $user->bio = $request['bio'];
                 $user->profile_pic = $request['profile_pic'];
                 $user->save();
+
+                $setting = new UsersSetting();
+                $setting->uid = $uid;
+                $setting->refer_code= Str::random(6);
+                $setting->refered_by = $request['refered_by'];
+                $setting->save();
+
                 DB::commit();
 
                 $response = [
