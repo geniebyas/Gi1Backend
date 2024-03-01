@@ -16,10 +16,11 @@ class ProtectRoute
      */
     public function handle(Request $request, Closure $next): Response
     {
+        date_default_timezone_set("Asia/Kolkata");
         $uid = $request->header('uid');
         $user = User::where('uid', $uid)->get()->first();
-$path = $request->path();
-      if(str_contains($path,"checkuserexists") || str_contains($path,"register")){
+        $path = $request->path();
+        if(str_contains($path,"checkuserexists") || str_contains($path,"register")){
 
 return $next($request);
         } else if (is_null($user)) {
