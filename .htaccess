@@ -1,3 +1,5 @@
+php_value date.timezone 'Asia/Kolkata'
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 

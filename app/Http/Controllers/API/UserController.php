@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redis;
 use Throwable;
 
 class UserController extends Controller
@@ -53,6 +54,25 @@ class UserController extends Controller
                 'message' => 'User does not exist',
                 'status' => 0,
                 'data' => null
+            ];
+        }
+        return response()->json($response,200);
+    }
+
+    public function isuniqueuser(Request $request)
+    {
+        $username = $request->$request->username;
+        if (User::where('username',$username)->exists()) {
+            $response = [
+                'message' => 'User Found',
+                'status' => 1,
+                'data' => false
+            ];
+        } else {
+            $response = [
+                'message' => 'User does not exist',
+                'status' => 0,
+                'data' => true
             ];
         }
         return response()->json($response,200);
