@@ -21,6 +21,7 @@ class User extends Authenticatable
     protected $primaryKey = 'id';
     protected $fillable = [
         'name',
+        'username',
         'uid',
         'email',
         'profile_pic',
