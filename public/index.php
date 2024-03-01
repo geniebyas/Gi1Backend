@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set("Asia/Kolkata");
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
