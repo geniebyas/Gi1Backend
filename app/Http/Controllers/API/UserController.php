@@ -93,6 +93,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'username' => ['required','unique:users,username'],
             'name' => 'required',
             'email' => ['required', 'email', 'unique:users,email'],
             'uid' => ['required', 'unique:users,uid']
@@ -104,6 +105,7 @@ class UserController extends Controller
             try {
                 $request['password'] = Hash::make($request->password);
                 $user = User::create([
+                    'username' => $request->username,
                     'email' => $request->email,
                     'password' => $request->password,
                     'name' => $request->name,

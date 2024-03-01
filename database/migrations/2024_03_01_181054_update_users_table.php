@@ -13,7 +13,7 @@ return new class extends Migration
     {
         //
         Schema::table('users', function (Blueprint $table) {
-            $table->string("username")->after('uid');
+            $table->string("username")->after('uid')->unique();
         });
     }
 

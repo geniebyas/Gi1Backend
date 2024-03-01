@@ -20,7 +20,7 @@ class ProtectRoute
         $uid = $request->header('uid');
         $user = User::where('uid', $uid)->get()->first();
         $path = $request->path();
-        if(str_contains($path,"checkuserexists") || str_contains($path,"register")){
+        if(str_contains($path,"checkuserexists") || str_contains($path,"register") || str_contains($path,"isuniqueuser")){
 
 return $next($request);
         } else if (is_null($user)) {
