@@ -4,6 +4,7 @@ use App\Http\Controllers\API\CoinsController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\IndustryController;
 use App\Http\Controllers\API\FileUploadController;
+use App\Http\Controllers\API\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +53,11 @@ Route::group(['middleware' => "api"], (function () {
         Route::put('/{uid}', [UserController::class, 'update']);
         Route::get('/checkuserexists/{uid}', [UserController::class, 'checkUserExists']);
         Route::get('/isuniqueuser/{username}',[UserController::class,'isuniqueuser']);
+    });
+
+    Route::prefix('setting')->group(function (){
+        Route::get('/referal/isvalid/{code}',[SettingController::class,'isvalid']);
+
     });
 
     //industry group
