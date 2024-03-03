@@ -215,7 +215,7 @@ class UserController extends Controller
                 $setting = new UsersSetting();
                 $setting->uid = $uid;
                 $setting->refer_code= generateReferCode();
-                $setting->refered_by = $request['refered_by'];
+                $setting->refered_by = $request['referred_by'];
                 $setting->save();
 
                 DB::commit();
