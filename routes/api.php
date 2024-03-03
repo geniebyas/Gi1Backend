@@ -56,7 +56,8 @@ Route::group(['middleware' => "api"], (function () {
     });
 
     Route::prefix('setting')->group(function (){
-        Route::get('/referal/isvalid/{code}',[SettingController::class,'isvalid']);
+        Route::get('/referal/isvalid/{refer_code}',[SettingController::class,'isvalid']);
+        Route::post('/add',[SettingController::class,'add_setting']);
 
     });
 

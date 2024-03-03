@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Str;
 
 if(!function_exists('p')){
     function p($data){
@@ -8,6 +9,10 @@ if(!function_exists('p')){
     }
 }
 
+
+    function generateReferCode(){
+        return strtolower(Str::random(6));
+    }
 
 
 ?>

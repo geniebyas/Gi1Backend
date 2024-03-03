@@ -201,7 +201,7 @@ class UserController extends Controller
 
                 $setting = new UsersSetting();
                 $setting->uid = $uid;
-                $setting->refer_code= strtolower(Str::random(6));
+                $setting->refer_code= generateReferCode();
                 $setting->refered_by = $request['refered_by'];
                 $setting->save();
 
