@@ -35,10 +35,7 @@ class UserController extends Controller
             $response = [
                 'message' => count($users) . ' users found',
                 'status' => 1,
-                'data' => [
-                    "users"=>$users,
-                    "uids"=>$uids
-                ]
+                'data' => $users
             ];
             
             return response()->json($response,200);
