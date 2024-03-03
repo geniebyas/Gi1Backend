@@ -47,7 +47,7 @@ Route::group(['middleware' => "api"], (function () {
     Route::prefix('user')->group(function () {
         Route::post('/register', [UserController::class, 'store']);
         Route::put('/registration/{uid}', [UserController::class, 'update']);
-        Route::get('/users', [UserController::class, 'getAllUsers']);
+        Route::get('/publicusers', [UserController::class, 'getAllPublicUsers']);
         Route::get('/{uid}', [UserController::class, 'show']);
         Route::post('/deleteuserac', [UserController::class, 'destroy']);
         Route::put('/{uid}', [UserController::class, 'update']);

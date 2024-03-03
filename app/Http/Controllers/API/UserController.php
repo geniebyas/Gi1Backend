@@ -19,9 +19,16 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
 
-    public function getAllUsers()
+    public function getAllPublicUsers()
     {
-        $users = User::select('id', 'email', 'name', 'uid')->get();
+        $uids = UsersSetting::where('is_private',false)->get();
+        $users = array();
+        if(!$uids->isEmpty()){
+            foreach($uids as $uid){
+                $user = User::where('uid',$uid)->first();
+                $users[] = $user;
+            }
+        }
         if (count($users) > 0) {
             //users exists
             $response = [
@@ -29,14 +36,16 @@ class UserController extends Controller
                 'status' => 1,
                 'data' => $users
             ];
+            
+            return response()->json($response,200);
         } else {
             $response = [
                 'message' => count($users) . ' users found',
-                'status' => 1,
+                'status' => 0,
                 'data' => null
             ];
-        }
-        return response()->json($response);
+                return response()->json($response,204);
+}
     }
     public function index()
     {
