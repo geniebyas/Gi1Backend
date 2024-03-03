@@ -17,8 +17,8 @@ class SettingController extends Controller
     
         if(UsersSetting::where("refer_code",$refer_code)->exists()){
 
-            $setting = UsersSetting::where("refer_code",$refer_code)->get();
-            $user = User::where("uid",$setting[0]->uid)->first();
+            $setting = UsersSetting::where("refer_code",$refer_code)->first();
+            $user = User::where("uid",$setting->uid)->first();
 
             $response = [
                 'message' => 'User Found',
