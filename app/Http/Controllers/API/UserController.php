@@ -25,7 +25,8 @@ class UserController extends Controller
         $users = array();
         if(!$uids->isEmpty()){
             foreach($uids as $uid){
-                $user = User::where('uid',$uid)->first();
+                $user = User::where('uid',$uid->uid)->first();
+                $user->refer_code = $uid->refer_code;
                 $users[] = $user;
             }
         }
@@ -34,7 +35,10 @@ class UserController extends Controller
             $response = [
                 'message' => count($users) . ' users found',
                 'status' => 1,
-                'data' => $users
+                'data' => [
+                    "users"=>$users,
+                    "uids"=>$uids
+                ]
             ];
             
             return response()->json($response,200);
