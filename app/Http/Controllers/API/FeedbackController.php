@@ -13,7 +13,7 @@ class FeedbackController extends Controller
         {
             $categories = FeedbackQuestionCategory::with('questions')->get();
     
-            return response()->json(['categories' => $categories]);
+            return response()->json($categories,200);
         }
 
         public function submitFeedbackAnswer(Request $request)
