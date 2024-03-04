@@ -49,6 +49,15 @@ class FeedbackController extends Controller
     
             return response()->json(['message' => 'Feedback answer submitted successfully', 'status' => 1,'data' => $response]);
         }
+
+        public function getCategory($id){
+            $category = FeedbackQuestionCategory::with('questions')->find($id);
+            return response()->json([
+                "message" => "Categories Loaded Successfully",
+                "status" => 1,
+                "data" => $category
+            ],200);
+        }
     
 
 }
