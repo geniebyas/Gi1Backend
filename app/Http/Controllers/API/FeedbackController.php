@@ -52,11 +52,19 @@ class FeedbackController extends Controller
 
         public function getCategory($id){
             $category = FeedbackQuestionCategory::with('questions')->find($id);
+            if($category != null){
             return response()->json([
                 "message" => "Categories Loaded Successfully",
                 "status" => 1,
                 "data" => $category
             ],200);
+        }else{
+            return response()->json([
+                "message" => "No Category Found!",
+                "status" => 0,
+                "data" => "no data found!"
+            ]);
+        }
         }
     
 
