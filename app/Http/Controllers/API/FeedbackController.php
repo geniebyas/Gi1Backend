@@ -63,7 +63,7 @@ class FeedbackController extends Controller
                 "message" => "No Category Found!",
                 "status" => 0,
                 "data" => "no data found!"
-            ]);
+            ],204);
         }
         }
     
