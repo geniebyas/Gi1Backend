@@ -80,7 +80,7 @@ Route::group(['middleware' => "api"], (function () {
     Route::prefix('feedback')->group(function (){
         Route::get('/categories',[FeedbackController::class,'getAllFeedback']);
         Route::post('/submit',[FeedbackController::class,'submitFeedbackAnswer']);
-        Route::get('/{id}',[FeedbackController::class,'getCategory']);
+        Route::get('/category/{id}',[FeedbackController::class,'getCategory']);
     });
 
 
