@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\CoinsController;
+use App\Http\Controllers\API\FeedbackController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\IndustryController;
 use App\Http\Controllers\API\FileUploadController;
@@ -75,6 +76,11 @@ Route::group(['middleware' => "api"], (function () {
     });
 
 
+    //feedback
+    Route::prefix('feedback')->group(function (){
+        Route::get('/categories',[FeedbackController::class,'getAllFeedback']);
+        Route::post('/submit',[FeedbackController::class,'submitFeedbackAnswer']);
+    });
 
 
 
