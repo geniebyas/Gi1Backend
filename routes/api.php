@@ -75,7 +75,6 @@ Route::group(['middleware' => "api"], (function () {
 
     });
 
-
     //feedback
     Route::prefix('feedback')->group(function (){
         Route::get('/categories',[FeedbackController::class,'getAllFeedback']);
