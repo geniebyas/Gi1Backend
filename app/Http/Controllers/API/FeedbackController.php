@@ -19,7 +19,7 @@ class FeedbackController extends Controller
                     $q->issubmitted = FeedbackUsersResponse::where('question_id', $q->question_id)->where('uid',$request->header('uid'))->exists();
                 }
             }
-            $resp = Http::post("https://api.gi1superapp.com/api/coins/add",[
+            $resp = Http::withHeader("uid",$request->header('uid'))->post("https://api.gi1superapp.com/api/coins/add",[
                 "action_id"=>3,
                 "type"=>"add"
             ]);
