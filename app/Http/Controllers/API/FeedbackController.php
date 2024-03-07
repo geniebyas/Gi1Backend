@@ -9,9 +9,15 @@ use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
 {
-    public function getAllFeedback()
+    public function getAllFeedback(Request $request)
         {
             $categories = FeedbackQuestionCategory::with('questions')->get();
+
+            foreach($categories as $category){
+                foreach($category->questions as $q){
+                    $q->issubmitted = FeedbackUsersResponse::where('question_id', $q->question_id)->where('uid',$request->header('uid'))->exists();
+                }
+            }
     
             return response()->json([
                 "message" => "Categories Loaded Successfully",
