@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FeedbackQuestionCategory;
 use App\Models\FeedbackUsersResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class FeedbackController extends Controller
 {
@@ -18,11 +19,16 @@ class FeedbackController extends Controller
                     $q->issubmitted = FeedbackUsersResponse::where('question_id', $q->question_id)->where('uid',$request->header('uid'))->exists();
                 }
             }
+            $resp = Http::post("https://api.gi1superapp.com/api/coins/add",[
+                "action_id"=>3,
+                "type"=>"add"
+            ]);
     
             return response()->json([
                 "message" => "Categories Loaded Successfully",
                 "status" => 1,
-                "data" => $categories
+                // "data" => $categories
+                "data" =>$resp
             ],200);
         }
 
@@ -52,6 +58,11 @@ class FeedbackController extends Controller
                     'response_date'=>$request->response_date,
                 ]
             );
+
+            
+
+
+
     
             return response()->json(['message' => 'Feedback answer submitted successfully', 'status' => 1,'data' => $response]);
         }

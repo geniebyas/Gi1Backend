@@ -61,7 +61,6 @@ class CoinsController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'uid' => 'required',
             'type' => ['required', 'in:add,remove'],
             'action_id' => 'required'
         ]);
@@ -79,7 +78,7 @@ class CoinsController extends Controller
                 }
                 $action = CoinsActions::find($request->action_id);
                 $coin = new Coins();
-                $coin->uid = $request->uid;
+                $coin->uid = $request->header('uid');
                 $coin->type = $request->type;
                 $coin->action_id = $request->action_id;
                 $coin->save();
