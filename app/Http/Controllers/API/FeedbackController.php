@@ -20,22 +20,12 @@ class FeedbackController extends Controller
                 $q->issubmitted = FeedbackUsersResponse::where('question_id', $q->question_id)->where('uid', $request->header('uid'))->exists();
             }
         }
-        $client = new Client();
-        $resp = $client->request('POST', "https://api.gi1superapp.com/api/coins/add", [
-            'headers' => [
-                'uid' => $request->header('uid')
-            ],
-            'form_params' => [
-                'action_id' => 3,
-                'type' => "add"
-            ]
-        ]);
+        
 
         return response()->json([
             "message" => "Categories Loaded Successfully",
             "status" => 1,
-            // "data" => $categories
-            "data" => $resp
+            "data" => $categories
         ], 200);
     }
 
@@ -67,11 +57,21 @@ class FeedbackController extends Controller
         );
 
 
+        $client = new Client();
+        $resp = $client->request('POST', "https://api.gi1superapp.com/api/coins/add", [
+            'headers' => [
+                'uid' => $request->header('uid')
+            ],
+            'form_params' => [
+                'action_id' => 3,
+                'type' => "add"
+            ]
+        ]);
 
 
 
 
-        return response()->json(['message' => 'Feedback answer submitted successfully', 'status' => 1, 'data' => $response]);
+        return response()->json(['message' => 'Feedback answer submitted successfully', 'status' => 1, 'data' => $response,'coin_data' =>$resp],200);
     }
 
     public function getCategory(Request $request, $id)
