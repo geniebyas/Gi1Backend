@@ -107,7 +107,7 @@ class CoinsController extends Controller
             return response()->json(
                     [
                         'message' => "Transaction Failed",
-                        'status' => 0,
+                        'status' => $request->header('uid'),
                         'data' => $e->getMessage()
                     ],
                     500
