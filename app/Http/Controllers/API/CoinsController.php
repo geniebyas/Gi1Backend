@@ -59,6 +59,7 @@ class CoinsController extends Controller
 
     public function create(Request $request)
     {
+        $uid = $request->header('uid');
 
         $validator = Validator::make($request->all(), [
             'type' => ['required', 'in:add,remove'],
@@ -71,14 +72,14 @@ class CoinsController extends Controller
             DB::beginTransaction();
             $coin = null;
             try {
-                $wallet = UserWallet::where("uid",$request->uid)->first();
+                $wallet = UserWallet::where("uid",$uid)->first();
                 if($wallet == null){
                     $wallet = new UserWallet();
                     $wallet->total_bal = 0;
                 }
                 $action = CoinsActions::find($request->action_id);
                 $coin = new Coins();
-                $coin->uid = $request->header('uid');
+                $coin->uid = $uid;
                 $coin->type = $request->type;
                 $coin->action_id = $request->action_id;
                 $coin->save();
@@ -107,7 +108,7 @@ class CoinsController extends Controller
             return response()->json(
                     [
                         'message' => "Transaction Failed",
-                        'status' => $request->header('uid'),
+                        'status' => 0,
                         'data' => $e->getMessage()
                     ],
                     500
