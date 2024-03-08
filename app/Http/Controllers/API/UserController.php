@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UsersSetting;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -21,11 +22,11 @@ class UserController extends Controller
 
     public function getAllPublicUsers()
     {
-        $uids = UsersSetting::where('is_private',false)->get();
+        $uids = UsersSetting::where('is_private', false)->get();
         $users = array();
-        if(!$uids->isEmpty()){
-            foreach($uids as $uid){
-                $user = User::where('uid',$uid->uid)->first();
+        if (!$uids->isEmpty()) {
+            foreach ($uids as $uid) {
+                $user = User::where('uid', $uid->uid)->first();
                 $user->refer_code = $uid->refer_code;
                 $users[] = $user;
             }
@@ -37,16 +38,16 @@ class UserController extends Controller
                 'status' => 1,
                 'data' => $users
             ];
-            
-            return response()->json($response,200);
+
+            return response()->json($response, 200);
         } else {
             $response = [
                 'message' => count($users) . ' users found',
                 'status' => 0,
                 'data' => null
             ];
-                return response()->json($response,204);
-}
+            return response()->json($response, 204);
+        }
     }
     public function index()
     {
@@ -68,12 +69,12 @@ class UserController extends Controller
                 'data' => null
             ];
         }
-        return response()->json($response,200);
+        return response()->json($response, 200);
     }
 
-    public function isuniqueuser(Request $request,$username)
+    public function isuniqueuser(Request $request, $username)
     {
-        if (User::where('username',$username)->exists()) {
+        if (User::where('username', $username)->exists()) {
             $response = [
                 'message' => 'User Found',
                 'status' => 1,
@@ -86,7 +87,7 @@ class UserController extends Controller
                 'data' => true
             ];
         }
-        return response()->json($response,200);
+        return response()->json($response, 200);
     }
 
     /**
@@ -103,7 +104,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => ['required','unique:users,username'],
+            'username' => ['required', 'unique:users,username'],
             'name' => 'required',
             'email' => ['required', 'email', 'unique:users,email'],
             'uid' => ['required', 'unique:users,uid']
@@ -157,8 +158,8 @@ class UserController extends Controller
      */
     public function show(Request $request)
     {
-    
-        $user = User::where('uid',$request->uid)->get()->first();
+
+        $user = User::where('uid', $request->uid)->get()->first();
         if (is_null($user)) {
             $response = [
                 'message' => 'User Not Found',
@@ -189,7 +190,7 @@ class UserController extends Controller
     public function update(Request $request, string $uid)
     {
         //
-        $user = User::where('uid',$uid)->get()->first();
+        $user = User::where('uid', $uid)->get()->first();
         if (is_null($user)) {
             return response()->json(
                 [
@@ -211,23 +212,49 @@ class UserController extends Controller
 
                 $setting = new UsersSetting();
                 $setting->uid = $uid;
-                $setting->refer_code= generateReferCode();
+                $setting->refer_code = generateReferCode();
                 $setting->refered_by = $request['referred_by'];
                 $setting->save();
+
+                $client = new Client();
+                if ($setting->refered_by != null) {
+                    $resp = $client->request('POST', "https://api.gi1superapp.com/api/coins/add", [
+                        'headers' => [
+                            'uid' => $setting->refered_by
+                        ],
+                        'form_params' => [
+                            'action_id' => 4,
+                            'type' => "add"
+                        ]
+                    ]);
+                }
+                
+                if ($setting->refered_by != null) {
+                    $resp = $client->request('POST', "https://api.gi1superapp.com/api/coins/add", [
+                        'headers' => [
+                            'uid' => $request->header('uid')
+                        ],
+                        'form_params' => [
+                            'action_id' => 5,
+                            'type' => "add"
+                        ]
+                    ]);
+                }
+
 
                 DB::commit();
 
                 $response = [
                     'message' => 'Registration Successfully',
                     'status' => 1,
-                    'data' =>""
+                    'data' => ""
                 ];
             } catch (Throwable $th) {
                 DB::rollback();
                 $response = [
                     'message' => $th->getMessage(),
                     'status' => 0,
-                    'data' =>""
+                    'data' => ""
                 ];
             }
             return response()->json($response, 200);
