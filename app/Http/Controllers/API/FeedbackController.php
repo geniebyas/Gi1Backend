@@ -7,6 +7,7 @@ use App\Models\FeedbackQuestionCategory;
 use App\Models\FeedbackUsersResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 
 class FeedbackController extends Controller
 {
@@ -19,7 +20,11 @@ class FeedbackController extends Controller
                     $q->issubmitted = FeedbackUsersResponse::where('question_id', $q->question_id)->where('uid',$request->header('uid'))->exists();
                 }
             }
-            $resp = Http::post("https://api.gi1superapp.com/api/coins/add",[
+            $client = new Client();
+            $resp = $client->request('POST',"https://api.gi1superapp.com/api/coins/add",[
+                'headers'=>[
+                    'uid' => $request->header('uid')
+                ],
                 "action_id"=>3,
                 "type"=>"add"
             ]);
