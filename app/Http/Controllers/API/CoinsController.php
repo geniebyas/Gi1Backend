@@ -89,7 +89,7 @@ class CoinsController extends Controller
                 }else{
                     $wallet->total_bal = intval($wallet->total_bal) - $action->amount;
                 }
-                UserWallet::updateOrCreate(['uid'=>$request->uid],['total_bal'=>$wallet->total_bal]);
+                UserWallet::updateOrCreate(['uid'=>$uid],['total_bal'=>$wallet->total_bal]);
             }
                 DB::commit();
             if($coin->type == "add")  $msg = "Coins Added Successfully" ;
