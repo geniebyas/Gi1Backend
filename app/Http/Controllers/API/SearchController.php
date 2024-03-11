@@ -10,7 +10,7 @@ class SearchController extends Controller
 {
     //
     function globalSearch($query){
-        $users = User::where('name','LIKE',"%$query%")->orWhere('username','LIKE',"%$query%")->orWhere('email','LIKE',"%$query%")->get();
+        $users = User::where('name','LIKE',"%$query%")->orWhere('username','LIKE',"%$query%")->orWhere('email','LIKE',"%$query%");
 
 
         if(!is_null($users)){
