@@ -10,8 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Str;
 use Throwable;
 
 class UserController extends Controller
@@ -218,27 +216,12 @@ class UserController extends Controller
 
                 $client = new Client();
                 if ($setting->refered_by != null) {
-                    $resp = $client->request('POST', "https://api.gi1superapp.com/api/coins/add", [
-                        'headers' => [
-                            'uid' => $setting->refered_by
-                        ],
-                        'form_params' => [
-                            'action_id' => 4,
-                            'type' => "add"
-                        ]
-                    ]);
+                addCoins($request->header('uid'),4);
                 }
                 
                 if ($setting->refered_by != null) {
-                    $resp = $client->request('POST', "https://api.gi1superapp.com/api/coins/add", [
-                        'headers' => [
-                            'uid' => $request->header('uid')
-                        ],
-                        'form_params' => [
-                            'action_id' => 5,
-                            'type' => "add"
-                        ]
-                    ]);
+                    
+                addCoins($request->header('uid'),5);
                 }
 
 
