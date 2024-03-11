@@ -4,14 +4,22 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
     //
     function globalSearch($query){
-        $users = User::where('name','LIKE',"%$query%")->orWhere('username','LIKE',"%$query%")->orWhere('email','LIKE',"%$query%");
+        // $users = User::where('name','LIKE',"%$query%")->orWhere('username','LIKE',"%$query%")->orWhere('email','LIKE',"%$query%");
 
+        $users = User::where(function (Builder $queryBuilder) use ($query) {
+            $queryBuilder
+                ->where('name', 'LIKE', "%$query%")
+                ->orWhere('username', 'LIKE', "%$query%")
+                ->orWhere('email', 'LIKE', "%$query%");
+        })
+        ->get();
 
         if($users->count() > 0){
             $response = [
