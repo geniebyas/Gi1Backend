@@ -21,7 +21,7 @@ class SearchController extends Controller
         // })
         // ->get();
 
-        $users = User::with('wallet')->get();
+        $users = User::with('settings')->get();
 
         if($users->count() > 0){
             $response = [
