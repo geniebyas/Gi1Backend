@@ -13,7 +13,7 @@ class SearchController extends Controller
         $users = User::where('name','LIKE',"%$query%")->orWhere('username','LIKE',"%$query%")->orWhere('email','LIKE',"%$query%");
 
 
-        if(!is_null($users)){
+        if($users->count() > 0){
             $response = [
                 'message' => 'Result Found',
                 'status' => 1,
