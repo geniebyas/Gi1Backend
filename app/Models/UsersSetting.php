@@ -21,4 +21,8 @@ class UsersSetting extends Model
     protected $casts = [
         'is_private' => 'boolean',
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'uid');
+    }
 }

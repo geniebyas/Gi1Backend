@@ -14,4 +14,9 @@ class UserWallet extends Model
         "uid",
         "total_bal"
     ];
+
+    
+    public function user(){
+        return $this->belongsTo(User::class, 'uid');
+    }
 }

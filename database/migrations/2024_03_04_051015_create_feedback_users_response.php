@@ -13,8 +13,8 @@ return new class extends Migration
         {
             Schema::create('feedback_users_response', function (Blueprint $table) {
                 $table->id();
-                $table->string('uid');
                 $table->foreignId('question_id')->constrained('feedback_questions','question_id');
+                $table->foreignId('uid')->constrained('users','uid');
                 $table->text('response_text')->nullable();
                 $table->boolean('response_boolean')->nullable();
                 $table->integer('response_range')->nullable();

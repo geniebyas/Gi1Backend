@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('coins_mst', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string("uid");
+            $table->foreignId('uid')->constrained('users','uid');
             $table->string("type");
             $table->integer("action_id");
         });

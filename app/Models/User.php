@@ -52,4 +52,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function settings(){
+        return $this->hasOne(UsersSetting::class,'uid');
+    }
+
+    public function responses(){
+        return $this->hasMany(FeedbackUsersResponse::class,'uid');
+    }
+
+    public function wallet(){
+        return $this->hasOne(UserWallet::class,'uid');
+    }
+
+    public function transactions(){
+        return $this->hasMany(Coins::class,'uid');
+    }
+
+
 }

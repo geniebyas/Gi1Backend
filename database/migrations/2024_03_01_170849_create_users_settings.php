@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('users_settings', function (Blueprint $table) {
             $table->id();
-            $table->string("uid")->unique();
+            $table->foreignId('uid')->constrained('users','uid');
             $table->boolean("is_private")->default(false);
             $table->string('refer_code')->unique()->default(random_int(100000,999999));
             $table->string('refered_by')->nullable();
