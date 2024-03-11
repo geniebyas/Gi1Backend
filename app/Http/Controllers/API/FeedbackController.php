@@ -54,18 +54,6 @@ class FeedbackController extends Controller
             ]
         );
 
-
-        // $client = new Client();
-        // $resp = $client->request('POST', "https://api.gi1superapp.com/api/coins/add", [
-        //     'headers' => [
-        //         'uid' => $request->header('uid')
-        //     ],
-        //     'form_params' => [
-        //         'action_id' => 3,
-        //         'type' => "add"
-        //     ]
-        // ]);
-
         $resp = addCoins($request->header('uid'),3);
 
         return response()->json(['message' => 'Feedback answer submitted successfully', 'status' => 1, 'data' => $response,'coin_data' =>$resp],200);

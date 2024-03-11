@@ -5,6 +5,7 @@ use App\Http\Controllers\API\FeedbackController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\IndustryController;
 use App\Http\Controllers\API\FileUploadController;
+use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -80,6 +81,13 @@ Route::group(['middleware' => "api"], (function () {
         Route::get('/categories',[FeedbackController::class,'getAllFeedback']);
         Route::post('/submit',[FeedbackController::class,'submitFeedbackAnswer']);
         Route::get('/category/{id}',[FeedbackController::class,'getCategory']);
+    });
+
+
+    //search
+
+    Route::prefix('search') ->group(function (){
+        Route::get('/global/{query}',[SearchController::class,'globalSearch']);
     });
 
 
