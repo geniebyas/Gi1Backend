@@ -22,7 +22,4 @@ class UsersSetting extends Model
         'is_private' => 'boolean',
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class, 'uid');
-    }
 }
