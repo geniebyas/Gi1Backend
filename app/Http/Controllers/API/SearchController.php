@@ -17,9 +17,7 @@ class SearchController extends Controller
             $response = [
                 'message' => 'Result Found',
                 'status' => 1,
-                'data' =>[
-                    'users' => $users
-                ]
+                'data' =>$users
                 ];
                 return response()->json($response,200);
         }else{
