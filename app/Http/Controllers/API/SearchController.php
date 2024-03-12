@@ -21,7 +21,7 @@ class SearchController extends Controller
         // })
         // ->get();
 
-        $users = User::with('settings')->get();
+        $users = User::with('settings')->where("uid",header('uid'))->get();
 
         if($users->count() > 0){
             $response = [
