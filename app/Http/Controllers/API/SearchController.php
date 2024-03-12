@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class SearchController extends Controller
 {
     //
-    function globalSearch($query){
+    function globalSearch(Request $request,$query){
         // $users = User::where('name','LIKE',"%$query%")->orWhere('username','LIKE',"%$query%")->orWhere('email','LIKE',"%$query%");
 
         // $users = User::with('wallet')->with('settings')->with('transactions')->with('responses')->where(function (Builder $queryBuilder) use ($query) {
@@ -21,7 +21,7 @@ class SearchController extends Controller
         // })
         // ->get();
 
-        $users = User::where("uid",header('uid'))->with('settings')->get();
+        $users = User::where("uid",$request->header('uid'))->with('settings')->get();
 
         // if($users->count() > 0){
         if($users != null){
