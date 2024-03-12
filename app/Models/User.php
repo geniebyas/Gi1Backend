@@ -55,7 +55,7 @@ class User extends Model
 
 
     public function settings(){
-        return $this->hasOne(UsersSetting::class,'uid');
+        return $this->hasOne("App/Models/UsersSetting",'uid');
     }
 
     public function responses(){
