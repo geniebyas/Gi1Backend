@@ -55,8 +55,8 @@ class User extends Model
 
 
     public function settings(){
-        // return $this->hasOne(UsersSetting::class,"uid");
-        return UsersSetting::where("uid",$this->uid)->first();
+        return $this->hasOne(UsersSetting::class,"uid");
+        // return UsersSetting::where("uid",$this->uid)->first();
     }
 
     public function responses(){
