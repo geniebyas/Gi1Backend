@@ -10,18 +10,18 @@ use Illuminate\Http\Request;
 class SearchController extends Controller
 {
     //
-    function globalSearch(Request $request,$query){
-        // $users = User::where('name','LIKE',"%$query%")->orWhere('username','LIKE',"%$query%")->orWhere('email','LIKE',"%$query%");
+    function globalSearch($query){
+        $users = User::where('name','LIKE',"%$query%")->orWhere('username','LIKE',"%$query%")->orWhere('email','LIKE',"%$query%");
 
-        // $users = User::with('wallet')->with('settings')->with('transactions')->with('responses')->where(function (Builder $queryBuilder) use ($query) {
-        //     $queryBuilder
-        //         ->where('name', 'LIKE', "%$query%")
-        //         ->orWhere('username', 'LIKE', "%$query%")
-        //         ->orWhere('email', 'LIKE', "%$query%");
-        // })
-        // ->get();
+        $users = User::with('wallet')->with('settings')->with('transactions')->with('responses')->where(function (Builder $queryBuilder) use ($query) {
+            $queryBuilder
+                ->where('name', 'LIKE', "%$query%")
+                ->orWhere('username', 'LIKE', "%$query%")
+                ->orWhere('email', 'LIKE', "%$query%");
+        })
+        ->get();
 
-        $users = User::where("uid",$request->header('uid'))->with('settings')->get();
+        // $users = User::where("uid",$request->header('uid'))->with('settings')->get();
 
         // if($users->count() > 0){
         if($users != null){
