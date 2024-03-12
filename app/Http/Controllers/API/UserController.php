@@ -46,11 +46,7 @@ class UserController extends Controller
             return response()->json($response, 204);
         }
     }
-    public function index()
-    {
-    }
-
-
+    
     public function checkUserExists($uid)
     {
         if (User::where('uid', $uid)->exists()) {
@@ -85,14 +81,6 @@ class UserController extends Controller
             ];
         }
         return response()->json($response, 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -174,14 +162,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $uid)
@@ -208,12 +188,11 @@ class UserController extends Controller
                 $user->save();
 
                 $setting = new UsersSetting();
-                $setting->uid = $uid;
+                $setting->uid = $user->id;
                 $setting->refer_code = generateReferCode();
                 $setting->refered_by = $request['referred_by'];
                 $setting->save();
 
-                $client = new Client();
                 if ($setting->refered_by != null) {
                 addCoins($request->header('uid'),4);
                 }
