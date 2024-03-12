@@ -63,6 +63,22 @@ class User extends Model
         return $query->leftJoin('users_settings', 'users.uid', '=', 'users_settings.uid');
     }
 
+    /**
+     * Accessor to append the settings attribute to the user model.
+     */
+    public function getSettingsAttribute()
+    {
+        return $this->getSettings();
+    }
+
+    /**
+     * Get the settings for the user.
+     */
+    protected function getSettings()
+    {
+        return UsersSetting::where('uid', $this->uid)->first();
+    }
+
     public function responses(){
         return $this->hasMany(FeedbackUsersResponse::class,'uid');
     }
