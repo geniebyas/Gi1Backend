@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class SearchController extends Controller
 {
     //
-    function globalSearch($query){
+    function globalSearch($query,$filter){
 
         $users = User::where(function (Builder $queryBuilder) use ($query) {
             $queryBuilder
