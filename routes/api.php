@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\CoinsController;
+use App\Http\Controllers\API\ConnectionsController;
 use App\Http\Controllers\API\FeedbackController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\IndustryController;
@@ -89,6 +90,10 @@ Route::group(['middleware' => "api"], (function () {
         Route::get('/global/{query}/{filter}',[SearchController::class,'globalSearch']);
     });
 
+    //connections
+    Route::prefix('connect') ->group(function (){
+        Route::get('/userconnections',[ConnectionsController::class,'getUserConnections']);
+    });
 
 
 }));
