@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_wallet', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('uid')->constrained('users');
+            $table->string('uid')->unique();
             $table->decimal("total_bal",15,2);
         });
     }
