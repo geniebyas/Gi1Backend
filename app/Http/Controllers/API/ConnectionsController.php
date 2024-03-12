@@ -26,9 +26,10 @@ class ConnectionsController extends Controller
     public function sendFriendRequest(Request $request,$dest_uid)
     {
         $user = User::where('uid',$request->header('uid'))->first();
+        $dest_user = User::where('uid',$dest_uid)->first();
    
         $status = "pending";
-        $setting = $user->getSettings();
+        $setting = $dest_user->getSettings();
         if($setting->is_private){
             $status = "pending";
         }else{
