@@ -12,7 +12,13 @@ class ConnectionsController extends Controller
         $uid = $request->header('uid');
         $user = User::with('connections')->where('uid',$uid)->first();
 
-
-
+        return response()->json(
+            [
+                'message'=> 'User loaded',
+                'status' => 1,
+                'data' =>$user
+            ],
+            200
+        );
     }
 }
