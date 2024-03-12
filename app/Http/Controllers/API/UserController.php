@@ -20,14 +20,15 @@ class UserController extends Controller
 
     public function getAllPublicUsers()
     {
-        $users = UsersSetting::with('user')->where('is_private', false)->get();
-        // if (!$uids->isEmpty()) {
-        //     foreach ($uids as $uid) {
-        //         $user = User::where('uid', $uid->uid)->first();
-        //         $user->refer_code = $uid->refer_code;
-        //         $users[] = $user;
-        //     }
-        // }
+        $uids = UsersSetting::where('is_private', false)->get();
+        $users = array();
+        if (!$uids->isEmpty()) {
+            foreach ($uids as $uid) {
+                $user = User::where('uid', $uid->uid)->first();
+                $user->refer_code = $uid->refer_code;
+                $users[] = $user;
+            }
+        }
         if (count($users) > 0) {
             //users exists
             $response = [
@@ -46,7 +47,11 @@ class UserController extends Controller
             return response()->json($response, 204);
         }
     }
-    
+    public function index()
+    {
+    }
+
+
     public function checkUserExists($uid)
     {
         if (User::where('uid', $uid)->exists()) {
@@ -81,6 +86,14 @@ class UserController extends Controller
             ];
         }
         return response()->json($response, 200);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -162,6 +175,14 @@ class UserController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $uid)
@@ -188,11 +209,12 @@ class UserController extends Controller
                 $user->save();
 
                 $setting = new UsersSetting();
-                $setting->uid = $user->id;
+                $setting->uid = $uid;
                 $setting->refer_code = generateReferCode();
                 $setting->refered_by = $request['referred_by'];
                 $setting->save();
 
+                $client = new Client();
                 if ($setting->refered_by != null) {
                 addCoins($request->header('uid'),4);
                 }
