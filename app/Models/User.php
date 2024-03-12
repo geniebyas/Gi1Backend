@@ -54,9 +54,13 @@ class User extends Model
     ];
 
 
-    public function settings(){
-        return $this->hasOne(UsersSetting::class,"uid");
-        // return UsersSetting::where("uid",$this->uid)->first();
+    // public function settings(){
+    //     return $this->hasOne(UsersSetting::class,"uid");
+    //     // return UsersSetting::where("uid",$this->uid)->first();
+    // }
+    public function scopeWithSettings($query)
+    {
+        return $query->leftJoin('users_settings', 'users.uid', '=', 'users_settings.uid');
     }
 
     public function responses(){
