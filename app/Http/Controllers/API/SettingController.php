@@ -17,13 +17,15 @@ class SettingController extends Controller
     
         if(UsersSetting::where("refer_code",$refer_code)->exists()){
 
-            $setting = UsersSetting::with('user')->where("refer_code",$refer_code)->first();
+            $setting = UsersSetting::where("refer_code",$refer_code)->first();
+            $user = User::where("uid",$setting->uid)->first();
 
             $response = [
                 'message' => 'User Found',
                 'status' => 1,
                 'data' => [
-                    "setting"=>$setting
+                    "setting"=>$setting,
+                    "user"=>$user
                 ]
             ];
                     return response()->json($response,200);
