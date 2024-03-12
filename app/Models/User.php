@@ -96,9 +96,9 @@ class User extends Model
       /**
      * Check if the user has a pending friend request from the given user.
      */
-    public function hasPendingFriendRequest(User $friend)
+    public function hasPendingFriendRequest($dest_uid)
     {
-        return UsersConnection::where('source_uid', $friend->uid)
+        return UsersConnection::where('source_uid', $dest_uid)
             ->where('dest_uid', $this->uid)
             ->where('status', 'pending')
             ->exists();
