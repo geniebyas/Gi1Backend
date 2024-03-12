@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Industry;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -20,12 +21,20 @@ class SearchController extends Controller
         })
         ->get();
 
+        $industries = Industry::where(function (Builder $queryBuilder) use ($query) {
+            $queryBuilder
+                ->where('name', 'LIKE', "%$query%")
+                ->orWhere('description', 'LIKE', "%$query%");
+        })
+        ->get();
+
         if($users->count() > 0){
             $response = [
                 'message' => 'Result Found',
                 'status' => 1,
                 'data' =>[
-                    'users'=>$users
+                    'users'=>$users,
+                    'industries' =>$industries
                 ]
                 ];
                 return response()->json($response,200);
