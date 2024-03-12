@@ -21,10 +21,7 @@ class SearchController extends Controller
         })
         ->get();
 
-        // $users = User::where("uid",$request->header('uid'))->with('settings')->get();
-
-        // if($users->count() > 0){
-        if($users != null){
+        if($users->count() > 0){
             $response = [
                 'message' => 'Result Found',
                 'status' => 1,
