@@ -55,7 +55,8 @@ class User extends Model
 
 
     public function settings(){
-        return $this->hasOne(UsersSetting::class,"uid");
+        // return $this->hasOne(UsersSetting::class,"uid");
+        return UsersSetting::where("uid",$this->uid);
     }
 
     public function responses(){
@@ -70,5 +71,18 @@ class User extends Model
         return $this->hasMany(Coins::class,'uid');
     }
 
+    /**
+     * Get the connections where the user is the source user.
+     */
+    public function connections(){
+        return $this->hasMany(UsersConnection::class,'source_uid','uid')->where('status','accepted');
+    }
 
+    /**
+     * Get the connectors (followers) of the user.
+     */
+    public function connectors()
+    {
+        return $this->hasMany(UsersConnection::class, 'dest_uid', 'uid')->where('status', 'accepted');
+    }
 }
