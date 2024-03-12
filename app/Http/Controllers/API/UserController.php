@@ -20,15 +20,14 @@ class UserController extends Controller
 
     public function getAllPublicUsers()
     {
-        $uids = UsersSetting::where('is_private', false)->get();
-        $users = array();
-        if (!$uids->isEmpty()) {
-            foreach ($uids as $uid) {
-                $user = User::where('uid', $uid->uid)->first();
-                $user->refer_code = $uid->refer_code;
-                $users[] = $user;
-            }
-        }
+        $users = UsersSetting::with('user')->where('is_private', false)->get();
+        // if (!$uids->isEmpty()) {
+        //     foreach ($uids as $uid) {
+        //         $user = User::where('uid', $uid->uid)->first();
+        //         $user->refer_code = $uid->refer_code;
+        //         $users[] = $user;
+        //     }
+        // }
         if (count($users) > 0) {
             //users exists
             $response = [
