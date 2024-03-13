@@ -62,6 +62,10 @@ class User extends Model
         return $this->hasOne(UserWallet::class,'uid','uid');
     }
 
+    public function settings(){
+        return $this->hasOne(UsersSetting::class,'uid','uid');
+    }
+
     public function transactions(){
         return $this->hasMany(Coins::class,'uid');
     }
