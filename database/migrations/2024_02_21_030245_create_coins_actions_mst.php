@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('coins_actions_mst', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string("name");
             $table->decimal("amount",15,2);
             $table->string("description")->nullable();
+            $table->timestamps();
         });
     }
 

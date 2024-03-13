@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('users_connection', function (Blueprint $table) {
             $table->id();
-            $table->string('source_uid');
-            $table->string('dest_uid');
+            $table->string("source_uid"); // Define the data type and length of the column
+            $table->foreign("source_uid")->references("uid")->on("users");
+            $table->string("dest_uid"); // Define the data type and length of the column
+            $table->foreign("dest_uid")->references("uid")->on("users");
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();
         });

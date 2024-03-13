@@ -14,8 +14,9 @@ return new class extends Migration
             Schema::create('feedback_users_response', function (Blueprint $table) {
                 $table->id();
                 $table->foreignId('question_id')->constrained('feedback_questions','question_id');
-                $table->string('uid')->unique();
-                $table->text('response_text')->nullable();
+                $table->string("uid"); // Define the data type and length of the column
+            $table->foreign("uid")->references("uid")->on("users");
+            $table->text('response_text')->nullable();
                 $table->boolean('response_boolean')->nullable();
                 $table->integer('response_range')->nullable();
                 $table->string('response_choice')->nullable();

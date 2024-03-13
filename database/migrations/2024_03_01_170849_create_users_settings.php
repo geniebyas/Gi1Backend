@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('users_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('uid')->unique();
+            $table->string("uid"); // Define the data type and length of the column
+            $table->foreign("uid")->references("uid")->on("users")->nullable();
             $table->boolean("is_private")->default(false);
-            $table->string('refer_code')->unique()->default(random_int(100000,999999));
-            $table->string('refered_by')->nullable();
+            $table->string('refer_code')->unique();
+            $table->string("refered_by"); // Define the data type and length of the column
+            $table->foreign("refered_by")->references("uid")->on("users");
             $table->timestamps();
         });
     }

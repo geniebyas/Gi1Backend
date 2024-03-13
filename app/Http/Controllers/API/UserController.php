@@ -187,62 +187,75 @@ class UserController extends Controller
      */
     public function update(Request $request, string $uid)
     {
-        //
-        $user = User::where('uid', $uid)->get()->first();
-        if (is_null($user)) {
-            return response()->json(
-                [
-                    'message' => 'User not found',
-                    'status' => 0
-                ],
-                404
-            );
-        } else {
-            DB::beginTransaction();
-            try {
-                $user->phone = $request['phone'];
-                $user->dob = $request['dob'];
-                $user->gender = $request['gender'];
-                $user->city = $request['city'];
-                $user->bio = $request['bio'];
-                $user->profile_pic = $request['profile_pic'];
-                $user->save();
-
-                $setting = new UsersSetting();
-                $setting->uid = $uid;
-                $setting->refer_code = generateReferCode();
-                $setting->refered_by = $request['referred_by'];
-                $setting->save();
-
-                $client = new Client();
-                if ($setting->refered_by != null) {
-                addCoins($request->header('uid'),4);
-                }
-                
-                if ($setting->refered_by != null) {
-                    
-                addCoins($request->header('uid'),5);
-                }
-
-
-                DB::commit();
-
-                $response = [
-                    'message' => 'Registration Successfully',
-                    'status' => 1,
-                    'data' => ""
-                ];
-            } catch (Throwable $th) {
-                DB::rollback();
-                $response = [
-                    'message' => $th->getMessage(),
-                    'status' => 0,
-                    'data' => ""
-                ];
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required|string|max:255',
+            'dob' => 'required',
+            'gender' => 'required|in:Male,Female',
+            'city' => 'required|string|max:255',
+            'bio' => 'nullable|string|max:255',
+            'profile_pic' => 'nullable|string|max:255',
+            'referred_by' => 'nullable|string|max:255', // Assuming referred_by is a string
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->first(),
+                'status' => 0
+            ], 422);
+        }
+        $user = User::where('uid', $uid)->first();
+    
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found',
+                'status' => 0
+            ], 404);
+        }
+    
+        DB::beginTransaction();
+        try {
+            $user->phone = $request['phone'];
+            $user->dob = $request['dob'];
+            $user->gender = $request['gender'];
+            $user->city = $request['city'];
+            $user->bio = $request['bio'];
+            $user->profile_pic = $request['profile_pic'];
+            $user->update([
+                'phone' => $request->input('phone'),
+                'dob' => $request->input('dob'),
+                'gender' => $request->input('gender'),
+                'city' => $request->input('city'),
+                'bio' => $request->input('bio'),
+                'profile_pic' => $request->input('profile_pic')
+            ]);
+    
+            $setting = UsersSetting::firstOrNew(['uid' => $uid]);
+            $setting->refer_code = generateReferCode();
+            $setting->refered_by = $request->input('referred_by');
+            $setting->save();
+    
+            if ($setting->refered_by !== null) {
+                addCoins($setting->refered_by, 4);
+                addCoins($request->header('uid'), 5);
             }
-            return response()->json($response, 200);
+    
+            DB::commit();
+    
+            return response()->json([
+                'message' => 'Registration Successfully',
+                'status' => 1,
+                'data' => $user
+            ], 200);
+        } catch (Throwable $th) {
+            DB::rollback();
+            return response()->json([
+                'message' => $th->getMessage(),
+                'status' => 0,
+                'data' => ''
+            ], 500);
         }
     }
+    
 
     /**
      * Remove the specified resource from storage.

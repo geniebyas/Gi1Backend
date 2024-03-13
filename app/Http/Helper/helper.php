@@ -24,7 +24,8 @@ if (!function_exists('addCoins')) {
         $client = new Client();
         if ($uid != null && $action_id != null) {
 
-            $resp = $client->request('POST', "https://api.gi1superapp.com/api/coins/add", [
+            // $resp = $client->request('POST', "https://api.gi1superapp.com/api/coins/add", [
+            $resp = $client->request('POST', "http://localhost:8000/api/coins/add", [
                 'headers' => [
                     'uid' => $uid
                 ],

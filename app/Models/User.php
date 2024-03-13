@@ -18,7 +18,7 @@ class User extends Model
      * @var array<int, string>
      */
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'uid';
     protected $fillable = [
         'name',
         'username',

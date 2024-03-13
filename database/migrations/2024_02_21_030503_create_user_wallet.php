@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('user_wallet', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->string('uid')->unique();
+            $table->string("uid"); // Define the data type and length of the column
+            $table->foreign("uid")->references("uid")->on("users");
             $table->decimal("total_bal",15,2);
+            $table->timestamps();
         });
     }
 

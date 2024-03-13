@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('coins_mst', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->string('uid')->unique();
+            $table->string("uid"); // Define the data type and length of the column
+            $table->foreign("uid")->references("uid")->on("users");
             $table->string("type");
-            $table->integer("action_id");
+            $table->foreignId("action_id")->constrained("coins_actions_mst");
+            $table->timestamps();
         });
     }
 
