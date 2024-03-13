@@ -19,6 +19,7 @@ class User extends Model
      */
 
     protected $primaryKey = 'uid';
+    protected $table = 'users';
     protected $fillable = [
         'name',
         'username',
