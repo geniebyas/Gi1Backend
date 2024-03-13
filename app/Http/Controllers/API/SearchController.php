@@ -51,7 +51,7 @@ class SearchController extends Controller
                 ]
             ];
 
-            return response()->json($response, 404);
+            return response()->json($response, 400);
         }
     }
 }
