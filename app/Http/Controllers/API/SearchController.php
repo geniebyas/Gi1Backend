@@ -32,7 +32,7 @@ class SearchController extends Controller
         Log::info($users->toArray());
 
         // Dump and die to inspect the retrieved users
-        dd($users);
+        // dd($users);
 
         // $users = UserWallet::with('user')->get();
 
