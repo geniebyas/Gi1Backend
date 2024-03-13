@@ -244,7 +244,7 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'Registration Successfully',
                 'status' => 1,
-                'data' => $user
+                'data' => ""
             ], 200);
         } catch (Throwable $th) {
             DB::rollback();
