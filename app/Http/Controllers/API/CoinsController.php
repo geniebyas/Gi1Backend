@@ -42,7 +42,8 @@ class CoinsController extends Controller
         $data = User::find($request->header('uid'))
         ->with('wallet')
         ->with('transactions.action')
-        ->get();
+        ->get()
+        ->first();
 
 
 
