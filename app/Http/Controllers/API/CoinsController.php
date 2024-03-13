@@ -38,16 +38,18 @@ class CoinsController extends Controller
             $wallet = new UserWallet();
             $wallet->total_bal = 0.0;
         }
-        if ($user != null) {
+        $data = User::find($request->header('uid'))
+        ->with('wallet')
+        ->with('transactions');
+
+
+
+        if ($data != null) {
             return response()->json(
                 [
                     "message" => "Success",
                     "status" => 1,
-                    "data" => [
-                        "user" => $user,
-                        "wallet" => $wallet,
-                        "transactions" => $trans
-                    ]
+                    "data" => $data
                 ],
                 200
             );
