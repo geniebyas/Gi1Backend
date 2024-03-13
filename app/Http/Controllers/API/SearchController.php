@@ -8,22 +8,35 @@ use App\Models\User;
 use App\Models\UserWallet;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SearchController extends Controller
 {
     //
-    function globalSearch($query,$filter){
+    function globalSearch($query, $filter)
+    {
 
-        $users = User::
-        where(function (Builder $queryBuilder) use ($query) {
-            $queryBuilder
-                ->where('name', 'LIKE', "%$query%")
+        $users = User::where(function (Builder $queryBuilder) use ($query) {
+                $queryBuilder
+                    ->where('name', 'LIKE', "%$query%")
+                    ->orWhere('username', 'LIKE', "%$query%")
+                    ->orWhere('email', 'LIKE', "%$query%");
+            })
+            ->with('wallet')
+            ->with('settings')
+            ->get();
+        // Log the SQL query being executed
+        Log::info(User::where(function ($query) {
+            $query->where('name', 'LIKE', "%$query%")
                 ->orWhere('username', 'LIKE', "%$query%")
                 ->orWhere('email', 'LIKE', "%$query%");
-        })
-        ->with('wallet')
-        ->with('settings')
-        ->get();
+        })->with('wallet')->with('settings')->toSql());
+
+        // Log the retrieved users
+        Log::info($users->toArray());
+
+        // Dump and die to inspect the retrieved users
+        dd($users);
 
         // $users = UserWallet::with('user')->get();
 
@@ -32,29 +45,29 @@ class SearchController extends Controller
                 ->where('name', 'LIKE', "%$query%")
                 ->orWhere('description', 'LIKE', "%$query%");
         })
-        ->get();
+            ->get();
 
-        if($users->count() > 0){
+        if ($users->count() > 0) {
             $response = [
                 'message' => 'Result Found',
                 'status' => 1,
-                'data' =>[
-                    'users'=>$users,
-                    'industries' =>$industries
+                'data' => [
+                    'users' => $users,
+                    'industries' => $industries
                 ]
-                ];
-                return response()->json($response,200);
-        }else{
+            ];
+            return response()->json($response, 200);
+        } else {
             $response = [
-                
+
                 'message' => 'Result Not Found',
                 'status' => 0,
                 'data' => [
                     'users' => null
                 ]
-                ];
-                
-                return response()->json($response,404);
+            ];
+
+            return response()->json($response, 404);
         }
     }
 }
