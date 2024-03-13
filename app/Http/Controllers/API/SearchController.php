@@ -33,7 +33,7 @@ class SearchController extends Controller
 
         // Dump and die to inspect the retrieved users
         // dd($users);
-
+        echo User::with('wallet')->with('settings')->toSql();
         // $users = UserWallet::with('user')->get();
 
         $industries = Industry::where(function (Builder $queryBuilder) use ($query) {
