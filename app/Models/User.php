@@ -53,10 +53,6 @@ class User extends Model
         'password' => 'hashed',
     ];
 
-    public function getSettings()
-    {
-        return UsersSetting::where('uid', $this->uid)->first();
-    }
 
     public function responses(){
         return $this->hasMany(FeedbackUsersResponse::class,'uid');
