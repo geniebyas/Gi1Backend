@@ -15,7 +15,7 @@ class UsersSetting extends Model
         'uid',
         'is_private',
         'refer_code',
-        'refered_by'
+        'referred_by'
     ];
 
     protected $casts = [
