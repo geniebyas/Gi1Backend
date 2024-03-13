@@ -26,4 +26,8 @@ class Coins extends Model
         return $this->belongsTo(User::class, 'uid');
     }
 
+    public function action(){
+        return $this->hasOne(CoinsActions::class, 'id', 'action_id');
+    }
+
 }
