@@ -59,7 +59,7 @@ class User extends Model
     }
 
     public function wallet(){
-        return $this->hasOne("user_wallet",'uid','uid');
+        return $this->hasOne("App\Models\UserWallet",'uid','uid');
     }
 
     public function settings(){
