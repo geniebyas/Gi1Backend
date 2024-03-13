@@ -18,6 +18,7 @@ class User extends Model
      * @var array<int, string>
      */
 
+    protected $keyType = "string";
     protected $primaryKey = 'uid';
     protected $table = 'users';
     protected $fillable = [
