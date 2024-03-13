@@ -25,17 +25,7 @@ class SearchController extends Controller
             ->with('wallet')
             ->with('settings')
             ->get();
-        // Log the SQL query being executed
-        Log::info(User::with('wallet')->with('settings')->toSql());
-
-        // Log the retrieved users
-        Log::info($users->toArray());
-
-        // Dump and die to inspect the retrieved users
-        // dd($users);
-        echo User::with('wallet')->with('settings')->toSql();
-        // $users = UserWallet::with('user')->get();
-
+    
         $industries = Industry::where(function (Builder $queryBuilder) use ($query) {
             $queryBuilder
                 ->where('name', 'LIKE', "%$query%")
