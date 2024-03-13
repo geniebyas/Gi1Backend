@@ -59,7 +59,7 @@ class User extends Model
     }
 
     public function wallet(){
-        echo strval($this->uid);
+        echo $this->uid;
         return $this->hasOne("App\Models\UserWallet",'uid','uid');
     }
 
