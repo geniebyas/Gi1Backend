@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('coins_mst', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->string("uid"); // Define the data type and length of the column
-        //     $table->foreign("uid")->references("uid")->on("users");
-        //     $table->string("type");
-        //     $table->foreignId("action_id")->constrained("coins_actions_mst");
-        //     $table->timestamps();
-        // });
+        Schema::create('coins_mst', function (Blueprint $table) {
+            $table->id();
+            $table->string("uid"); // Define the data type and length of the column
+            $table->foreign("uid")->references("uid")->on("users");
+            $table->string("type");
+            $table->foreignId("action_id")->constrained("coins_actions_mst");
+            $table->timestamps();
+        });
     }
 
     /**
