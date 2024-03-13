@@ -24,6 +24,7 @@ class SearchController extends Controller
         // ->with('wallet')
         // ->with('settings')
         // ->get();
+        
         $users = UserWallet::with('user')->get();
 
         $industries = Industry::where(function (Builder $queryBuilder) use ($query) {
