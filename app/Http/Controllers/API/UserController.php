@@ -238,6 +238,7 @@ class UserController extends Controller
                 addCoins($setting->refered_by, 4);
                 addCoins($request->header('uid'), 5);
             }
+            addCoins($request->header('uid'),2);
     
             DB::commit();
     
