@@ -26,11 +26,7 @@ class SearchController extends Controller
             ->with('settings')
             ->get();
         // Log the SQL query being executed
-        Log::info(User::where(function ($query) {
-            $query->where('name', 'LIKE', "%$query%")
-                ->orWhere('username', 'LIKE', "%$query%")
-                ->orWhere('email', 'LIKE', "%$query%");
-        })->with('wallet')->with('settings')->toSql());
+        Log::info(User::with('wallet')->with('settings')->toSql());
 
         // Log the retrieved users
         Log::info($users->toArray());
