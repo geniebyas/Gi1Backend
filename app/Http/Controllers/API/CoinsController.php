@@ -40,7 +40,8 @@ class CoinsController extends Controller
         }
         $data = User::find($request->header('uid'))
         ->with('wallet')
-        ->with('transactions');
+        ->with('transactions')
+        ->get();
 
 
 
