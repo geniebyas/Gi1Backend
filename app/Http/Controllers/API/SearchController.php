@@ -13,13 +13,14 @@ class SearchController extends Controller
     //
     function globalSearch($query,$filter){
 
-        $users = User::with('wallet')
-        ->where(function (Builder $queryBuilder) use ($query) {
+        $users = User::
+        where(function (Builder $queryBuilder) use ($query) {
             $queryBuilder
                 ->where('name', 'LIKE', "%$query%")
                 ->orWhere('username', 'LIKE', "%$query%")
                 ->orWhere('email', 'LIKE', "%$query%");
         })
+        ->with('wallet')
         ->get();
 
         $industries = Industry::where(function (Builder $queryBuilder) use ($query) {
