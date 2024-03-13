@@ -22,8 +22,6 @@ class SearchController extends Controller
                     ->orWhere('username', 'LIKE', "%$query%")
                     ->orWhere('email', 'LIKE', "%$query%");
             })
-            ->with('wallet')
-            ->with('settings')
             ->get();
     
         $industries = Industry::where(function (Builder $queryBuilder) use ($query) {
