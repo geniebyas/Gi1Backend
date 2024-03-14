@@ -187,11 +187,7 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-        return response()->json(
-            [
-                'message' => 'Update Successfully!'
-            ]
-            );
+       
         $uid = $request->header('uid');
         $validator = Validator::make($request->all(), [
             'phone' => 'required|string|max:255',
@@ -211,7 +207,11 @@ class UserController extends Controller
             ], 422);
         }
         $user = User::where('uid', $uid)->first();
-    
+     return response()->json(
+            [
+                'message' => p($user)
+            ]
+            );
         if (!$user) {
             return response()->json([
                 'message' => 'User not found',
