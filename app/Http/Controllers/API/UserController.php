@@ -221,24 +221,24 @@ class UserController extends Controller
             $user->bio = $request['bio'];
             $user->profile_pic = $request['profile_pic'];
             $user->update([
-                'phone' => $request->input('phone'),
-                'dob' => $request->input('dob'),
-                'gender' => $request->input('gender'),
-                'city' => $request->input('city'),
-                'bio' => $request->input('bio'),
-                'profile_pic' => $request->input('profile_pic')
+                'phone' => $request->phone,
+                'dob' => $request->dob,
+                'gender' => $request->gender,
+                'city' => $request->city,
+                'bio' => $request->bio,
+                'profile_pic' => $request->profile_pic
             ]);
     
             $setting = UsersSetting::firstOrNew(['uid' => $uid]);
             $setting->refer_code = generateReferCode();
             $setting->referred_by = $request->input('referred_by');
             $setting->save();
-    
+                addCoins($request->header('uid'),2);
+
             if ($setting->referred_by !== null) {
                 addCoins($setting->referred_by, 4);
                 addCoins($request->header('uid'), 5);
             }
-            addCoins($request->header('uid'),2);
     
             DB::commit();
     
