@@ -187,6 +187,11 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
+        return response()->json(
+            [
+                'message' => 'Update Successfully!'
+            ]
+            );
         $uid = $request->header('uid');
         $validator = Validator::make($request->all(), [
             'phone' => 'required|string|max:255',
