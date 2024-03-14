@@ -223,7 +223,16 @@ class UserController extends Controller
             $user->bio = $request['bio'];
             $user->profile_pic = $request['profile_pic'];
 
-            $res = User::updateOrCreate($user);
+            $res = User::updateOrCreate([
+                'uid' =>$uid,
+                'phone' => $request->phone,
+                'dob' => $request->dob,
+                'gender' => $request->gender,
+                'city' => $request->city,
+                'bio' => $request->bio,
+                'profile_pic' => $request->profile_pic
+            ]
+            );
             // $user->update([
             //     'phone' => $request->phone,
             //     'dob' => $request->dob,
