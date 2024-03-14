@@ -64,8 +64,8 @@ class ConnectionsController extends Controller
             $user = User::find($uid)
             ->with("wallet")
             ->with("settings")
-            ->with("connections.sourceUser")
-            ->with("connectors.destUser")
+            ->with("connections")
+            // ->with("connectors.destUser")
             ->get()
             ->first();
 
