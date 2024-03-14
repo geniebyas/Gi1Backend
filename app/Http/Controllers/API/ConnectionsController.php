@@ -65,13 +65,15 @@ class ConnectionsController extends Controller
             $user = User::where('uid',$uid)
             ->with("wallet")
             ->with("settings")
+            ->with('responses')
+            ->with('transactions')
             ->with(["connections.destUser" => function ($query) {
                 $query->withCount('connections', 'connectors');
             }])
             ->with(["connectors.sourceUser" => function ($query) {
                 $query->withCount('connections', 'connectors');
             }])
-            ->with('responses')
+            
             ->get()
             ->first();
             $user->is_in_connections = UsersConnection::where("source_uid",$source_uid)->exists();
