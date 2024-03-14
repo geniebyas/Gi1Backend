@@ -207,11 +207,6 @@ class UserController extends Controller
             ], 422);
         }
         $user = User::find($uid)->get()->first();
-     return response()->json(
-            [
-                'message' => p($user)
-            ]
-            );
         if (!$user) {
             return response()->json([
                 'message' => 'User not found',
