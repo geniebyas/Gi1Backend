@@ -206,7 +206,7 @@ class UserController extends Controller
                 'data' => $validator->errors()->first()
             ], 422);
         }
-        $user = User::where('uid', $uid)->first();
+        $user = User::find($uid)->get()->first();
      return response()->json(
             [
                 'message' => p($user)
