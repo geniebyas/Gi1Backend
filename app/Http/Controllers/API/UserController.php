@@ -226,12 +226,12 @@ class UserController extends Controller
             $setting = UsersSetting::firstOrNew(['uid' => $uid]);
             $setting->refer_code = generateReferCode();
             $setting->referred_by = $request->input('referred_by');
-            // $setting->save();
-            // addCoins($uid,2);
+            $setting->save();
+            addCoins($uid,2);
 
             if (is_null($setting->referred_by)) {
-                // addCoins($setting->referred_by, 4);
-                // addCoins($uid, 5);
+                addCoins($setting->referred_by, 4);
+                addCoins($uid, 5);
             }
     
     
