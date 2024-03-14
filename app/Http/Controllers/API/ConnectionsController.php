@@ -60,23 +60,17 @@ class ConnectionsController extends Controller
     }
 
     function getUserWithDetails(Request $request,$uid){
-        $source_user = $request->header('uid');
+        $source_uid = $request->header('uid');
         if(User::find($uid)->exists()){
             $user = User::where('uid',$uid)
             ->with("wallet")
             ->with("settings")
-            ->with(["connections" => function($query) use ($source_user) {
-                $query->where('dest_uid', $source_user); // Check if source_user is in connections
-            }])
-            ->with(["connectors" => function($query) use ($source_user) {
-                $query->where('source_uid', $source_user); // Check if source_user is in connectors
-            }])
+            ->with("connections.sourceUser")
+            ->with("connectors.destUser")
+            ->get()
             ->first();
-
-        // Append flag indicating if the user is in connections or connectors of source_user
-        $user->is_in_connections = $user->connections->isNotEmpty();
-        $user->is_in_connectors = $user->connectors->isNotEmpty();
-
+            $user->is_in_connections = UsersConnection::where("source_uid",$source_uid)->exists();
+            $user->is_in_connectors = UsersConnection::where("dest_uid",$source_uid)->exists();
 
             return response()->json(
                 [
