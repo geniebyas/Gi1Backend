@@ -59,6 +59,34 @@ class ConnectionsController extends Controller
     ], 400);
     }
 
+
+    public function deleteRequest(Request $request,$dest_uid){
+        $source_uid = $request->header('uid');
+        $connection = UsersConnection::where('source_uid',$source_uid)->where("dest_uid",$dest_uid)->get()->first();
+        if(is_null($connection)){
+            return response()->json(
+                [
+                    'message' => 'You\'r not connected',
+                    'status' => 0,
+                    'data' => null
+                ],
+                400
+                );
+
+        }else{
+            $connection->delete();
+            return response()->json(
+                [
+                    'message' => 'Removed from your connection',
+                    'status' => 1,
+                    'data' => 'Removed from your connection'
+                ],
+                200
+            );
+        }
+
+    }
+
     function getUserWithDetails(Request $request,$uid){
         $source_uid = $request->header('uid');
         if(User::find($uid)->exists()){
