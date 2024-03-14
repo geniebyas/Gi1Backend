@@ -57,7 +57,7 @@ class User extends Model
 
 
     public function responses(){
-        return $this->hasMany(FeedbackUsersResponse::class,'uid');
+        return $this->hasMany(FeedbackUsersResponse::class,'uid','uid');
     }
 
     public function wallet(){
