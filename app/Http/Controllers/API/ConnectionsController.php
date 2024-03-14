@@ -29,7 +29,7 @@ class ConnectionsController extends Controller
         $dest_user = User::where('uid',$dest_uid)->first();
    
         $status = "pending";
-        $setting = $dest_user->getSettings();
+        $setting = $dest_user->settings();
         if($setting->is_private){
             $status = "pending";
         }else{
