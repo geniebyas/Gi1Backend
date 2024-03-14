@@ -222,14 +222,16 @@ class UserController extends Controller
             $user->city = $request['city'];
             $user->bio = $request['bio'];
             $user->profile_pic = $request['profile_pic'];
-            $user->update([
-                'phone' => $request->phone,
-                'dob' => $request->dob,
-                'gender' => $request->gender,
-                'city' => $request->city,
-                'bio' => $request->bio,
-                'profile_pic' => $request->profile_pic
-            ]);
+
+            $res = User::updateOrCreate($user);
+            // $user->update([
+            //     'phone' => $request->phone,
+            //     'dob' => $request->dob,
+            //     'gender' => $request->gender,
+            //     'city' => $request->city,
+            //     'bio' => $request->bio,
+            //     'profile_pic' => $request->profile_pic
+            // ]);
     
             $setting = UsersSetting::firstOrNew(['uid' => $uid]);
             $setting->refer_code = generateReferCode();
@@ -247,7 +249,7 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'Registration Successfully',
                 'status' => 1,
-                'data' => ""
+                'data' => $res
             ], 200);
         } catch (Throwable $th) {
             DB::rollback();
