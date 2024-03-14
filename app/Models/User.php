@@ -76,7 +76,7 @@ class User extends Model
      * Get the connections where the user is the source user.
      */
     public function connections(){
-        return $this->hasMany(UsersConnection::class,'source_uid','uid')->where('status','accepted');
+        return $this->hasMany(UsersConnection::class,'dest_user','uid')->where('status','accepted');
     }
 
     /**

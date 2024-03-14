@@ -40,7 +40,7 @@ class ConnectionsController extends Controller
         }
 
         // Check if a request already exists
-        if (!$user->hasSentFriendRequest($dest_uid) && !$user->isFriendWith($dest_uid)) {
+        if (!$user->hasSentFriendRequest($dest_uid) && !$user->hasPendingFriendRequest($dest_uid) && !$user->isFriendWith($dest_uid)) {
             UsersConnection::create([
                 'source_uid' => $user->uid,
                 'dest_uid' => $dest_uid,
