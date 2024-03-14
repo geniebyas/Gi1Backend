@@ -39,7 +39,7 @@ class CoinsController extends Controller
             $wallet->total_bal = 0.0;
         }
 
-        $data = User::find($request->header('uid'))
+        $data = User::where('uid',$request->header('uid'))
         ->with('wallet')
         ->with('transactions.action')
         ->get()
