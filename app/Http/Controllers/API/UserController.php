@@ -221,7 +221,7 @@ class UserController extends Controller
             $user->city = $request['city'];
             $user->bio = $request['bio'];
             $user->profile_pic = $request['profile_pic'];
-            // $res = $user->save();
+            $res = $user->save();
             echo dd($user);
 
             $setting = UsersSetting::firstOrNew(['uid' => $uid]);
