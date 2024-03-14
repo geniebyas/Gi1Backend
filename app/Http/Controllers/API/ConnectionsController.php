@@ -62,6 +62,7 @@ class ConnectionsController extends Controller
             ->with("wallet")
             ->with("settings")
             ->with("connections.sourceUser")
+            ->with("connectors.destUser")
             ->get()
             ->first();
 
