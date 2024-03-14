@@ -66,7 +66,7 @@ class ConnectionsController extends Controller
             ->with("wallet")
             ->with("settings")
             ->with('responses.question.category')
-            ->with('transactions')
+            ->with('transactions.action')
             ->with(["connections.destUser" => function ($query) {
                 $query->withCount('connections', 'connectors');
             }])
