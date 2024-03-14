@@ -214,7 +214,6 @@ class UserController extends Controller
             ], 404);
         }
     
-        DB::beginTransaction();
         try {
             $user->phone = $request['phone'];
             $user->dob = $request['dob'];
@@ -243,18 +242,17 @@ class UserController extends Controller
             //     'profile_pic' => $request->profile_pic
             // ]);
     
-            $setting = UsersSetting::firstOrNew(['uid' => $uid]);
-            $setting->refer_code = generateReferCode();
-            $setting->referred_by = $request->input('referred_by');
-            $setting->save();
-                addCoins($request->header('uid'),2);
+            // $setting = UsersSetting::firstOrNew(['uid' => $uid]);
+            // $setting->refer_code = generateReferCode();
+            // $setting->referred_by = $request->input('referred_by');
+            // $setting->save();
+            //     addCoins($request->header('uid'),2);
 
-            if ($setting->referred_by !== null) {
-                addCoins($setting->referred_by, 4);
-                addCoins($request->header('uid'), 5);
-            }
+            // if ($setting->referred_by !== null) {
+            //     addCoins($setting->referred_by, 4);
+            //     addCoins($request->header('uid'), 5);
+            // }
     
-            DB::commit();
     
             return response()->json([
                 'message' => 'Registration Successfully',
@@ -262,7 +260,6 @@ class UserController extends Controller
                 'data' => $res
             ], 200);
         } catch (Throwable $th) {
-            DB::rollback();
             return response()->json([
                 'message' => $th->getMessage(),
                 'status' => 0,
