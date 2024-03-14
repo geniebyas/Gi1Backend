@@ -94,6 +94,7 @@ Route::group(['middleware' => "api"], (function () {
     Route::prefix('connect') ->group(function (){
         Route::get('/userconnections',[ConnectionsController::class,'getUserConnections']);
         Route::post('/sentrequest/{dest_uid}',[ConnectionsController::class,'sendFriendRequest']);
+        Route::get('/userinfo/{uid}',[ConnectionsController::class,'getUserWithDetails']);
     });
 
 

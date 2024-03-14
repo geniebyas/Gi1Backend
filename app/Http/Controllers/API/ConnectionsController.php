@@ -56,4 +56,34 @@ class ConnectionsController extends Controller
     ], 400);
     }
 
+    function getUserWithDetails(Request $request,$uid){
+        if(User::find($uid)->exists()){
+            $user = User::find($uid)
+            ->with("wallet")
+            ->with("settings")
+            ->with("connections.sourceUser")
+            ->get()
+            ->first();
+
+            return response()->json(
+                [
+                    'message' => "User Found",
+                    'status' => 1,
+                    'data' => $user
+                ],
+                200
+            );
+
+        }else{
+            return response()->json(
+                [
+                    'message' => 'User not found',
+                    'status'  => 0,
+                    'data' => "No Data Found"
+                ],
+                402
+                );
+        }
+    }
+
 }
