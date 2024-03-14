@@ -33,7 +33,6 @@ class ConnectionsController extends Controller
    
         $status = "pending";
         $setting = $dest_user->settings;
-        echo strval($dest_user);
         if($setting->is_private){
             $status = "pending";
         }else{
@@ -41,18 +40,18 @@ class ConnectionsController extends Controller
         }
 
         // Check if a request already exists
-        // if (!$user->hasSentFriendRequest($dest_uid) && !$user->hasPendingFriendRequest($dest_uid) && !$user->isFriendWith($dest_uid)) {
-        //     UsersConnection::create([
-        //         'source_uid' => $user->uid,
-        //         'dest_uid' => $dest_uid,
-        //         'status' => $status,
-        //     ]);
+        if (!$user->hasSentFriendRequest($dest_uid) && !$user->hasPendingFriendRequest($dest_uid) && !$user->isFriendWith($dest_uid)) {
+            UsersConnection::create([
+                'source_uid' => $user->uid,
+                'dest_uid' => $dest_uid,
+                'status' => $status,
+            ]);
 
-        //     return response()->json(['message' => 'Friend request sent.',
-        //     'status' =>'1',
-        //     'data' => "success"
-        // ], 200);
-        // }
+            return response()->json(['message' => 'Friend request sent.',
+            'status' =>'1',
+            'data' => "success"
+        ], 200);
+        }
 
         return response()->json(['message' => 'Unable to send friend request.',
         'status' => 0,
