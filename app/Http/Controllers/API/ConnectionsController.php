@@ -61,11 +61,11 @@ class ConnectionsController extends Controller
 
     function getUserWithDetails(Request $request,$uid){
         if(User::find($uid)->exists()){
-            $user = User::find($uid)
+            $user = User::where('uid',$uid)
             ->with("wallet")
             ->with("settings")
-            ->with("connections")
-            // ->with("connectors.destUser")
+            ->with("connections.sourceUser")
+            ->with("connectors.destUser")
             ->get()
             ->first();
 
