@@ -222,7 +222,6 @@ class UserController extends Controller
             $user->bio = $request['bio'];
             $user->profile_pic = $request['profile_pic'];
             $res = $user->save();
-            echo dd($user);
 
             $setting = UsersSetting::firstOrNew(['uid' => $uid]);
             $setting->refer_code = generateReferCode();
