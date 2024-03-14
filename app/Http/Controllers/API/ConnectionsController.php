@@ -65,7 +65,7 @@ class ConnectionsController extends Controller
             $user = User::where('uid',$uid)
             ->with("wallet")
             ->with("settings")
-            ->with('responses')
+            ->with('responses.question.category')
             ->with('transactions')
             ->with(["connections.destUser" => function ($query) {
                 $query->withCount('connections', 'connectors');
