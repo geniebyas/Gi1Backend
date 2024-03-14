@@ -229,7 +229,7 @@ class UserController extends Controller
             $setting->save();
             addCoins($uid,2);
 
-            if (is_null($setting->referred_by)) {
+            if (!is_null($setting->referred_by)) {
                 addCoins($setting->referred_by, 4);
                 addCoins($uid, 5);
             }
