@@ -13,10 +13,11 @@ use Illuminate\Support\Facades\Log;
 class SearchController extends Controller
 {
     //
-    function globalSearch($query, $filter)
+    function globalSearch(Request $request,$query, $filter)
     {
 
-        $users = User::where(function (Builder $queryBuilder) use ($query) {
+        $users = User::where('uid','!=',$request->header('uid'))
+        ->where(function (Builder $queryBuilder) use ($query) {
                 $queryBuilder
                     ->where('name', 'LIKE', "%$query%")
                     ->orWhere('username', 'LIKE', "%$query%")
