@@ -53,7 +53,6 @@ Route::group(['middleware' => "api"], (function () {
         Route::get('/publicusers', [UserController::class, 'getAllPublicUsers']);
         Route::get('/{uid}', [UserController::class, 'show']);
         Route::post('/deleteuserac', [UserController::class, 'destroy']);
-        Route::put('/{uid}', [UserController::class, 'update']);
         Route::get('/checkuserexists/{uid}', [UserController::class, 'checkUserExists']);
         Route::get('/isuniqueuser/{username}',[UserController::class,'isuniqueuser']);
     });

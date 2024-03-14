@@ -234,8 +234,8 @@ class UserController extends Controller
             $setting->referred_by = $request->input('referred_by');
             $setting->save();
     
-            if ($setting->refered_by !== null) {
-                addCoins($setting->refered_by, 4);
+            if ($setting->referred_by !== null) {
+                addCoins($setting->referred_by, 4);
                 addCoins($request->header('uid'), 5);
             }
             addCoins($request->header('uid'),2);
