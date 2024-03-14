@@ -185,8 +185,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $uid)
+    public function update(Request $request)
     {
+        $uid = $request->header('uid');
         $validator = Validator::make($request->all(), [
             'phone' => 'required|string|max:255',
             'dob' => 'required',
@@ -200,7 +201,8 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'message' => $validator->errors()->first(),
-                'status' => 0
+                'status' => 0,
+                'data' => $validator->errors()->first()
             ], 422);
         }
         $user = User::where('uid', $uid)->first();
