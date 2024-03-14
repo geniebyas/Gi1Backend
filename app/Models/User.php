@@ -95,33 +95,16 @@ class User extends Model
             ->where('status', 'pending')
             ->exists();
     }
-      /**
-     * Check if the user has a pending friend request from the given user.
-     */
-    public function hasPendingFriendRequest($dest_uid)
-    {
-        return UsersConnection::where('source_uid', $dest_uid)
-            ->where('dest_uid', $this->uid)
-            ->where('status', 'pending')
-            ->exists();
-    }
-
+    
     /**
      * Check if the user is friends with the given user.
      */
     public function isFriendWith($uid)
     {
-        return UsersConnection::where(function ($query) use ($uid) {
-                $query->where('source_uid', $this->uid)
-                    ->where('dest_uid', $uid)
-                    ->where('status', 'accepted');
-            })
-            ->orWhere(function ($query) use ($uid) {
-                $query->where('source_uid', $uid)
-                    ->where('dest_uid', $this->uid)
-                    ->where('status', 'accepted');
-            })
-            ->exists();
+        return UsersConnection::where('source_uid', $this->uid)
+        ->where('dest_uid', $uid)
+        ->where('status', 'accepted')
+        ->exists();
     }
 
 
