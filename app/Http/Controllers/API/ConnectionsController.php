@@ -65,13 +65,14 @@ class ConnectionsController extends Controller
             $user = User::where('uid',$uid)
             ->with("wallet")
             ->with("settings")
-            ->with("connections.sourceUser")
-            ->with("connectors.destUser")
+            ->with("connections.destUser")
+            ->with("connectors.sourceUser")
             ->get()
             ->first();
             $user->is_in_connections = UsersConnection::where("source_uid",$source_uid)->exists();
             $user->is_in_connectors = UsersConnection::where("dest_uid",$source_uid)->exists();
-
+            $user->connectors_count= $user->connectorsCount();
+            $user->connections_count= $user->connectionsCount();
             return response()->json(
                 [
                     'message' => "User Found",

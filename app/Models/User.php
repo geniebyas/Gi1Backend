@@ -76,7 +76,7 @@ class User extends Model
      * Get the connections where the user is the source user.
      */
     public function connections(){
-        return $this->hasMany(UsersConnection::class,'dest_user','uid')->where('status','accepted');
+        return $this->hasMany(UsersConnection::class,'source_id','uid')->where('status','accepted');
     }
 
     /**
@@ -85,6 +85,20 @@ class User extends Model
     public function connectors()
     {
         return $this->hasMany(UsersConnection::class, 'dest_uid', 'uid')->where('status', 'accepted');
+    }
+
+    public function connectorsCount(){
+        return UsersConnection::where('dest_uid',$this->uid)
+        ->where('status','accepted')
+        ->get()
+        ->count();
+    }
+
+    public function connectionsCount(){
+        return UsersConnection::where('source_uid',$this->uid)
+        ->where('status','accepted')
+        ->get()
+        ->count();
     }
 
 
