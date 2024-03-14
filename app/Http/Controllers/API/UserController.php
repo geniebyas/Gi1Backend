@@ -206,7 +206,7 @@ class UserController extends Controller
                 'data' => $validator->errors()->first()
             ], 422);
         }
-        $user = User::find($uid)->get()->first();
+        $user = User::find($uid)->get();
         if (!$user) {
             return response()->json([
                 'message' => 'User not found',
@@ -221,43 +221,25 @@ class UserController extends Controller
             $user->city = $request['city'];
             $user->bio = $request['bio'];
             $user->profile_pic = $request['profile_pic'];
-            $res = $user->save();
+            // $res = $user->save();
+            echo dd($user);
 
-            // $res = User::updateOrCreate([
-            //     'uid' =>$uid,
-            //     'phone' => $request->phone,
-            //     'dob' => $request->dob,
-            //     'gender' => $request->gender,
-            //     'city' => $request->city,
-            //     'bio' => $request->bio,
-            //     'profile_pic' => $request->profile_pic
-            // ]
-            // );
-            // $user->update([
-            //     'phone' => $request->phone,
-            //     'dob' => $request->dob,
-            //     'gender' => $request->gender,
-            //     'city' => $request->city,
-            //     'bio' => $request->bio,
-            //     'profile_pic' => $request->profile_pic
-            // ]);
-    
-            // $setting = UsersSetting::firstOrNew(['uid' => $uid]);
-            // $setting->refer_code = generateReferCode();
-            // $setting->referred_by = $request->input('referred_by');
+            $setting = UsersSetting::firstOrNew(['uid' => $uid]);
+            $setting->refer_code = generateReferCode();
+            $setting->referred_by = $request->input('referred_by');
             // $setting->save();
-            //     addCoins($request->header('uid'),2);
+            // addCoins($uid,2);
 
-            // if ($setting->referred_by !== null) {
-            //     addCoins($setting->referred_by, 4);
-            //     addCoins($request->header('uid'), 5);
-            // }
+            if (is_null($setting->referred_by)) {
+                // addCoins($setting->referred_by, 4);
+                // addCoins($uid, 5);
+            }
     
     
             return response()->json([
                 'message' => 'Registration Successfully',
                 'status' => 1,
-                'data' => $res
+                'data' => strval($user)
             ], 200);
         } catch (Throwable $th) {
             return response()->json([

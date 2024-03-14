@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\UsersSetting;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 
@@ -15,7 +16,11 @@ if (!function_exists('p')) {
 
 function generateReferCode()
 {
-    return strtolower(Str::random(6));
+    do {
+        $referCode = strtolower(Str::random(6));
+    } while (UsersSetting::where('refer_code', $referCode)->exists());
+
+    return $referCode;
 }
 
 if (!function_exists('addCoins')) {
@@ -56,7 +61,6 @@ if (!function_exists('removeCoins')) {
             ]);
 
             return $resp;
-
         }
     }
 }
