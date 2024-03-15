@@ -135,7 +135,7 @@ class ConnectionsController extends Controller
         $uid = $request->header('uid');
 
         $requests = UsersConnection::where('dest_uid',$uid)
-        ->with(["destUser" => function ($query) {
+        ->with(["sourceUser" => function ($query) {
             $query->withCount('connections', 'connectors');
         }])
         ->get();
