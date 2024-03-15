@@ -138,7 +138,7 @@ class ConnectionsController extends Controller
         ->with('destUser')
         ->get();
 
-        if($request > 0){
+        if($requests > 0){
             return response()->json(
                 [
                     'message' => 'Pending Requests',
