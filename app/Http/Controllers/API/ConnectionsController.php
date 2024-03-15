@@ -130,4 +130,34 @@ class ConnectionsController extends Controller
         }
     }
 
+
+    public function getPendingRequest(Request $request){
+        $uid = $request->header('uid');
+
+        $requests = UsersConnection::where('source_uid',$uid)
+        ->with('destUser')
+        ->get();
+
+        if($request > 0){
+            return response()->json(
+                [
+                    'message' => 'Pending Requests',
+                    'status' => 1,
+                    'data' => $requests
+                ],
+                200
+            );
+        }else{
+            return response()->json(
+                [
+                    'message' => 'Pending Requests',
+                    'status' => 0,
+                    'data' => "No Requests"
+                ],
+                200
+            );
+        }
+
+    }
+
 }
