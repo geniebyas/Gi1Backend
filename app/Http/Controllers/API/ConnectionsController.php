@@ -134,7 +134,7 @@ class ConnectionsController extends Controller
     public function getPendingRequest(Request $request){
         $uid = $request->header('uid');
 
-        $requests = UsersConnection::where('source_uid',$uid)
+        $requests = UsersConnection::where('dest_uid',$uid)
         ->with(["destUser" => function ($query) {
             $query->withCount('connections', 'connectors');
         }])
