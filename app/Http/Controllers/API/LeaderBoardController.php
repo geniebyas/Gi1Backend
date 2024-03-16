@@ -12,7 +12,7 @@ class LeaderBoardController extends Controller
         $users = User::
         withCount("connectors")
         ->with(['wallet' => function ($query){
-            $query->pluck('amount');
+            $query->pluck('total_bal');
         }])
         ->get();
 
