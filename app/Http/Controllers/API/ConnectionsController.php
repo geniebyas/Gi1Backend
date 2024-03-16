@@ -228,6 +228,16 @@ class ConnectionsController extends Controller
         // Find the intersection of connections
         $mutualConnections = array_intersect($sourceConnections, $destConnections);
 
-        return $mutualConnections;
+        $mutuals = [];
+
+        foreach($mutualConnections as $m){
+            $mutuals[] = User::where("uid",$m)
+            ->withCount('connectors')
+            ->withCount('connections')
+            ->get()
+            ->first();
+        }
+
+        return $mutuals;
     }
 }
