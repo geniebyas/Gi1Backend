@@ -196,22 +196,20 @@ class ConnectionsController extends Controller
         ->with('connections')
         ->first();
 
-    // Convert collections to arrays
-    $connectorsDest = $dest_user->connectors->toArray();
-    $connectorsSource = $source_user->connectors->toArray();
-    $connectionsDest = $dest_user->connections->toArray();
-    $connectionsSource = $source_user->connections->toArray();
 
-    // Find common elements
-    $connectorsMutual = array_intersect($connectorsDest, $connectorsSource);
-    $connectionsMutual = array_intersect($connectionsDest, $connectionsSource);
-
+        $connectorsDest = is_array($dest_user->connectors) ? $dest_user->connectors : [];
+        $connectorsSource = is_array($source_user->connectors) ? $source_user->connectors : [];
+        $connectionsDest = is_array($dest_user->connections) ? $dest_user->connections : [];
+        $connectionsSource = is_array($source_user->connections) ? $source_user->connections : [];
+        
+        // Find common elements
+        $connectorsMutual = array_values(array_intersect($connectorsDest, $connectorsSource));
+        $connectionsMutual = array_values(array_intersect($connectionsDest, $connectionsSource));
+        
     // Add mutuals property to $dest_user
-    $dest_user->mutuals = [
-        'connectors' => $connectorsMutual,
-        'connections' => $connectionsMutual
-    ];
+   $dest_user->mutuals = array_intersect($connectorsMutual,$connectionsMutual);
 
+   
     return response()->json([
         'message' => 'User Relations',
         'status' => 1,
