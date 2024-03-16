@@ -195,6 +195,20 @@ class ConnectionsController extends Controller
         ->with('connections')
         ->get();
 
+        if(is_null($dest_user->connectors)){
+            $dest_user->connectors = [];
+        }
+        if(is_null($dest_user->connections)){
+            $dest_user->connections = [];
+        }
+
+        if(is_null($source_user->connectors)){
+            $source_user->connectors = [];
+        }
+        if(is_null($source_user->connections)){
+            $source_user->connections = [];
+        }
+
         $connectorsMutual = array_intersect($dest_user->connectors,$source_user->connectors);
         $connectionsMutual = array_intersect($dest_user->connections,$source_user->connections);
 
