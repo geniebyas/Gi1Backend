@@ -19,6 +19,10 @@ class LeaderBoardController extends Controller
         }])
         ->get();
 
+        foreach($users as $u){
+            $u->total_bal += $u->connectors_count * 5; // Add bonus for each connector
+        }
+
         return response()->json(
             [
                 'message' => "Successfully loaded",
