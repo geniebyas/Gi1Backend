@@ -53,7 +53,8 @@ class IndustryController extends Controller
             'multipart' => [
                 'dir' => $request->dir,
                 'name' => $request->name,
-                'contents' => Psr7\Utils::tryFopen($request->file($request->name)->path(),'r')
+                'contents' => Psr7\Utils::tryFopen($request->file($request->name)->path(),'r'),
+                'filename' => $request->name . ".png"
             ]
         ]);
 
