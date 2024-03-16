@@ -54,12 +54,15 @@ class LeaderBoardController extends Controller
         }
     }
 
+    $primes = [];
+
     return response()->json([
         'message' => 'Successfully loaded',
         'status' => 1,
         'data' => [
             "top50" => $top50_users,
             "mutuals" => $mutuals,
+            "primes" => $primes
         ]
     ]);
 }
