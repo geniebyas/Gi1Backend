@@ -166,6 +166,7 @@ class ConnectionsController extends Controller
         $connection = UsersConnection::find($id);
         if($status == "accepted"){
             $connection->status = $status;
+            $connection->update();
             return response()->json([
                 'message' => 'Request accepted successfully',
                 'status' => 1,
