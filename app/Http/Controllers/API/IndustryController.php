@@ -50,11 +50,8 @@ class IndustryController extends Controller
             'headers' => [
                 'uid' => $uid
             ],
-            'form_params' => [
-                'name' =>$request->name,
-                'dir' => $request->dir
-            ],
             'multipart' => [
+                'dir' => $request->dir,
                 'name' => $request->name,
                 'contents' => Psr7\Utils::tryFopen($request->file($request->name)->path(),'r')
             ]
