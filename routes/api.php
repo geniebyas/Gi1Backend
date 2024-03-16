@@ -96,6 +96,7 @@ Route::group(['middleware' => "api"], (function () {
         Route::get('/deleterequest/{dest_uid}',[ConnectionsController::class,'deleteRequest']);
         Route::get('/userinfo/{uid}',[ConnectionsController::class,'getUserWithDetails']);
         Route::get('/pendingrequest',[ConnectionsController::class,'getPendingRequest']);
+        Route::get('/updaterequest/{id}/{status}',[ConnectionsController::class,'updateRequest']);
     });
 
 

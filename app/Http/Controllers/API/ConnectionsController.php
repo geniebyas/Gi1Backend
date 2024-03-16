@@ -162,4 +162,23 @@ class ConnectionsController extends Controller
 
     }
 
+    public function updateRequest($id,$status){
+        $connection = UsersConnection::find($id);
+        if($status == "accepted"){
+            $connection->status = $status;
+            return response()->json([
+                'message' => 'Request accepted successfully',
+                'status' => 1,
+                'data' => "Request accepted successfully"
+            ],200);
+        }else{
+            $connection->delete();
+            return response()->json([
+                'message' => 'Request rejected successfully',
+                'status' => 0,
+                'data' => "Request rejected successfully"
+            ],200);
+        }
+    }
+
 }
