@@ -6,6 +6,7 @@ use App\Http\Controllers\API\FeedbackController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\IndustryController;
 use App\Http\Controllers\API\FileUploadController;
+use App\Http\Controllers\API\LeaderBoardController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\SettingController;
 use Illuminate\Http\Request;
@@ -99,6 +100,12 @@ Route::group(['middleware' => "api"], (function () {
         Route::get('/pendingrequest',[ConnectionsController::class,'getPendingRequest']);
         Route::get('/updaterequest/{id}/{status}',[ConnectionsController::class,'updateRequest']);
         Route::get('/userrelations/{dest_uid}',[ConnectionsController::class,'getUserRelation']);
+    });
+
+    //leaderboard
+    Route::prefix('/leaderboard') -> group(function (){
+        Route::get('/top50',[LeaderBoardController::class,'getLeaderBoard']);
+
     });
 
 
