@@ -56,7 +56,7 @@ class IndustryController extends Controller
             ],
             'multipart' => [
                 'name' => $request->name,
-                'contents' => Psr7\Utils::tryFopen($request->file()->path(),'r')
+                'contents' => Psr7\Utils::tryFopen($request->file($request->name)->path(),'r')
             ]
         ]);
 
