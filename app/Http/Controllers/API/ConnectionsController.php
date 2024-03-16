@@ -190,13 +190,8 @@ class ConnectionsController extends Controller
         $source_uid = $request->header('uid');
 
         $dest_user = User::where("uid", $dest_uid)
-            ->with('connectors')
-            ->with('connections')
-            ->first();
-
-        $source_user = User::where("uid", $source_uid)
-            ->with('connectors')
-            ->with('connections')
+            ->with('connectors.sourceUser')
+            ->with('connections.destUser')
             ->first();
 
         $dest_user->mutuals = $this->getMutualConnections($source_uid, $dest_uid);
