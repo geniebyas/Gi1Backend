@@ -221,6 +221,9 @@ class ConnectionsController extends Controller
             ->where('status', 'accepted')
             ->pluck('dest_uid')
             ->toArray();
+            
+        echo p($destConnections);
+        echo p($sourceConnections);
 
         // Find the intersection of connections
         $mutualConnections = array_intersect($sourceConnections, $destConnections);
