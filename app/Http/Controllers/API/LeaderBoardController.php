@@ -10,7 +10,10 @@ class LeaderBoardController extends Controller
 {
     public function getLeaderBoard() {
         $users = User::
-        withCount("connectors")
+        with(['settings' => function($query){
+            $query->where("is_private",false);
+        }])
+        ->withCount("connectors")
         ->with(['wallet' => function ($query){
             $query->pluck('total_bal');
         }])
