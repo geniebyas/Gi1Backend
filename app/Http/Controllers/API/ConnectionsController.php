@@ -188,12 +188,14 @@ class ConnectionsController extends Controller
         $dest_user = User::where("uid",$dest_uid)
         ->with('connectors')
         ->with('connections')
-        ->get();
+        ->get()
+        ->first();
 
         $source_user = User::where("uid",$source_uid)
         ->with('connectors')
         ->with('connections')
-        ->get();
+        ->get()
+        ->first();
 
         if(is_null($dest_user->connectors)){
             $dest_user->connectors = [];
