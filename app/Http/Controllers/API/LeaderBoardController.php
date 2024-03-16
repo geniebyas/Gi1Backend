@@ -14,8 +14,8 @@ class LeaderBoardController extends Controller
             $query->where('is_private', false);
         })
         ->withCount("connectors")
-        ->with(['wallet' => function ($query){
-            $query->pluck('total_bal');
+        ->withCount(['wallet as total_bal' => function ($query) {
+            $query->select('total_bal');
         }])
         ->get();
 
