@@ -29,7 +29,7 @@ class LeaderBoardController extends Controller
     }
 
     // Sort users by total_bal in descending order
-    $users = $users->sortByDesc('total_bal');
+    $users = $users->sortByAsc('total_bal');
 
     // Limit the list to the top 50 users
     $users = $users->take(50);
