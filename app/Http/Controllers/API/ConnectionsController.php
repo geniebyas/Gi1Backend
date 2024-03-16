@@ -182,45 +182,42 @@ class ConnectionsController extends Controller
         }
     }
 
-    public function getUserRelation(Request $request,$dest_uid){
-        $source_uid = $request->header('uid');
+    public function getUserRelation(Request $request, $dest_uid)
+{
+    $source_uid = $request->header('uid');
 
-        $dest_user = User::where("uid",$dest_uid)
+    $dest_user = User::where("uid", $dest_uid)
         ->with('connectors')
         ->with('connections')
-        ->get()
         ->first();
 
-        $source_user = User::where("uid",$source_uid)
+    $source_user = User::where("uid", $source_uid)
         ->with('connectors')
         ->with('connections')
-        ->get()
         ->first();
 
-        if(is_null($dest_user->connectors)){
-            $dest_user->connectors = [];
-        }
-        if(is_null($dest_user->connections)){
-            $dest_user->connections = [];
-        }
+    // Convert collections to arrays
+    $connectorsDest = $dest_user->connectors->toArray();
+    $connectorsSource = $source_user->connectors->toArray();
+    $connectionsDest = $dest_user->connections->toArray();
+    $connectionsSource = $source_user->connections->toArray();
 
-        if(is_null($source_user->connectors)){
-            $source_user->connectors = [];
-        }
-        if(is_null($source_user->connections)){
-            $source_user->connections = [];
-        }
+    // Find common elements
+    $connectorsMutual = array_intersect($connectorsDest, $connectorsSource);
+    $connectionsMutual = array_intersect($connectionsDest, $connectionsSource);
 
-        $connectorsMutual = array_intersect($dest_user->connectors,$source_user->connectors);
-        $connectionsMutual = array_intersect($dest_user->connections,$source_user->connections);
+    // Add mutuals property to $dest_user
+    $dest_user->mutuals = [
+        'connectors' => $connectorsMutual,
+        'connections' => $connectionsMutual
+    ];
 
-        $dest_user->mutuals = array_intersect($connectorsMutual,$connectionsMutual);
-        
-        return response()->json([
-            'message' => 'User Relations',
-            'status' => 1,
-            'data' => $dest_user
-        ]);
-    }
+    return response()->json([
+        'message' => 'User Relations',
+        'status' => 1,
+        'data' => $dest_user
+    ]);
+}
+
 
 }
