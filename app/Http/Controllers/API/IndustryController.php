@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Industry;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -40,49 +42,61 @@ class IndustryController extends Controller
      */
     public function create(Request $request)
     {
+        $uid = $request->header('uid');
+        $industry = new Industry();
+        $client = new Client();
 
-//$result = (new 
-//TestController)->exampleFunction();
-  
-      //  dd($result);
-  //  }
+        $resp = $client->request('POST', "https://api.gi1superapp.com/api/file/upload", [
+            'headers' => [
+                'uid' => $uid
+            ],
+            'form_params' => [
+                'name' =>$request->name,
+                'dir' => $request->dir
+            ],
+            'multipart' => [
+                'name' => $request->name,
+                'contents' => Psr7\Utils::tryFopen($request->file()->path(),'r')
+            ]
+        ]);
 
-        $industry = $request->all();
-        // $validator = Validator::make($request->all(), [
-        //     'name' => 'required',
-        //     'email' => ['required', 'email', 'unique:users,email'],
-        //     'uid' => ['required', 'unique:users,uid']
-        // ]);
-        if(!is_null($industry))
-        DB::beginTransaction();
-            try {
-                Industry::create($industry);
-                DB::commit();
-            } catch (\Throwable $th) {
-                //throw $th;
-                DB::rollBack();
-                $industry = null;
-                $e = $th;
-            }
-            if ($industry != null) {
-                return response()->json(
-                    [
-                        "message" => "Industry Added successfully",
-                        "status" => 1,
-                        "data" => $industry
-                    ],
-                    200
-                );
-            } else {
-                return response()->json(
-                    [
-                        'message' => "Error Occured" . $e->getMessage() ,
-                        'status' => 0,
-                        'data' =>$request->all()
-                    ],
-                    500
-                );
-            }
+        return response()->json([
+            'message' => $resp
+        ]);
+
+
+
+
+        // if(!is_null($industry))
+        // DB::beginTransaction();
+        //     try {
+        //         // Industry::create($industry);
+        //         DB::commit();
+        //     } catch (\Throwable $th) {
+        //         //throw $th;
+        //         DB::rollBack();
+        //         $industry = null;
+        //         $e = $th;
+        //     }
+        //     if ($industry != null) {
+        //         return response()->json(
+        //             [
+        //                 "message" => "Industry Added successfully",
+        //                 "status" => 1,
+        //                 "data" => $industry
+        //             ],
+        //             200
+        //         );
+        //     } else {
+        //         return response()->json(
+        //             [
+        //                 'message' => "Error Occured" . $e->getMessage() ,
+        //                 'status' => 0,
+        //                 'data' =>$request->all()
+        //             ],
+        //             500
+        //         );
+        //     }
         p($request->all());
 
     }

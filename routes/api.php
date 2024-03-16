@@ -57,6 +57,7 @@ Route::group(['middleware' => "api"], (function () {
         Route::get('/isuniqueuser/{username}',[UserController::class,'isuniqueuser']);
     });
 
+    //settings
     Route::prefix('settings')->group(function (){
         Route::get('/referal/isvalid/{refer_code}',[SettingController::class,'isvalid']);
         Route::post('/add',[SettingController::class,'add_setting']);
