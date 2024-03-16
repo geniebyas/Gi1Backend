@@ -42,8 +42,8 @@ class LeaderBoardController extends Controller
 
     // Add rank for each user in top 50
     $rank = 1;
-    foreach ($top50_users as &$user) {
-        $user['rank'] = $rank++;
+    foreach ($top50_users as $userRank) {
+        $userRank['rank'] = $rank++;
     }
 
     // Find mutual connections from the top 50 users
