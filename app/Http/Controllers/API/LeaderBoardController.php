@@ -14,8 +14,8 @@ class LeaderBoardController extends Controller
     $uid = $request->header('uid');
 
     // Fetch the connections of the source user
-    $source_user_connections = UsersConnection::where('dest_uid', $uid)
-        ->pluck("source_uid")
+    $source_user_connections = UsersConnection::where('source_uid', $uid)
+        ->pluck("dest_uid")
         ->toArray();
 
     // Get users who have public profiles
