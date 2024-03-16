@@ -159,7 +159,7 @@ class ConnectionsController extends Controller
                     'status' => 0,
                     'data' => "No Requests"
                 ],
-                200
+                400
             );
         }
     }
