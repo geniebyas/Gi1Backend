@@ -182,4 +182,29 @@ class ConnectionsController extends Controller
         }
     }
 
+    public function getUserRelation(Request $request,$dest_uid){
+        $source_uid = $request->header('uid');
+
+        $dest_user = User::where("uid",$dest_uid)
+        ->with('connectors')
+        ->with('connections')
+        ->get();
+
+        $source_user = User::where("uid",$source_uid)
+        ->with('connectors')
+        ->with('connections')
+        ->get();
+
+        $connectorsMutual = array_intersect($dest_user->connectors,$source_user->connectors);
+        $connectionsMutual = array_intersect($dest_user->connections,$source_user->connections);
+
+        $dest_user->mutuals = array_intersect($connectorsMutual,$connectionsMutual);
+        
+        return response()->json([
+            'message' => 'User Relations',
+            'status' => 1,
+            'data' => $dest_user
+        ]);
+    }
+
 }
