@@ -26,4 +26,8 @@ class UsersSetting extends Model
         return $this->belongsTo(User::class, 'id');
     }
 
+    public function referrer(){
+        return $this->belongsTo(User::class,'uid','referred_by');
+    }
+
 }
