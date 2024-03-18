@@ -56,12 +56,14 @@ Route::group(['middleware' => "api"], (function () {
         Route::post('/deleteuserac', [UserController::class, 'destroy']);
         Route::get('/checkuserexists/{uid}', [UserController::class, 'checkUserExists']);
         Route::get('/isuniqueuser/{username}',[UserController::class,'isuniqueuser']);
+        Route::post('/update',[UserController::class,'updateUser']);
     });
 
     //settings
     Route::prefix('settings')->group(function (){
         Route::get('/referal/isvalid/{refer_code}',[SettingController::class,'isvalid']);
         Route::post('/add',[SettingController::class,'add_setting']);
+        Route::post('/update',[SettingController::class,'updateSetting']);
 
     });
 

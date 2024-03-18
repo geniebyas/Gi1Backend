@@ -18,6 +18,20 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
 
+     public function updateUser(Request $request){
+        $user = User::where('uid',$request->header('uid'))->get()->first();
+
+        $user->phone = $request->phone;
+    
+
+
+
+
+     }
+
+
+
+
     public function getAllPublicUsers()
     {
         $uids = UsersSetting::where('is_private', false)->get();
@@ -187,7 +201,7 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-       
+
         $uid = $request->header('uid');
         $validator = Validator::make($request->all(), [
             'phone' => 'required|string|max:255',
@@ -198,7 +212,7 @@ class UserController extends Controller
             'profile_pic' => 'nullable|string|max:255',
             'referred_by' => 'nullable|string|max:255', // Assuming referred_by is a string
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'message' => $validator->errors()->first(),
@@ -206,14 +220,14 @@ class UserController extends Controller
                 'data' => $validator->errors()->first()
             ], 422);
         }
-        $user = User::where('uid',$uid)->get()->first();
+        $user = User::where('uid', $uid)->get()->first();
         if (!$user) {
             return response()->json([
                 'message' => 'User not found',
                 'status' => 0
             ], 404);
         }
-    
+
         try {
             $user->phone = $request['phone'];
             $user->dob = $request['dob'];
@@ -227,14 +241,14 @@ class UserController extends Controller
             $setting->refer_code = generateReferCode();
             $setting->referred_by = $request->input('referred_by');
             $setting->save();
-            addCoins($uid,2);
+            addCoins($uid, 2);
 
             if (!is_null($setting->referred_by)) {
                 addCoins($setting->referred_by, 4);
                 addCoins($uid, 5);
             }
-    
-    
+
+
             return response()->json([
                 'message' => 'Registration Successfully',
                 'status' => 1,
@@ -248,7 +262,7 @@ class UserController extends Controller
             ], 500);
         }
     }
-    
+
 
     /**
      * Remove the specified resource from storage.
