@@ -93,6 +93,7 @@ public function create(Request $request)
         $coin->uid = $uid;
         $coin->type = $request->type;
         $coin->action_id = $request->action_id;
+        $coin->amount = $action->amount;
         $coin->save();
 
         // Update wallet balance based on the type of action

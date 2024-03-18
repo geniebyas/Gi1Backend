@@ -14,11 +14,13 @@ class Coins extends Model
     protected $fillable = [
         "uid",
         "type",
-        "action_id"
+        "action_id",
+        "amount"
     ];
 
     protected $casts = [
-        "action_id"=>'integer'
+        "action_id"=>'integer',
+        "amount"=>'decimal'
     ];
 
 

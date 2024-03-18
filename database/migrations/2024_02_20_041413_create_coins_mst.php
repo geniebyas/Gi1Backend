@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign("uid")->references("uid")->on("users");
             $table->string("type");
             $table->foreignId("action_id")->constrained("coins_actions_mst");
+            $table->decimal("amount",15,2);
             $table->timestamps();
         });
     }
