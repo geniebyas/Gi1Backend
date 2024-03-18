@@ -74,7 +74,7 @@ class SettingController extends Controller
         return response()->json([
             'message' => "Settings Updated",
             'status' => 1,
-            'data' => "Settings Updated Successfully"
+            'data' => $setting
         ]);
     }
 
