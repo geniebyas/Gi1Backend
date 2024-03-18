@@ -114,7 +114,6 @@ class ConnectionsController extends Controller
             $user->connectors_count = $user->connectorsCount();
             $user->connections_count = $user->connectionsCount();
             $user->is_pending_request = UsersConnection::where("source_uid", $source_uid)->where("dest_uid", $uid)->where('status', 'pending')->exists();
-            p($user);
             return response()->json(
                 [
                     'message' => "User Found",
