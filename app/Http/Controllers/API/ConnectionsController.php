@@ -95,7 +95,9 @@ class ConnectionsController extends Controller
         if (User::find($uid)->exists()) {
             $user = User::where('uid', $uid)
                 ->with("wallet")
-                ->with("settings.referrer")
+                ->with(["settings.referrer" => function ($query){
+                    $query->withCount('connectors');
+                }])
                 ->with('responses.question.category')
                 ->with('transactions.action')
                 ->with(["connections.destUser" => function ($query) {
