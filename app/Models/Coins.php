@@ -19,8 +19,7 @@ class Coins extends Model
     ];
 
     protected $casts = [
-        "action_id"=>'integer',
-        "amount"=>'decimal'
+        "action_id"=>'integer'
     ];
 
 
