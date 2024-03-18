@@ -67,7 +67,9 @@ class SettingController extends Controller
         $setting->is_private = $request->is_private;
         $setting->referred_by = $request->referred_by;
         //More settings need to be implemented
-        $setting->update();
+        $res = $setting->update();
+
+        p($res);
 
         return response()->json([
             'message' => "Settings Updated",
