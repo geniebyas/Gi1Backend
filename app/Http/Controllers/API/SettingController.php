@@ -64,7 +64,7 @@ class SettingController extends Controller
     public function updateSetting(Request $request){
         $setting = UsersSetting::where('uid',$request->header('uid'))->get()->first();
 
-        $setting->is_private = $request->is_private;
+        $setting->is_private = boolval($request->is_private);
         $setting->referred_by = $request->referred_by;
         //More settings need to be implemented
         $res = $setting->update();
