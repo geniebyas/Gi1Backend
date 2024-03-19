@@ -117,7 +117,11 @@ class IndustryController extends Controller
         }
 
         $industry = Industry::
-        with('discussions.replies')
+        with(['discussions' => function($query){
+            $query->with('user')->with(['replies'=> function($query){
+                $query->with('user');
+            }]);
+        }])
         ->find($id);
         if($industry != null){
             return response()->json(
