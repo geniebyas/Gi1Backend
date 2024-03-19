@@ -117,8 +117,7 @@ class IndustryController extends Controller
         }
 
         $industry = Industry::
-        find($id)
-        ->with(['discussions' => function($query){
+        with(['discussions' => function($query){
             $query->with('user')
             ->with(['likes'=>function($query){
                 $query->with('user');
@@ -129,8 +128,9 @@ class IndustryController extends Controller
                     $query->with('user');
                 }]);
             }]);
-        }]);
-        
+        }])
+        ->find($id);
+
         if($industry != null){
             return response()->json(
                 [
