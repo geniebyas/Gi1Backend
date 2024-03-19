@@ -23,7 +23,7 @@ class IndustryDiscussion extends Model
 
     public function likes()
     {
-        return $this->hasMany(IndustryDiscussionLike::class);
+        return $this->hasMany(IndustryDiscussionLike::class,'discussion_id','id');
     }
 
     public function replies(){
