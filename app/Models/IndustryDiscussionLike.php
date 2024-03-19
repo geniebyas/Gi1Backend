@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class IndustryDiscussionLike extends Model
 {
     protected $fillable = ['uid', 'discussion_id'];
+    protected $table = "discussion_likes";
 
     public function discussion()
     {

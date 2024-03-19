@@ -20,6 +20,6 @@ class IndustryReply extends Model
 
     public function likes()
     {
-        return $this->hasMany(IndustryReplyLike::class);
+        return $this->hasMany(IndustryReplyLike::class,'reply_id','id');
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class IndustryReplyLike extends Model
 {
     protected $fillable = ['uid', 'reply_id'];
+    protected $table = "reply_likes";
 
     public function reply()
     {
