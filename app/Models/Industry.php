@@ -36,8 +36,4 @@ class Industry extends Model
         return $this->hasMany(IndustryDiscussion::class,'industry_id','id');
     }
 
-
-
-
-
 }
