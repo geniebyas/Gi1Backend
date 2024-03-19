@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class IndustryReply extends Model
 {
-    protected $fillable = ['industry_id', 'uid', 'msg'];
+    protected $fillable = ['industry_id','discussion_id', 'uid', 'msg'];
 
     public function industry()
     {

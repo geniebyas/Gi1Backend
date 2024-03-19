@@ -9,7 +9,7 @@ class IndustryDiscussion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['industry_id', 'uid', 'msg'];
+    protected $fillable = ['id','industry_id', 'uid', 'msg'];
 
     public function industry()
     {
@@ -24,6 +24,10 @@ class IndustryDiscussion extends Model
     public function likes()
     {
         return $this->hasMany(IndustryDiscussionLike::class);
+    }
+
+    public function replies(){
+        return $this->hasMany(IndustryReply::class,'discussion_id','id');
     }
 
 

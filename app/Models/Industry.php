@@ -27,4 +27,17 @@ class Industry extends Model
         'ispinned' => 'boolean',
         'status' => 'boolean',
     ];
+
+    public function views(){
+        return $this->hasMany(IndustryView::class,'industry_id','id');
+    }
+
+    public function discussions(){
+        return $this->hasMany(IndustryDiscussion::class,'industry_id','id');
+    }
+
+
+
+
+
 }

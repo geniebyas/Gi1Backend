@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('industry_replies', function (Blueprint $table) {
             $table->id();
             $table->foreignId('industry_id')->constrained("industries");
+            $table->foreignId('discussion_id')->constrained("industry_discussions");
             $table->string("uid"); // Define the data type and length of the column
             $table->foreign("uid")->references("uid")->on("users");
             $table->string('msg');

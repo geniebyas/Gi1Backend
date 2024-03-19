@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Industry;
+use App\Models\IndustryView;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;
 use Illuminate\Http\Request;
@@ -99,43 +100,40 @@ class IndustryController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function getIndustryItem(Request $request,$id){
+
+        $uid = $request->header('uid');
+
+        if(!IndustryView::where('industry_id',$id)->where('uid',$uid)->exists()){
+            IndustryView::create([
+                'industry_id' => $id,
+                'uid' => $uid
+            ]);
+            addCoins($uid,6);
+        }else{
+            $view = IndustryView::where('industry_id',$id)->where('uid',$uid)->get()->first();
+            $view->updated_at = time();
+            $view->update();
+        }
+
+        $industry = Industry::find($id);
+        if($industry != null){
+            return response()->json(
+                [
+                    'message' => 'Industry loaded Successfully',
+                    'status' => 1,
+                    'data' => $industry
+                ]
+                );
+        }else{
+            return response()->json(
+                [
+                    'message' => 'Some Error Occurred',
+                    'status' => 0,
+                    'data' => "Error Detected"
+                ],500
+                );
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
