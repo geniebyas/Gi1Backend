@@ -116,7 +116,9 @@ class IndustryController extends Controller
             $view->update();
         }
 
-        $industry = Industry::find($id);
+        $industry = Industry::
+        with('discussions')
+        ->find($id);
         if($industry != null){
             return response()->json(
                 [
