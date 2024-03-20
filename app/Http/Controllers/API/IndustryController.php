@@ -137,7 +137,7 @@ class IndustryController extends Controller
 
 
         if ($industry != null) {
-            if ($industry->discussion != null) {
+            if ($industry->discussions != null) {
                 foreach ($industry->discussions as $d) {
                     if ($d->likes != null) {
                         foreach ($d->likes as $l) {
