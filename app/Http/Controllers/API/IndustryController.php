@@ -119,40 +119,54 @@ class IndustryController extends Controller
         }
 
         $industry = Industry::with(['discussions' => function ($query) {
-                $query->with('user')
-                    ->with(['likes' => function ($query) {
-                        $query->with('user');
-                    }])
-                    ->with(['replies' => function ($query) {
-                        $query->with('user')
-                            ->with(['likes' => function ($query) {
-                                $query->with('user');
-                            }]);
-                    }]);
-            }])
+            $query->with('user')
+                ->with(['likes' => function ($query) {
+                    $query->with('user');
+                }])
+                ->with(['replies' => function ($query) {
+                    $query->with('user')
+                        ->with(['likes' => function ($query) {
+                            $query->with('user');
+                        }]);
+                }]);
+        }])
             ->find($id);
 
-        foreach ($industry->discussions as $d) {
-            foreach ($d->likes as $l) {
-                if ($l->uid == $uid) {
-                    $d->is_liked = true;
-                } else {
-                    $d->is_liked = false;
-                }
-            }
 
-            foreach ($d->replies as $r) {
-                foreach ($r->likes as $rl) {
-                    if ($r->uid == $uid) {
-                        $r->is_liked = true;
-                    }else{
-                        $r->is_liked = false;
+
+
+
+        if ($industry != null) {
+            if ($industry->discussion != null) {
+                foreach ($industry->discussions as $d) {
+                    if ($d->likes != null) {
+                        foreach ($d->likes as $l) {
+                            if ($l->uid == $uid) {
+                                $d->is_liked = true;
+                            } else {
+                                $d->is_liked = false;
+                            }
+                        }
+                    }
+
+
+                    if ($d->replies != null) {
+                        foreach ($d->replies as $r) {
+                            if ($r->likes != null) {
+                                foreach ($r->likes as $rl) {
+                                    if ($r->uid == $uid) {
+                                        $r->is_liked = true;
+                                    } else {
+                                        $r->is_liked = false;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
-        }
 
-        if ($industry != null) {
+
             return response()->json(
                 [
                     'message' => 'Industry loaded Successfully',
