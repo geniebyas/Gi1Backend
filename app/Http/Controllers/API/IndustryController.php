@@ -17,11 +17,12 @@ class IndustryController extends Controller
     /**
      * Display a listing of the resource.
      */
-        public function index(){
-            
+    public function index()
+    {
     }
 
-    public function allActiveIndustries(){
+    public function allActiveIndustries()
+    {
         $list = Industry::get();
         if (count($list) > 0) {
             //users exists
@@ -37,7 +38,7 @@ class IndustryController extends Controller
                 'data' => null
             ];
         }
-        return response()->json($response,200);
+        return response()->json($response, 200);
     }
     /**
      * Show the form for creating a new resource.
@@ -55,7 +56,7 @@ class IndustryController extends Controller
             'multipart' => [
                 'dir' => $request->dir,
                 'name' => $request->name,
-                'contents' => Psr7\Utils::tryFopen($request->file($request->name)->path(),'r'),
+                'contents' => Psr7\Utils::tryFopen($request->file($request->name)->path(), 'r'),
                 'filename' => $request->name . ".png"
             ]
         ]);
@@ -98,60 +99,81 @@ class IndustryController extends Controller
         //         );
         //     }
         p($request->all());
-
     }
 
-    public function getIndustryItem(Request $request,$id){
+    public function getIndustryItem(Request $request, $id)
+    {
 
         $uid = $request->header('uid');
 
-        if(!IndustryView::where('industry_id',$id)->where('uid',$uid)->exists()){
+        if (!IndustryView::where('industry_id', $id)->where('uid', $uid)->exists()) {
             IndustryView::create([
                 'industry_id' => $id,
                 'uid' => $uid
             ]);
-            addCoins($uid,6);
-        }else{
-            $view = IndustryView::where('industry_id',$id)->where('uid',$uid)->get()->first();
+            addCoins($uid, 6);
+        } else {
+            $view = IndustryView::where('industry_id', $id)->where('uid', $uid)->get()->first();
             $view->updated_at = time();
             $view->update();
         }
 
-        $industry = Industry::
-        with(['discussions' => function($query){
-            $query->with('user')
-            ->with(['likes'=>function($query){
-                $query->with('user');
-            }])
-            ->with(['replies'=> function($query){
+        $industry = Industry::with(['discussions' => function ($query) {
                 $query->with('user')
-                ->with(['likes' => function($query){
-                    $query->with('user');
-                }]);
-            }]);
-        }])
-        ->find($id);
+                    ->with(['likes' => function ($query) {
+                        $query->with('user');
+                    }])
+                    ->with(['replies' => function ($query) {
+                        $query->with('user')
+                            ->with(['likes' => function ($query) {
+                                $query->with('user');
+                            }]);
+                    }]);
+            }])
+            ->find($id);
 
-        if($industry != null){
+        foreach ($industry->discussions as $d) {
+            foreach ($d->likes as $l) {
+                if ($l->uid == $uid) {
+                    $d->is_liked = true;
+                } else {
+                    $d->is_liked = false;
+                }
+            }
+
+            foreach ($d->replies as $r) {
+                foreach ($r->likes as $rl) {
+                    if ($r->uid == $uid) {
+                        $r->is_liked = true;
+                    }else{
+                        $r->is_liked = false;
+                    }
+                }
+            }
+        }
+
+        if ($industry != null) {
             return response()->json(
                 [
                     'message' => 'Industry loaded Successfully',
                     'status' => 1,
                     'data' => $industry
                 ]
-                );
-        }else{
+            );
+        } else {
             return response()->json(
                 [
                     'message' => 'Some Error Occurred',
                     'status' => 0,
                     'data' => "Error Detected"
-                ],500
-                );
+                ],
+                500
+            );
         }
     }
 
-    public function addDiscussion(Request $request){
+    public function addDiscussion(Request $request)
+    {
         $uid = $request->header('uid');
         $industry_id = $request->industry_id;
         $msg = $request->msg;
@@ -167,12 +189,5 @@ class IndustryController extends Controller
             'status' => 1,
             'data' => $res
         ]);
-
-
-
     }
-
-
-
-
 }
