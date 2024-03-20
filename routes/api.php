@@ -72,6 +72,7 @@ Route::group(['middleware' => "api"], (function () {
         Route::post('/add', [IndustryController::class, 'create']);
         Route::get('/active', [IndustryController::class, 'allActiveIndustries']);
         Route::get('/industryitem/{id}',[IndustryController::class,'getIndustryItem']);
+        Route::post('/adddiscussion',[IndustryController::class,'addDiscussion']);
     });
 
     //coins
