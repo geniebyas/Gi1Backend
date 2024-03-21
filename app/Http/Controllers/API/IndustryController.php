@@ -243,7 +243,7 @@ class IndustryController extends Controller
         return response()->json([
             'message'=> "Successfull",
             'status' => 1,
-            'data' => $resp
+            'data' => true
         ]);
 
     }
