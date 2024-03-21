@@ -231,7 +231,7 @@ class IndustryController extends Controller
         $uid=$request->header("uid");
 
         if(IndustryDiscussionLike::where('uid',$uid)->where('discussion_id',$discussion_id)->exists()){
-            $like = IndustryDiscussionLike::find($discussion_id);
+            $like = IndustryDiscussionLike::where('uid',$uid)->where('discussion_id',$discussion_id)->get()->first();
             $resp = $like->delete();
         }else{
             $resp = IndustryDiscussionLike::create([
@@ -251,7 +251,7 @@ class IndustryController extends Controller
         $uid=$request->header("uid");
 
         if(IndustryReplyLike::where('uid',$uid)->where('reply_id',$reply_id)->exists()){
-            $like = IndustryReplyLike::find($reply_id);
+            $like = IndustryReplyLike::where('uid',$uid)->where('reply_id',$reply_id)->get()->first();
             $resp = $like->delete();
         }else{
             $resp = IndustryReplyLike::create([
