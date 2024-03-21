@@ -7,6 +7,7 @@ use App\Models\Industry;
 use App\Models\IndustryDiscussion;
 use App\Models\IndustryDiscussionLike;
 use App\Models\IndustryReply;
+use App\Models\IndustryReplyLike;
 use App\Models\IndustryView;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;
@@ -247,6 +248,22 @@ class IndustryController extends Controller
 
     }
     public function replyLike(Request $request,$reply_id){
+        $uid=$request->header("uid");
 
+        if(IndustryReplyLike::where('uid',$uid)->where('reply_id',$reply_id)->exists()){
+            $like = IndustryReplyLike::find($reply_id);
+            $resp = $like->delete();
+        }else{
+            $resp = IndustryReplyLike::create([
+                'uid'=>$uid,
+                'reply_id'=>$reply_id
+            ]);
+        }
+
+        return response()->json([
+            'message'=> "Successfull",
+            'status' => 1,
+            'data' => $resp
+        ]);
     }
 }
