@@ -252,7 +252,7 @@ class IndustryController extends Controller
 
         if(IndustryReplyLike::where('uid',$uid)->where('reply_id',$reply_id)->exists()){
             $like = IndustryReplyLike::find($reply_id);
-            $resp = true;
+            $resp = $like->delete();
         }else{
             $resp = IndustryReplyLike::create([
                 'uid'=>$uid,
