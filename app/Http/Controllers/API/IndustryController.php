@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Industry;
 use App\Models\IndustryDiscussion;
+use App\Models\IndustryReply;
 use App\Models\IndustryView;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;
@@ -193,6 +194,25 @@ class IndustryController extends Controller
         $msg = $request->msg;
 
         $res = IndustryDiscussion::create([
+            'uid' => $uid,
+            'industry_id' => $industry_id,
+            'msg' => $msg
+        ]);
+
+        return response()->json([
+            'message' => 'Discussion created successfully',
+            'status' => 1,
+            'data' => $res
+        ]);
+    }
+
+    public function addReply(Request $request)
+    {
+        $uid = $request->header('uid');
+        $industry_id = $request->industry_id;
+        $msg = $request->msg;
+
+        $res = IndustryReply::create([
             'uid' => $uid,
             'industry_id' => $industry_id,
             'msg' => $msg

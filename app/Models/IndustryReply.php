@@ -6,12 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class IndustryReply extends Model
 {
-    protected $fillable = ['industry_id','discussion_id', 'uid', 'msg'];
+    protected $fillable = ['discussion_id', 'uid', 'msg'];
 
-    public function industry()
-    {
-        return $this->belongsTo(Industry::class);
-    }
 
     public function user()
     {
