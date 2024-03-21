@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Industry;
 use App\Models\IndustryDiscussion;
+use App\Models\IndustryDiscussionLike;
 use App\Models\IndustryReply;
 use App\Models\IndustryView;
 use GuzzleHttp\Client;
@@ -223,5 +224,29 @@ class IndustryController extends Controller
             'status' => 1,
             'data' => $res
         ]);
+    }
+
+    public function discussionLike(Request $request,$discussion_id){
+        $uid=$request->header("uid");
+
+        if(IndustryDiscussionLike::where('uid',$uid)->where('discussion_id',$discussion_id)->exists()){
+            $like = IndustryDiscussionLike::find($discussion_id);
+            $resp = $like->delete();
+        }else{
+            $resp = IndustryDiscussionLike::create([
+                'uid'=>$uid,
+                'discussion_id'=>$discussion_id
+            ]);
+        }
+
+        return response()->json([
+            'message'=> "Successfull",
+            'status' => 1,
+            'data' => $resp
+        ]);
+
+    }
+    public function replyLike(Request $request,$reply_id){
+
     }
 }
