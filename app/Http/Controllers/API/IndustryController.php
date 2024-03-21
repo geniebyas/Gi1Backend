@@ -252,7 +252,7 @@ class IndustryController extends Controller
 
         if(IndustryReplyLike::where('uid',$uid)->where('reply_id',$reply_id)->exists()){
             $like = IndustryReplyLike::find($reply_id);
-            $resp = $like->delete();
+            $resp = true;
         }else{
             $resp = IndustryReplyLike::create([
                 'uid'=>$uid,
@@ -263,7 +263,7 @@ class IndustryController extends Controller
         return response()->json([
             'message'=> "Successfull",
             'status' => 1,
-            'data' => $resp
+            'data' => true
         ]);
     }
 }
