@@ -209,17 +209,17 @@ class IndustryController extends Controller
     public function addReply(Request $request)
     {
         $uid = $request->header('uid');
-        $industry_id = $request->industry_id;
+        $discussion_id = $request->discussion_id;
         $msg = $request->msg;
 
         $res = IndustryReply::create([
             'uid' => $uid,
-            'industry_id' => $industry_id,
+            'discussion_id' => $discussion_id,
             'msg' => $msg
         ]);
 
         return response()->json([
-            'message' => 'Discussion created successfully',
+            'message' => 'Reply created successfully',
             'status' => 1,
             'data' => $res
         ]);
