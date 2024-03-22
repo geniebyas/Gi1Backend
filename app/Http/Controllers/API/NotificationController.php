@@ -68,7 +68,7 @@ class NotificationController extends Controller
 
         $messaging->send($message);
 
-
+  
 
 
         // $client = new Client();
