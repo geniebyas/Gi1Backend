@@ -7,6 +7,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\IndustryController;
 use App\Http\Controllers\API\FileUploadController;
 use App\Http\Controllers\API\LeaderBoardController;
+use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\SettingController;
 use Illuminate\Http\Request;
@@ -113,6 +114,15 @@ Route::group(['middleware' => "api"], (function () {
     //leaderboard
     Route::prefix('/leaderboard') -> group(function (){
         Route::get('/top50',[LeaderBoardController::class,'getLeaderBoard']);
+
+    });
+
+    //notification
+    Route::prefix('/notification') -> group(function (){
+        Route::post('/send',[NotificationController::class,'sendNotification']);
+
+
+
 
     });
 
