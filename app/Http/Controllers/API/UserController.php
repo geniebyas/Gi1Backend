@@ -18,6 +18,18 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
 
+
+     public function tokenUpdate(Request $request){
+        $uid = $request->header('uid');
+        $token = $request->token;
+        $user= User::where("uid", $uid)->get()->first();
+        $user->token = $token;
+        $user->update();
+
+        return response()->json("Token Updated Successfully");
+     }
+
+
      public function updateUser(Request $request){
         $user = User::where('uid',$request->header('uid'))->get()->first();
 
