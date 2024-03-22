@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use GuzzleHttp\Client;
-use Illuminate\Http\Request;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\RawMessageFromArray;
