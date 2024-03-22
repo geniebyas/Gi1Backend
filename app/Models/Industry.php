@@ -20,12 +20,14 @@ class Industry extends Model
         'type',
         'ispinned',
         'status',
+        'is_discussion_allowed',
         'pinnedthumb'
     ];
 
     protected $casts = [
         'ispinned' => 'boolean',
         'status' => 'boolean',
+        'is_discussion_allowed' => 'boolean'
     ];
 
     public function views(){

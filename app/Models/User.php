@@ -32,7 +32,8 @@ class User extends Model
         'dob',
         'gender',
         'city',
-        'bio'
+        'bio',
+        'token'
     ];
 
     /**

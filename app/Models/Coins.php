@@ -15,7 +15,8 @@ class Coins extends Model
         "uid",
         "type",
         "action_id",
-        "amount"
+        "amount",
+        "description"
     ];
 
     protected $casts = [
