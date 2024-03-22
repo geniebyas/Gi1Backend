@@ -11,9 +11,10 @@ class NotificationController extends Controller
     //
     public function sendNotification(){
         $client = new Client();
-        $resp = $client->request('POST', "https://fcm.googleapis.com/v1/projects/myproject-gi1-info-app/messages:send", [
+        $resp = $client->request('POST', "https://fcm.googleapis.com/v1/projects/gi1-info-app/messages:send", [
             'headers' => [
-                'Authorization' =>'Bearer 27595911584-evlpcfqpe2npa9dt8v1kmkd1shafg6fq.apps.googleusercontent.com'
+                'Authorization' =>'Bearer 27595911584-evlpcfqpe2npa9dt8v1kmkd1shafg6fq.apps.googleusercontent.com',
+                'Content-Type' => 'application/json'
             ],
             'form_params' => [
                 "message" => [
