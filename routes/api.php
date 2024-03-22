@@ -57,7 +57,7 @@ Route::group(['middleware' => "api"], (function () {
         Route::get('/checkuserexists/{uid}', [UserController::class, 'checkUserExists']);
         Route::get('/isuniqueuser/{username}',[UserController::class,'isuniqueuser']);
         Route::post('/update',[UserController::class,'updateUser']);
-        Route::post('/tokenupdate',[UserController::class,'updateUser']);
+        Route::post('/tokenupdate',[UserController::class,'tokenUpdate']);
     });
 
     //settings
