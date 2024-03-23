@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\PublicNotification;
 use App\Models\UsersSetting;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
 
 if (!function_exists('p')) {
     function p($data)
@@ -42,6 +45,41 @@ if (!function_exists('addCoins')) {
         }
     }
 }
+
+if(!function_exists('sendPublicNotification')){
+    function sendPublicNotification($data){
+        define("GOOGLE_APPLICATION_CREDENTIALS", __DIR__ . '../Controllers/API/gi1-info-app-c9afc9a63f4b.json');
+        $factory = (new Factory)->withServiceAccount(GOOGLE_APPLICATION_CREDENTIALS);
+        $messaging = $factory->createMessaging();
+
+        $message = CloudMessage::withTarget('topic', $data->topic)
+            ->withNotification(['title' => $data->title, 'body' => $data->body])
+            ->withData([
+                'img_url' => $data->img_url,
+                'topic' => $data->topic,
+                'android_route' => $data->android_route
+            ]);
+
+        $messaging->send($message);
+
+        PublicNotification::create([
+            "title" => $data->title,
+            "body" => $data->body,
+            "img_url" => $data->img_url,
+            "android_route" => $data->android_route,
+            "topic" => $data->topic
+        ]);
+
+        return response()->json(
+            [
+                'message' => "Notification Published",
+                'status' => 1,
+                'data' => $data
+            ]
+            );
+    }
+}
+
 
 
 

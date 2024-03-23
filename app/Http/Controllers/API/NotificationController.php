@@ -12,10 +12,16 @@ class NotificationController extends Controller
     //
     public function sendNotification()
     {
+        sendPublicNotification([
+            "title" => "Test Notification",
+            "body" => "Test Notification Body",
+            "img_url" => "https://www.gi1superapp.com/images/websitelogo.png",
+            "topic" => "all"
+        ]);
 
-        define("GOOGLE_APPLICATION_CREDENTIALS", __DIR__ . '/gi1-info-app-c9afc9a63f4b.json');
-        $factory = (new Factory)->withServiceAccount(GOOGLE_APPLICATION_CREDENTIALS);
-        $messaging = $factory->createMessaging();
+        // define("GOOGLE_APPLICATION_CREDENTIALS", __DIR__ . '/gi1-info-app-c9afc9a63f4b.json');
+        // $factory = (new Factory)->withServiceAccount(GOOGLE_APPLICATION_CREDENTIALS);
+        // $messaging = $factory->createMessaging();
 
 
         $messagee = new RawMessageFromArray([
@@ -64,7 +70,7 @@ class NotificationController extends Controller
         $message = CloudMessage::withTarget('topic', "all")
             ->withNotification(['title' => 'My title', 'body' => 'My Body']);
 
-        $messaging->send($message);
+        // $messaging->send($message);
 
   
 
