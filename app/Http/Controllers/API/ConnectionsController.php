@@ -191,7 +191,7 @@ class ConnectionsController extends Controller
             sendPersonalNotification(new PersonalNotification([
                 "sender_uid" => $connection->dest_uid,
                 "reciever_uid" => $connection->source_uid,
-                "title" => "Request Accepted",
+                "title" => "Connection Request Accepted",
                 "body"=> $username . " accepted your connection request",
             ]));
             
