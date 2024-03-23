@@ -186,17 +186,20 @@ class ConnectionsController extends Controller
         if ($status == "accepted") {
             $connection->status = $status;
             $connection->update();
-            return response()->json([
-                'message' => 'Request accepted successfully',
-                'status' => 1,
-                'data' => "Request accepted successfully"
-            ], 200);
+            
             sendPersonalNotification(new PersonalNotification([
                 "sender_uid" => $connection->dest_uid,
                 "reciever_uid" => $connection->source_uid,
                 "title" => "Request Accepted",
                 "body"=> $connection->dest_user->username . " accepted your connection request",
             ]));
+            
+            return response()->json([
+                'message' => 'Request accepted successfully',
+                'status' => 1,
+                'data' => "Request accepted successfully"
+            ], 200);
+            
         } else {
             $connection->delete();
             return response()->json([
