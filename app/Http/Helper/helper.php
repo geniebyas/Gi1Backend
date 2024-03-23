@@ -49,7 +49,7 @@ if (!function_exists('addCoins')) {
             sendPersonalNotification(new PersonalNotification([
                 "title" => "Congratulations! You've won $action->amount coins 🎉",
                 "body" => "You've been awarded $action->amount coins for your $action->name task. Keep up the good work and enjoy your rewards",
-                "reciever_uid"=>$uid
+                "receiver_uid"=>$uid
             ]));
             return $resp;
         }
@@ -96,14 +96,14 @@ if(!function_exists('sendPersonalNotification')){
         $factory = (new Factory)->withServiceAccount(GOOGLE_APPLICATION_CREDENTIALS);
         $messaging = $factory->createMessaging();
 
-        $user = User::where("uid",$data->reciever_uid)->get()->first();
+        $user = User::where("uid",$data->receiver_uid)->get()->first();
 
         if(!is_null($user->token)){
         $message = CloudMessage::withTarget('token', $user->token)
             ->withNotification(['title' => $data->title, 'body' => $data->body])
             ->withData([
                 'sender_uid'=>$data->sender_uid,
-                'reciever_uid'=>$data->reciever_uid,
+                'receiver_uid'=>$data->receiver_uid,
                 'img_url' => $data->img_url,
                 'android_route' => $data->android_route
             ]);
@@ -116,7 +116,7 @@ if(!function_exists('sendPersonalNotification')){
             "img_url" => $data->img_url,
             "android_route" => $data->android_route,
             "sender_uid"=>$data->sender_uid,
-            "reciever_uid"=>$data->reciever_uid
+            "receiver_uid"=>$data->receiver_uid
         ]);
 
         return response()->json(

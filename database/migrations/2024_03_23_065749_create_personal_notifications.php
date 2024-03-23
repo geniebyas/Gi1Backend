@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string("sender_uid"); // Define the data type and length of the column
             $table->foreign("sender_uid")->references("uid")->on("users");
-            $table->string("reciever_uid"); // Define the data type and length of the column
-            $table->foreign("reciever_uid")->references("uid")->on("users");
+            $table->string("receiver_uid"); // Define the data type and length of the column
+            $table->foreign("receiver_uid")->references("uid")->on("users");
             $table->string("title");
             $table->string("body");
             $table->string("img_url")->nullable();

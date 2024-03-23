@@ -16,4 +16,9 @@ class PublicNotification extends Model
         'img_url',
         'android_route',
     ];
+
+
+
+
+    
 }

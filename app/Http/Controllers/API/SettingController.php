@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\PersonalNotification;
 use App\Models\User;
 use App\Models\UsersSetting;
 use Illuminate\Http\Request;
@@ -66,8 +67,15 @@ class SettingController extends Controller
 
         if($setting->referred_by == null){
             if($request->referred_by != null){
-                addCoins($request->header('uid'),5);
-                addCoins($request->referred_by,4);
+                $user=User::where("uid",$request->header('uid'))->get()->first();
+                addCoins($request->header('uid'),5,"You got a coins for using refer code");
+                addCoins($request->referred_by,4,"$user->username used your refer code");
+                sendPersonalNotification(new PersonalNotification([
+                    'sender_uid'=>$request->header('uid'),
+                    'receiver_uid' =>$request->referred_by,
+                    'title'=>"New Referral",
+                    'body'=>"Congratulations! $user->username used your refer code"
+                ]));
             }
         }
 

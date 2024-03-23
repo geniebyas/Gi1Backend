@@ -40,7 +40,7 @@ class ConnectionsController extends Controller
             $status = "pending";
             sendPersonalNotification(new PersonalNotification([
                 "sender_uid"=>$user->uid,
-                "reciever_uid"=>$dest_uid,
+                "receiver_uid"=>$dest_uid,
                 "title"=>"new Connection Request",
                 "body" => "$user->username sent you a connection request",
             ]));
@@ -48,7 +48,7 @@ class ConnectionsController extends Controller
             $status = "accepted";
             sendPersonalNotification(new PersonalNotification([
                 "sender_uid"=>$user->uid,
-                "reciever_uid"=>$dest_uid,
+                "receiver_uid"=>$dest_uid,
                 "title"=>"new Connection",
                 "body" => "$user->username connected with you",
             ]));
@@ -190,7 +190,7 @@ class ConnectionsController extends Controller
 
             sendPersonalNotification(new PersonalNotification([
                 "sender_uid" => $connection->dest_uid,
-                "reciever_uid" => $connection->source_uid,
+                "receiver_uid" => $connection->source_uid,
                 "title" => "Connection Request Accepted",
                 "body"=> $username . " accepted your connection request",
             ]));

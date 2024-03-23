@@ -11,7 +11,7 @@ class PersonalNotification extends Model
 
     protected $fillable = [
         'sender_uid',
-        'reciever_uid',
+        'receiver_uid',
         'title',
         'body',
         'img_url',
