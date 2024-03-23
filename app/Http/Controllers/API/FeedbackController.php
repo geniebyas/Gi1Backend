@@ -56,7 +56,7 @@ class FeedbackController extends Controller
         );
         $question = FeedbackQuestions::find($request->question_id);
 
-        $resp = addCoins($request->header('uid'),3,"You received coins for answering  <b>$question->question_text</b>");
+        $resp = addCoins($request->header('uid'),3,"You received coins for answering question : <b>$question->question_text</b>");
 
         return response()->json(['message' => 'Feedback answer submitted successfully', 'status' => 1, 'data' => $response,'coin_data' =>$resp],200);
     }
