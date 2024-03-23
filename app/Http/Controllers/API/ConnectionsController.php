@@ -197,7 +197,7 @@ class ConnectionsController extends Controller
             return response()->json([
                 'message' => 'Request accepted successfully',
                 'status' => 1,
-                'data' => "Request accepted successfully"
+                'data' => $connection
             ], 200);
             
         } else {
