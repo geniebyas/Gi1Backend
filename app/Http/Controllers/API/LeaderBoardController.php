@@ -26,6 +26,7 @@ class LeaderBoardController extends Controller
         ->withCount(['wallet as total_bal' => function ($query) {
             $query->select('total_bal');
         }])
+        ->orderBy('created_at', 'desc') // Sort users by created_at timestamp in descending order
         ->get();
 
     // Calculate the total_bal for each user by adding a bonus for each connector

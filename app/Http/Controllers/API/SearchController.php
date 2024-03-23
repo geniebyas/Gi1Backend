@@ -56,4 +56,21 @@ class SearchController extends Controller
             return response()->json($response, 400);
         }
     }
+
+    function getExplore() {
+        // Retrieve 4 random users
+        $users = User::withCount('connectors')->inRandomOrder()->limit(4)->get();
+    
+        // Retrieve 2 random industries
+        $industries = Industry::inRandomOrder()->limit(2)->get();
+    
+        return response()->json([
+            'message' => "Explorer Loaded",
+            'status' => 1,
+            'data' => [
+                'users' => $users,
+                'industries' => $industries
+            ]
+        ]);
+    }
 }
