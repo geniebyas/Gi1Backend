@@ -120,9 +120,7 @@ Route::group(['middleware' => "api"], (function () {
     //notification
     Route::prefix('/notification') -> group(function (){
         Route::post('/send',[NotificationController::class,'sendNotification']);
-
-
-
+        Route::get('/all',[NotificationController::class,'getNotifications']);
 
     });
 

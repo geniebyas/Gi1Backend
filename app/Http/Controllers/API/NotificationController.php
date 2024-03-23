@@ -12,8 +12,14 @@ class NotificationController extends Controller
         $uid = $request->header('uid');
 
         $publicNotifications = PublicNotification::get();
-        $personalNotifications = PersonalNotification::where("reciever_uid",$uid)->with('sender')->get();
-
-
+        $personalNotifications = PersonalNotification::where("receiver_uid",$uid)->with('sender')->get();
+        return response()->json([
+            'message' => 'Notification Collected',
+            'status'=> 1,
+            'data'=> [
+                'public'=>$publicNotifications,
+                'personal'=>$personalNotifications
+            ]
+        ]);
     }
 }
