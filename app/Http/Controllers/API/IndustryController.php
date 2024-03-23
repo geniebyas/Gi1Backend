@@ -224,19 +224,19 @@ class IndustryController extends Controller
             'msg' => $msg
         ]);
 
-        
-        $dis = IndustryDiscussion::find($discussion_id);
-        if($dis->uid != $uid){
-        $user = User::where("uid", $dis->uid)->get()->first();
-        $industry = Industry::find($dis->industry_id);
 
-        sendPersonalNotification(new PersonalNotification([
-            'sender_uid' => $uid,
-            'receiver_uid' => $user->uid,
-            "title" => "Reply In $industry->name Discussion",
-            "body" => "$user->username replied you in $industry->name"
-        ]));
-    }
+        $dis = IndustryDiscussion::find($discussion_id);
+        if ($dis->uid != $uid) {
+            $user = User::where("uid", $uid)->get()->first();
+            $industry = Industry::find($dis->industry_id);
+
+            sendPersonalNotification(new PersonalNotification([
+                'sender_uid' => $uid,
+                'receiver_uid' => $dis->uid,
+                "title" => "Reply In $industry->name Discussion",
+                "body" => "$user->username replied you in $industry->name"
+            ]));
+        }
 
         return response()->json([
             'message' => 'Reply created successfully',
@@ -261,12 +261,12 @@ class IndustryController extends Controller
             $dis = IndustryDiscussion::find($discussion_id);
 
             if ($uid != $dis->uid) {
-                $user = User::where("uid", $dis->uid)->get()->first();
+                $user = User::where("uid", $uid)->get()->first();
                 $industry = Industry::find($dis->industry_id);
 
                 sendPersonalNotification(new PersonalNotification([
                     'sender_uid' => $uid,
-                    'receiver_uid' => $user->uid,
+                    'receiver_uid' => $dis->uid,
                     "title" => "Like In $industry->name Discussion",
                     "body" => "$user->username liked your discussion in $industry->name"
                 ]));
@@ -297,17 +297,16 @@ class IndustryController extends Controller
             $dis = IndustryDiscussion::find($reply->discussion_id);
 
             if ($uid != $reply->uid) {
-                $user = User::where("uid", $dis->uid)->get()->first();
+                $user = User::where("uid", $uid)->get()->first();
                 $industry = Industry::find($dis->industry_id);
 
                 sendPersonalNotification(new PersonalNotification([
                     'sender_uid' => $uid,
-                    'receiver_uid' => $user->uid,
+                    'receiver_uid' => $dis->uid,
                     "title" => "Like In $industry->name Discussion",
                     "body" => "$user->username liked your reply in $industry->name"
                 ]));
             }
-
         }
 
         return response()->json([
