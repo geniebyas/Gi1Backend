@@ -98,6 +98,7 @@ Route::group(['middleware' => "api"], (function () {
     //search
     Route::prefix('search') ->group(function (){
         Route::get('/global/{query}/{filter}',[SearchController::class,'globalSearch']);
+        Route::get('/explore',[SearchController::class,'getExplore']);
     });
 
     //connections
