@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\PersonalNotification;
 use App\Models\PublicNotification;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
@@ -13,11 +14,18 @@ class NotificationController extends Controller
     //
     public function sendNotification()
     {
-        sendPublicNotification(new PublicNotification([
-            "title" => "Test Notification",
-            "body" => "Test Notification Body",
-            "img_url" => "https://www.gi1superapp.com/images/websitelogo.png",
-            "topic" => "all"
+        // sendPublicNotification(new PublicNotification([
+        //     "title" => "Test Notification",
+        //     "body" => "Test Notification Body",
+        //     "img_url" => "https://www.gi1superapp.com/images/websitelogo.png",
+        //     "topic" => "all"
+        // ]));
+
+        sendPersonalNotification(new PersonalNotification([
+            "title" => "Personal Notification Test",
+            "body" => "Personal Notification Test Body",
+            "sender_uid" =>"BkjsdvfaCVQgxFDTtEjQr5ERpTu2",
+            "reciever_uid"=>"irQkpwCcDlPExfZd6LzhspuJEF63"
         ]));
 
         // define("GOOGLE_APPLICATION_CREDENTIALS", __DIR__ . '/gi1-info-app-c9afc9a63f4b.json');
