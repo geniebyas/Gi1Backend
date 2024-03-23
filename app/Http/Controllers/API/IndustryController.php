@@ -9,11 +9,13 @@ use App\Models\IndustryDiscussionLike;
 use App\Models\IndustryReply;
 use App\Models\IndustryReplyLike;
 use App\Models\IndustryView;
+use App\Models\PersonalNotification;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class IndustryController extends Controller
 {
@@ -114,7 +116,8 @@ class IndustryController extends Controller
                 'industry_id' => $id,
                 'uid' => $uid
             ]);
-            addCoins($uid, 6);
+            $industry = Industry::find($id);
+            addCoins($uid, 6,"You got a coins for visiting $industry->name.");
         } else {
             $view = IndustryView::where('industry_id', $id)->where('uid', $uid)->get()->first();
             $view->updated_at = time();
@@ -219,6 +222,17 @@ class IndustryController extends Controller
             'discussion_id' => $discussion_id,
             'msg' => $msg
         ]);
+
+        $dis = IndustryDiscussion::find($discussion_id)->with('user')->with('industry');
+        $user = $dis->user;
+        $industry = $dis->industry;
+
+        sendPersonalNotification(new PersonalNotification([
+            'sender_uid'=>$uid,
+            'receiver_uid'=>$user->uid,
+            "title"=>"Reply In $industry->name",
+            "body"=>"$user->username replied you in $industry->name"
+        ]));
 
         return response()->json([
             'message' => 'Reply created successfully',
