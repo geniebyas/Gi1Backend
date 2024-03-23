@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\PersonalNotification;
 use App\Models\User;
 use App\Models\UsersConnection;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class ConnectionsController extends Controller
 {
@@ -36,8 +38,20 @@ class ConnectionsController extends Controller
         $setting = $dest_user->settings;
         if ($setting->is_private) {
             $status = "pending";
+            sendPersonalNotification(new PersonalNotification([
+                "sender_uid"=>$user->uid,
+                "reciever_uid"=>$dest_uid,
+                "title"=>"new Connection Request",
+                "body" => "$user->username sent you a connection request",
+            ]));
         } else {
             $status = "accepted";
+            sendPersonalNotification(new PersonalNotification([
+                "sender_uid"=>$user->uid,
+                "reciever_uid"=>$dest_uid,
+                "title"=>"new Connection",
+                "body" => "$user->username connected with you",
+            ]));
         }
 
         // Check if a request already exists
@@ -168,7 +182,7 @@ class ConnectionsController extends Controller
 
     public function updateRequest($id, $status)
     {
-        $connection = UsersConnection::find($id);
+        $connection = UsersConnection::with('sourceUser')->with('destUser')->find($id);
         if ($status == "accepted") {
             $connection->status = $status;
             $connection->update();
@@ -177,6 +191,12 @@ class ConnectionsController extends Controller
                 'status' => 1,
                 'data' => "Request accepted successfully"
             ], 200);
+            sendPersonalNotification(new PersonalNotification([
+                "sender_uid" => $connection->dest_uid,
+                "reciever_uid" => $connection->reciever_uid,
+                "title" => "Request Accepted",
+                "body"=> $connection->dest_user->username . " accepted your connection request",
+            ]));
         } else {
             $connection->delete();
             return response()->json([
