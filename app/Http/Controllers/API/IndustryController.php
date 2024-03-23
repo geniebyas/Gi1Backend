@@ -10,6 +10,7 @@ use App\Models\IndustryReply;
 use App\Models\IndustryReplyLike;
 use App\Models\IndustryView;
 use App\Models\PersonalNotification;
+use App\Models\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;
 use Illuminate\Http\Request;
@@ -223,9 +224,9 @@ class IndustryController extends Controller
             'msg' => $msg
         ]);
 
-        $dis = IndustryDiscussion::find($discussion_id)->with('user')->with('industry');
-        $user = $dis->user;
-        $industry = $dis->industry;
+        $dis = IndustryDiscussion::find($discussion_id);
+        $user = User::where("uid",$dis->uid)->get()->first();
+        $industry = Industry::find($dis->industry_id);
 
         sendPersonalNotification(new PersonalNotification([
             'sender_uid'=>$uid,
