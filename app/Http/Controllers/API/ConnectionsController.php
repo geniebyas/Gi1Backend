@@ -182,7 +182,7 @@ class ConnectionsController extends Controller
 
     public function updateRequest($id, $status)
     {
-        $connection = UsersConnection::with('sourceUser')->find($id);
+        $connection = UsersConnection::with('destUser')->find($id);
         if ($status == "accepted") {
             $connection->status = $status;
             $connection->update();
@@ -195,7 +195,7 @@ class ConnectionsController extends Controller
                 "sender_uid" => $connection->dest_uid,
                 "reciever_uid" => $connection->source_uid,
                 "title" => "Request Accepted",
-                "body"=> $connection->source_user->username . " accepted your connection request",
+                "body"=> $connection->dest_user->username . " accepted your connection request",
             ]));
         } else {
             $connection->delete();
