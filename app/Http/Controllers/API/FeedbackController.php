@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\FeedbackQuestionCategory;
+use App\Models\FeedbackQuestions;
 use App\Models\FeedbackUsersResponse;
 use Illuminate\Http\Request;
 
@@ -53,8 +54,9 @@ class FeedbackController extends Controller
                 'response_date' => $request->response_date,
             ]
         );
+        $question = FeedbackQuestions::find($request->question_id);
 
-        $resp = addCoins($request->header('uid'),3);
+        $resp = addCoins($request->header('uid'),3,"You received coins for answering  <b>$question->question_text</b>");
 
         return response()->json(['message' => 'Feedback answer submitted successfully', 'status' => 1, 'data' => $response,'coin_data' =>$resp],200);
     }

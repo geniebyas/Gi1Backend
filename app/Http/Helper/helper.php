@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CoinsActions;
 use App\Models\PersonalNotification;
 use App\Models\PublicNotification;
 use App\Models\User;
@@ -29,7 +30,7 @@ function generateReferCode()
 }
 
 if (!function_exists('addCoins')) {
-    function addCoins($uid, $action_id)
+    function addCoins($uid, $action_id,$description)
     {
         $client = new Client();
         if ($uid != null && $action_id != null) {
@@ -40,9 +41,16 @@ if (!function_exists('addCoins')) {
                 ],
                 'form_params' => [
                     'action_id' => $action_id,
-                    'type' => "add"
+                    'type' => "add",
+                    'description'=>$description
                 ]
             ]);
+            $action = CoinsActions::find($action_id);
+            sendPersonalNotification(new PersonalNotification([
+                "title" => "Congratulations! You've won $action->amount coins 🎉",
+                "body" => "You've been awarded $action->amount coins for your $action->name task. Keep up the good work and enjoy your rewards",
+                "reciever_uid"=>$uid
+            ]));
             return $resp;
         }
     }
