@@ -119,13 +119,13 @@ if(!function_exists('sendPersonalNotification')){
             "receiver_uid"=>$data->receiver_uid
         ]);
 
-        return response()->json(
-            [
-                'message' => "Notification Published",
-                'status' => 1,
-                'data' => $data
-            ]
-            );
+        // return response()->json(
+        //     [
+        //         'message' => "Notification Published",
+        //         'status' => 1,
+        //         'data' => $data
+        //     ]
+        //     );
         }
     }
 }
