@@ -224,7 +224,9 @@ class IndustryController extends Controller
             'msg' => $msg
         ]);
 
+        
         $dis = IndustryDiscussion::find($discussion_id);
+        if($dis->uid != $uid){
         $user = User::where("uid", $dis->uid)->get()->first();
         $industry = Industry::find($dis->industry_id);
 
@@ -234,6 +236,7 @@ class IndustryController extends Controller
             "title" => "Reply In $industry->name Discussion",
             "body" => "$user->username replied you in $industry->name"
         ]));
+    }
 
         return response()->json([
             'message' => 'Reply created successfully',
