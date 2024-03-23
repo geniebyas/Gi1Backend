@@ -102,8 +102,15 @@ if(!function_exists('sendPersonalNotification')){
 
         $messaging->send($message);
 
-        $data->create();
-        
+        PersonalNotification::create([
+            "title" => $data->title,
+            "body" => $data->body,
+            "img_url" => $data->img_url,
+            "android_route" => $data->android_route,
+            "sender_uid"=>$data->sender_uid,
+            "reciever_uid"=>$data->reciever_uid
+        ]);
+
         return response()->json(
             [
                 'message' => "Notification Published",
