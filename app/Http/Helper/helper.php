@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\PersonalNotification;
 use App\Models\PublicNotification;
+use App\Models\User;
 use App\Models\UsersSetting;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
@@ -77,6 +79,39 @@ if(!function_exists('sendPublicNotification')){
                 'data' => $data
             ]
             );
+    }
+}
+
+if(!function_exists('sendPersonalNotification')){
+    function sendPersonalNotification(PersonalNotification $data){
+        define("GOOGLE_APPLICATION_CREDENTIALS", __DIR__ . '/../Controllers/API/gi1-info-app-c9afc9a63f4b.json');
+        $factory = (new Factory)->withServiceAccount(GOOGLE_APPLICATION_CREDENTIALS);
+        $messaging = $factory->createMessaging();
+
+        $user = User::where("uid",$data->reciever_uid)->get()->first();
+
+        if(!is_null($user->token)){
+        $message = CloudMessage::withTarget('token', $user->token)
+            ->withNotification(['title' => $data->title, 'body' => $data->body])
+            ->withData([
+                'sender_uid'=>$data->sender_uid,
+                'reciever_uid'=>$data->reciever_uid,
+                'img_url' => $data->img_url,
+                'android_route' => $data->android_route
+            ]);
+
+        $messaging->send($message);
+
+        $data->create();
+        
+        return response()->json(
+            [
+                'message' => "Notification Published",
+                'status' => 1,
+                'data' => $data
+            ]
+            );
+        }
     }
 }
 
