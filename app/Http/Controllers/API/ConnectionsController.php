@@ -182,17 +182,17 @@ class ConnectionsController extends Controller
 
     public function updateRequest($id, $status)
     {
-        $connection = UsersConnection::with('destUser')->find($id);
+        $connection = UsersConnection::find($id);
         if ($status == "accepted") {
             $connection->status = $status;
             $connection->update();
-            $dest_user = json_decode($connection->dest_user);
+            $username = User::where("uid",$connection->dest_uid)->get()->first()->username;
 
             sendPersonalNotification(new PersonalNotification([
                 "sender_uid" => $connection->dest_uid,
                 "reciever_uid" => $connection->source_uid,
                 "title" => "Request Accepted",
-                "body"=> $dest_user['username'] . " accepted your connection request",
+                "body"=> $username . " accepted your connection request",
             ]));
             
             return response()->json([
