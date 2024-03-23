@@ -118,7 +118,7 @@ class IndustryController extends Controller
                 'uid' => $uid
             ]);
             $industry = Industry::find($id);
-            addCoins($uid, 6,"You got a coins for visiting $industry->name.");
+            addCoins($uid, 6, "You got a coins for visiting $industry->name.");
         } else {
             $view = IndustryView::where('industry_id', $id)->where('uid', $uid)->get()->first();
             $view->updated_at = time();
@@ -225,14 +225,14 @@ class IndustryController extends Controller
         ]);
 
         $dis = IndustryDiscussion::find($discussion_id);
-        $user = User::where("uid",$dis->uid)->get()->first();
+        $user = User::where("uid", $dis->uid)->get()->first();
         $industry = Industry::find($dis->industry_id);
 
         sendPersonalNotification(new PersonalNotification([
-            'sender_uid'=>$uid,
-            'receiver_uid'=>$user->uid,
-            "title"=>"Reply In $industry->name",
-            "body"=>"$user->username replied you in $industry->name"
+            'sender_uid' => $uid,
+            'receiver_uid' => $user->uid,
+            "title" => "Reply In $industry->name Discussion",
+            "body" => "$user->username replied you in $industry->name"
         ]));
 
         return response()->json([
@@ -242,41 +242,73 @@ class IndustryController extends Controller
         ]);
     }
 
-    public function discussionLike(Request $request,$discussion_id){
-        $uid=$request->header("uid");
+    public function discussionLike(Request $request, $discussion_id)
+    {
+        $uid = $request->header("uid");
 
-        if(IndustryDiscussionLike::where('uid',$uid)->where('discussion_id',$discussion_id)->exists()){
-            $like = IndustryDiscussionLike::where('uid',$uid)->where('discussion_id',$discussion_id)->get()->first();
+        if (IndustryDiscussionLike::where('uid', $uid)->where('discussion_id', $discussion_id)->exists()) {
+            $like = IndustryDiscussionLike::where('uid', $uid)->where('discussion_id', $discussion_id)->get()->first();
             $resp = $like->delete();
-        }else{
+        } else {
             $resp = IndustryDiscussionLike::create([
-                'uid'=>$uid,
-                'discussion_id'=>$discussion_id
+                'uid' => $uid,
+                'discussion_id' => $discussion_id
             ]);
+
+            $dis = IndustryDiscussion::find($discussion_id);
+
+            if ($uid != $dis->uid) {
+                $user = User::where("uid", $dis->uid)->get()->first();
+                $industry = Industry::find($dis->industry_id);
+
+                sendPersonalNotification(new PersonalNotification([
+                    'sender_uid' => $uid,
+                    'receiver_uid' => $user->uid,
+                    "title" => "Like In $industry->name Discussion",
+                    "body" => "$user->username liked your discussion in $industry->name"
+                ]));
+            }
         }
 
+
         return response()->json([
-            'message'=> "Successfull",
+            'message' => "Successfull",
             'status' => 1,
             'data' => true
         ]);
-
     }
-    public function replyLike(Request $request,$reply_id){
-        $uid=$request->header("uid");
+    public function replyLike(Request $request, $reply_id)
+    {
+        $uid = $request->header("uid");
 
-        if(IndustryReplyLike::where('uid',$uid)->where('reply_id',$reply_id)->exists()){
-            $like = IndustryReplyLike::where('uid',$uid)->where('reply_id',$reply_id)->get()->first();
+        if (IndustryReplyLike::where('uid', $uid)->where('reply_id', $reply_id)->exists()) {
+            $like = IndustryReplyLike::where('uid', $uid)->where('reply_id', $reply_id)->get()->first();
             $resp = $like->delete();
-        }else{
+        } else {
             $resp = IndustryReplyLike::create([
-                'uid'=>$uid,
-                'reply_id'=>$reply_id
+                'uid' => $uid,
+                'reply_id' => $reply_id
             ]);
+
+            $reply = IndustryReply::find($reply_id);
+            $dis = IndustryDiscussion::find($reply->discussion_id);
+
+            if ($uid != $reply->uid) {
+                $user = User::where("uid", $dis->uid)->get()->first();
+                $industry = Industry::find($dis->industry_id);
+
+                sendPersonalNotification(new PersonalNotification([
+                    'sender_uid' => $uid,
+                    'receiver_uid' => $user->uid,
+                    "title" => "Like In $industry->name Discussion",
+                    "body" => "$user->username liked your reply in $industry->name"
+                ]));
+            }
+
         }
 
         return response()->json([
-            'message'=> "Successfull",
+            'message' => "Successfull",
             'status' => 1,
             'data' => true
         ]);
