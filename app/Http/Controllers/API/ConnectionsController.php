@@ -192,7 +192,7 @@ class ConnectionsController extends Controller
                 "sender_uid" => $connection->dest_uid,
                 "reciever_uid" => $connection->source_uid,
                 "title" => "Request Accepted",
-                "body"=> $dest_user->username . " accepted your connection request",
+                "body"=> $dest_user['username'] . " accepted your connection request",
             ]));
             
             return response()->json([
