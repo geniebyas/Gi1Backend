@@ -59,10 +59,10 @@ class SearchController extends Controller
 
     function getExplore() {
         // Retrieve 4 random users
-        $users = User::withCount('connectors')->inRandomOrder()->limit(4)->get();
+        $users = User::withCount('connectors')->inRandomOrder()->limit(5)->get();
     
         // Retrieve 2 random industries
-        $industries = Industry::inRandomOrder()->limit(2)->get();
+        $industries = Industry::inRandomOrder()->limit(3)->get();
     
         return response()->json([
             'message' => "Explorer Loaded",
