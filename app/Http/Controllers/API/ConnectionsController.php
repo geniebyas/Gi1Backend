@@ -193,7 +193,7 @@ class ConnectionsController extends Controller
             ], 200);
             sendPersonalNotification(new PersonalNotification([
                 "sender_uid" => $connection->dest_uid,
-                "reciever_uid" => $connection->reciever_uid,
+                "reciever_uid" => $connection->source_uid,
                 "title" => "Request Accepted",
                 "body"=> $connection->source_user->username . " accepted your connection request",
             ]));
