@@ -12,6 +12,7 @@ class PublicNotification extends Model
     protected $fillable = [
         'title',
         'body',
+        'topic',
         'img_url',
         'android_route',
     ];

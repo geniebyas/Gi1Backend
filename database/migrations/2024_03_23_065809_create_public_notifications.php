@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("body");
             $table->string("img_url")->nullable();
             $table->string("android_route");
+            $table->string("topic")->default("all");
             $table->timestamps();
         });
     }
