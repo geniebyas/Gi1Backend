@@ -47,7 +47,7 @@ if (!function_exists('addCoins')) {
 }
 
 if(!function_exists('sendPublicNotification')){
-    function sendPublicNotification($data){
+    function sendPublicNotification(PublicNotification $data){
         define("GOOGLE_APPLICATION_CREDENTIALS", __DIR__ . '/../Controllers/API/gi1-info-app-c9afc9a63f4b.json');
         $factory = (new Factory)->withServiceAccount(GOOGLE_APPLICATION_CREDENTIALS);
         $messaging = $factory->createMessaging();

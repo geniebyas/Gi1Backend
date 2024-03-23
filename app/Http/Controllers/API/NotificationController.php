@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\PublicNotification;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\RawMessageFromArray;
@@ -12,12 +13,12 @@ class NotificationController extends Controller
     //
     public function sendNotification()
     {
-        sendPublicNotification([
+        sendPublicNotification(new PublicNotification([
             "title" => "Test Notification",
             "body" => "Test Notification Body",
             "img_url" => "https://www.gi1superapp.com/images/websitelogo.png",
             "topic" => "all"
-        ]);
+        ]));
 
         // define("GOOGLE_APPLICATION_CREDENTIALS", __DIR__ . '/gi1-info-app-c9afc9a63f4b.json');
         // $factory = (new Factory)->withServiceAccount(GOOGLE_APPLICATION_CREDENTIALS);
