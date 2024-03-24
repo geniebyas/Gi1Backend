@@ -309,11 +309,11 @@ class IndustryController extends Controller
                     "title" => "Like in $industry->name Discussion",
                     "body" => "$user->username liked your reply in $industry->name"
                 ]));
-            //      return response()->json([
-            // 'message' => "Successfull",
-            // 'status' => 1,
-            // 'data' => $resp
-        // ]);
+                 return response()->json([
+            'message' => "Successfull",
+            'status' => 1,
+            'data' => $resp
+        ]);
             }
         }
 
