@@ -267,7 +267,7 @@ class IndustryController extends Controller
                 sendPersonalNotification(new PersonalNotification([
                     'sender_uid' => $uid,
                     'receiver_uid' => $dis->uid,
-                    "title" => "Like In $industry->name Discussion",
+                    "title" => "Like in $industry->name Discussion",
                     "body" => "$user->username liked your discussion in $industry->name"
                 ]));
             }
@@ -280,6 +280,9 @@ class IndustryController extends Controller
             'data' => true
         ]);
     }
+
+
+
     public function replyLike(Request $request, $reply_id)
     {
         $uid = $request->header("uid");
