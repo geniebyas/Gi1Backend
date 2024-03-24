@@ -45,8 +45,8 @@ class UserController extends Controller
         if(is_null($request->profile_pic) && !is_null($user->profile_pic)){
             $fc = new FileUploadController();
             $resp = $fc->deleteFile([
-                basename($user->profile_pic),
-                "profiles"
+                'filename' => basename($user->profile_pic),
+                'dir' => "profiles"
             ]);
         }
 
