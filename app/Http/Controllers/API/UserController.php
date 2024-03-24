@@ -34,10 +34,10 @@ class UserController extends Controller
     public function updateUser(Request $request)
     {
         $user = User::where('uid', $request->header('uid'))->get()->first();
-        if($user->profile_pic != $request->profile_pic){
+        if(!is_null($user->profile_pic) && $user->profile_pic != $request->profile_pic){
             $fc = new FileUploadController();
             $resp = $fc->deleteFile([
-                basename($request->profile_pic),
+                basename($user->profile_pic),
                 "profiles"
             ]);
         }
