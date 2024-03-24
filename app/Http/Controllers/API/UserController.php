@@ -19,22 +19,25 @@ class UserController extends Controller
      */
 
 
-     public function tokenUpdate(Request $request){
+    public function tokenUpdate(Request $request)
+    {
         $uid = $request->header('uid');
         $token = $request->token;
-        $user= User::where("uid", $uid)->get()->first();
+        $user = User::where("uid", $uid)->get()->first();
         $user->token = $token;
         $user->update();
 
         return response()->json("Token Updated Successfully");
-     }
+    }
 
 
-     public function updateUser(Request $request){
-        $user = User::where('uid',$request->header('uid'))->get()->first();
+    public function updateUser(Request $request)
+    {
+        $user = User::where('uid', $request->header('uid'))->get()->first();
+        $user->profile_pic = $request->profile_pic;
         $user->name = $request->name;
         $user->phone = $request->phone;
-        $user->dob=$request->dob;
+        $user->dob = $request->dob;
         $user->gender = $request->gender;
         $user->city = $request->city;
         $user->bio = $request->bio;
@@ -43,11 +46,10 @@ class UserController extends Controller
 
         return response()->json([
             'message' => "Successfully updated",
-            'status' =>1,
-            'data'=>$resp
+            'status' => 1,
+            'data' => $resp
         ]);
-    
-     }
+    }
 
 
 
@@ -261,11 +263,11 @@ class UserController extends Controller
             $setting->refer_code = generateReferCode();
             $setting->referred_by = $request->input('referred_by');
             $setting->save();
-            addCoins($uid, 2,"You received welcome bonus for creating Gi1 account");
+            addCoins($uid, 2, "You received welcome bonus for creating Gi1 account");
 
             if (!is_null($setting->referred_by)) {
-                addCoins($setting->referred_by, 4,"$user->username used your refer code");
-                addCoins($uid, 5,"You got a coins for using refer code");
+                addCoins($setting->referred_by, 4, "$user->username used your refer code");
+                addCoins($uid, 5, "You got a coins for using refer code");
             }
 
 
