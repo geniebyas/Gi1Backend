@@ -161,7 +161,7 @@ class IndustryController extends Controller
                         foreach ($d->replies as $r) {
                             if ($r->likes != null) {
                                 foreach ($r->likes as $rl) {
-                                    if ($r->uid == $uid) {
+                                    if ($rl->uid == $uid) {
                                         $r->is_liked = true;
                                     } else {
                                         $r->is_liked = false;
