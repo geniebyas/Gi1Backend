@@ -34,7 +34,7 @@ class UserController extends Controller
         $user = User::where('uid',$request->header('uid'))->get()->first();
         $user->name = $request->name;
         $user->phone = $request->phone;
-        $user->dob->$request->dob;
+        $user->dob=$request->dob;
         $user->gender = $request->gender;
         $user->city = $request->city;
         $user->bio = $request->bio;
