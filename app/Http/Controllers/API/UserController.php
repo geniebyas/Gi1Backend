@@ -41,6 +41,15 @@ class UserController extends Controller
                 "profiles"
             ]);
         }
+
+        if(is_null($request->profile_pic) && !is_null($user->profile_pic)){
+            $fc = new FileUploadController();
+            $resp = $fc->deleteFile([
+                basename($user->profile_pic),
+                "profiles"
+            ]);
+        }
+
         $user->profile_pic = $request->profile_pic;
         $user->name = $request->name;
         $user->phone = $request->phone;
