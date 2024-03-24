@@ -43,19 +43,11 @@ class UserController extends Controller
         }
 
         if(is_null($request->profile_pic) && !is_null($user->profile_pic)){
-            // $fc = new FileUploadController();
-            // $resp = $fc->deleteFile([
-            //     'filename' => basename($user->profile_pic),
-            //     'dir' => "profiles"
-            // ]);
-            // echo $resp;
-            // Delete the file from the storage
-        $filePath = public_path("uploads/profiles/" . basename($user->profile_pic));
-        echo $filePath;
-        if (file_exists($filePath)) {
-            echo $filePath;
-            unlink($filePath); // Delete the file
-        }
+            $fc = new FileUploadController();
+            $resp = $fc->deleteFile([
+                'filename' => basename($user->profile_pic),
+                'dir' => "profiles"
+            ]);
     
         }
 
