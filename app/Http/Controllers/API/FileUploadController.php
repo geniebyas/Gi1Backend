@@ -60,4 +60,41 @@ class FileUploadController extends Controller
             return response()->json($response, 404);
         }
     }
+
+    public function deleteFile($data) {
+        $filename = $data['filename'];
+        $dir = $data['dir'];
+    
+        // Get the file record from the database
+        $file = File::where('name', $filename)->first();
+    
+        if (!$file) {
+            // File not found in the database
+            $response = [
+                'message' => 'File not found',
+                'status' => 0,
+                'data'  => null,
+            ];
+            return response()->json($response, 404);
+        }
+    
+        // Delete the file from the storage
+        $filePath = asset("public/uploads/$dir/$filename");
+        if (file_exists($filePath)) {
+            unlink($filePath); // Delete the file
+        }
+    
+        // Delete the file record from the database
+        $file->delete();
+    
+        // Respond with success message
+        $response = [
+            'message' => 'File deleted successfully',
+            'status' => 1,
+            'data' => null,
+        ];
+    
+        return response()->json($response, 200);
+    }
+    
 }
