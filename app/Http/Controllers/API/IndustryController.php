@@ -150,6 +150,7 @@ class IndustryController extends Controller
                         foreach ($d->likes as $l) {
                             if ($l->uid == $uid) {
                                 $d->is_liked = true;
+                                break;
                             } else {
                                 $d->is_liked = false;
                             }
@@ -163,6 +164,7 @@ class IndustryController extends Controller
                                 foreach ($r->likes as $rl) {
                                     if ($rl->uid == $uid) {
                                         $r->is_liked = true;
+                                        break;
                                     } else {
                                         $r->is_liked = false;
                                     }
