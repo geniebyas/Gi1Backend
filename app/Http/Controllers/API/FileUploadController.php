@@ -81,6 +81,7 @@ class FileUploadController extends Controller
         // Delete the file from the storage
         $filePath = asset("public/uploads/$dir/$filename");
         if (file_exists($filePath)) {
+            echo $filePath;
             unlink($filePath); // Delete the file
         }
     
