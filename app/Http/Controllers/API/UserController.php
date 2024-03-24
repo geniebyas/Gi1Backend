@@ -32,13 +32,21 @@ class UserController extends Controller
 
      public function updateUser(Request $request){
         $user = User::where('uid',$request->header('uid'))->get()->first();
-
+        $user->name = $request->name;
         $user->phone = $request->phone;
+        $user->dob->$request->dob;
+        $user->gender = $request->gender;
+        $user->city = $request->city;
+        $user->bio = $request->bio;
+
+        $resp = $user->update();
+
+        return response()->json([
+            'message' => "Successfully updated",
+            'status' =>1,
+            'data'=>$resp
+        ]);
     
-
-
-
-
      }
 
 
@@ -253,11 +261,11 @@ class UserController extends Controller
             $setting->refer_code = generateReferCode();
             $setting->referred_by = $request->input('referred_by');
             $setting->save();
-            addCoins($uid, 2);
+            addCoins($uid, 2,"You received welcome bonus for creating Gi1 account");
 
             if (!is_null($setting->referred_by)) {
-                addCoins($setting->referred_by, 4);
-                addCoins($uid, 5);
+                addCoins($setting->referred_by, 4,"$user->username used your refer code");
+                addCoins($uid, 5,"You got a coins for using refer code");
             }
 
 
