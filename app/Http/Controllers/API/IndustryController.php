@@ -297,7 +297,7 @@ class IndustryController extends Controller
             $dis = IndustryDiscussion::find($reply->discussion_id);
 
             if ($uid != $reply->uid) {
-                $user = User::where("uid", $reply->uid)->get()->first();
+                $user = User::where("uid", $uid)->get()->first();
                 $industry = Industry::find($dis->industry_id);
 
                 sendPersonalNotification(new PersonalNotification([
