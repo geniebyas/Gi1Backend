@@ -275,7 +275,7 @@ class IndustryController extends Controller
 
 
         return response()->json([
-            'message' => "Successfull",
+            'message' => "Successfull Like",
             'status' => 1,
             'data' => true
         ]);
