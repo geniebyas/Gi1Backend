@@ -51,6 +51,7 @@ class UserController extends Controller
             // echo $resp;
             // Delete the file from the storage
         $filePath = asset("public/uploads/profiles/" . basename($user->profile_pic));
+        echo $filePath;
         if (file_exists($filePath)) {
             echo $filePath;
             unlink($filePath); // Delete the file
