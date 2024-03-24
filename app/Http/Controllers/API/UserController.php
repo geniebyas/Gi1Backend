@@ -35,19 +35,18 @@ class UserController extends Controller
     {
         $user = User::where('uid', $request->header('uid'))->get()->first();
         if(!is_null($user->profile_pic) && $user->profile_pic != $request->profile_pic){
-            $fc = new FileUploadController();
-            $resp = $fc->deleteFile([
-                'filename' => basename($user->profile_pic),
-                'dir' => "profiles"
-            ]);
+            $filePath = public_path("uploads/profiles/" . basename($user->profile_pic));
+            if (file_exists($filePath)) {
+                unlink($filePath); // Delete the file
+            }
         }
 
         if(is_null($request->profile_pic) && !is_null($user->profile_pic)){
-            $fc = new FileUploadController();
-            $resp = $fc->deleteFile([
-                'filename' => basename($user->profile_pic),
-                'dir' => "profiles"
-            ]);
+            
+            $filePath = public_path("uploads/profiles/" . basename($user->profile_pic));
+        if (file_exists($filePath)) {
+            unlink($filePath); // Delete the file
+        }
     
         }
 
