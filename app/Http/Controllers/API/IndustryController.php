@@ -297,12 +297,12 @@ class IndustryController extends Controller
             $dis = IndustryDiscussion::find($reply->discussion_id);
 
             if ($uid != $reply->uid) {
-                $user = User::where("uid", $uid)->get()->first();
+                $user = User::where("uid", $reply->uid)->get()->first();
                 $industry = Industry::find($dis->industry_id);
 
                 sendPersonalNotification(new PersonalNotification([
                     'sender_uid' => $uid,
-                    'receiver_uid' => $dis->uid,
+                    'receiver_uid' => $reply->uid,
                     "title" => "Like In $industry->name Discussion",
                     "body" => "$user->username liked your reply in $industry->name"
                 ]));
