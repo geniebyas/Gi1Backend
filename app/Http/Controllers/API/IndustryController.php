@@ -303,19 +303,20 @@ class IndustryController extends Controller
                 $user = User::where("uid", $uid)->get()->first();
                 $industry = Industry::find($dis->industry_id);
 
-                sendPersonalNotification(new PersonalNotification([
+                $resp = sendPersonalNotification(new PersonalNotification([
                     'sender_uid' => $uid,
                     'receiver_uid' => $reply->uid,
                     "title" => "Like in $industry->name Discussion",
                     "body" => "$user->username liked your reply in $industry->name"
                 ]));
-            }
-        }
-
-        return response()->json([
+                 return response()->json([
             'message' => "Successfull",
             'status' => 1,
             'data' => true
         ]);
+            }
+        }
+
+       
     }
 }
