@@ -13,6 +13,10 @@ class CoinsActions extends Model
     protected $fillable = [
         "name",
         "amount",
-        "description"
+        "description",
+        "status"
+    ];
+    protected $casts = [
+        'status' => 'boolean'
     ];
 }

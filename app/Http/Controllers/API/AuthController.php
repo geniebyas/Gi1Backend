@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator as FacadesValidator;
 
 class AuthController extends Controller
 {
@@ -13,7 +14,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         //validation
-        $validator = Validator::make($request->all(), [
+        $validator = FacadesValidator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:8',
@@ -48,7 +49,7 @@ class AuthController extends Controller
         if(Auth::attempt(['email' => $req->email,'password' => $req->password])){
             $user = Auth::user();
 
-        $success['token'] = $user->createToken('Gi1InfoApp')->accessToken;
+        // $success['token'] = $user->createToken('Gi1InfoApp')->accessToken;
         $success['name'] = $user->name;
 
         $response = [

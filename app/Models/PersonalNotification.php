@@ -14,6 +14,8 @@ class PersonalNotification extends Model
         'receiver_uid',
         'title',
         'body',
+        'type',
+        'data',
         'img_url',
         'android_route',
         'is_read',
