@@ -109,7 +109,7 @@ class ConnectionsController extends Controller
         if (User::find($uid)->exists()) {
             $user = User::where('uid', $uid)
                 ->with("wallet")
-                ->with(["referrals.referrer" => function ($query) {
+                ->with(["referrals.user" => function ($query) {
                     $query->withCount('connections', 'connectors');
                 }])
                 ->with(["settings.referrer" => function ($query){
