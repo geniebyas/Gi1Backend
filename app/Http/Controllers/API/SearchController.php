@@ -31,9 +31,10 @@ class SearchController extends Controller
                 ->where('name', 'LIKE', "%$query%")
                 ->orWhere('description', 'LIKE', "%$query%");
         })
+        ->where("status",true)
             ->get();
 
-        if ($users->count() > 0) {
+        if ($users->count() > 0 || $industries->count() > 0){
             $response = [
                 'message' => 'Result Found',
                 'status' => 1,
@@ -49,7 +50,8 @@ class SearchController extends Controller
                 'message' => 'Result Not Found',
                 'status' => 0,
                 'data' => [
-                    'users' => null
+                    'users' => null,
+                    'industries'=>null
                 ]
             ];
 
@@ -62,7 +64,7 @@ class SearchController extends Controller
         $users = User::withCount('connectors')->inRandomOrder()->limit(5)->get();
     
         // Retrieve 2 random industries
-        $industries = Industry::inRandomOrder()->limit(3)->get();
+        $industries = Industry::where("status",true)->inRandomOrder()->limit(3)->get();
     
         return response()->json([
             'message' => "Explorer Loaded",

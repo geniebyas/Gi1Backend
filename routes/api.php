@@ -84,6 +84,7 @@ Route::group(['middleware' => "api"], (function () {
     Route::prefix('coins')->group(function () {
         Route::post('/add',[CoinsController::class, 'create']);
         Route::get('/userwallet',[CoinsController::class, 'getCoinsDetailsForUser']);
+        Route::get('actions',[CoinsController::class, 'getCoinsActions']);
 
     });
 

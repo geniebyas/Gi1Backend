@@ -110,7 +110,13 @@ class CoinsController extends Controller
 
     function getCoinsActions(){
 
-        $actions = CoinsActions::get();
+        $actions = CoinsActions::where("status",true)->get();
+
+        return response()->json([
+            'message' => "Actions Loaded",
+            'status' => 1,
+            'data' => $actions
+        ]);
 
         
         
