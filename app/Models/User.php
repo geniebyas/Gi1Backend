@@ -57,7 +57,7 @@ class User extends Model
     ];
 
     public function referrals(){
-        return $this->hasMany(UsersSetting::class,'uid','referred_by');
+        return $this->hasMany(UsersSetting::class,'referred_by','uid');
     }
 
 
