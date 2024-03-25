@@ -111,6 +111,8 @@ class CoinsController extends Controller
     function getCoinsActions(){
 
         $actions = CoinsActions::get();
+
+        
         
     }
 }
