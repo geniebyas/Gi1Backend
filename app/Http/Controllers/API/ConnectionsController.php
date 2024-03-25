@@ -120,7 +120,7 @@ class ConnectionsController extends Controller
                 ->with(["connectors.sourceUser" => function ($query) {
                     $query->withCount('connections', 'connectors');
                 }])
-
+                ->with('referrals.referrer')
                 ->get()
                 ->first();
             $user->is_in_connections = UsersConnection::where("source_uid", $source_uid)->where("dest_uid", $uid)->where('status', 'accepted')->exists();

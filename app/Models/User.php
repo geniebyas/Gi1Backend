@@ -56,6 +56,10 @@ class User extends Model
         'password' => 'hashed',
     ];
 
+    public function referrals(){
+        return $this->hasMany(UsersSetting::class,'uid','referred_by');
+    }
+
 
     public function responses(){
         return $this->hasMany(FeedbackUsersResponse::class,'uid','uid');
