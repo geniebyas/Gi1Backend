@@ -36,7 +36,7 @@ function generateReferCode()
 }
 
 if (!function_exists('addCoins')) {
-    function addCoins($uid, $action_id,$description)
+    function addCoins($uid, $action_id, $description)
     {
         $client = new Client();
         if ($uid != null && $action_id != null) {
@@ -48,22 +48,27 @@ if (!function_exists('addCoins')) {
                 'form_params' => [
                     'action_id' => $action_id,
                     'type' => "add",
-                    'description'=>$description
+                    'description' => $description
                 ]
             ]);
             $action = CoinsActions::find($action_id);
-            sendPersonalNotification(new PersonalNotification([
-                "title" => "Congratulations! You've won $action->amount coins 🎉",
-                "body" => "You've been awarded $action->amount coins for your $action->name task. Keep up the good work and enjoy your rewards",
-                "receiver_uid"=>$uid
-            ]));
+            try {
+                sendPersonalNotification(new PersonalNotification([
+                    "title" => "Congratulations! You've won $action->amount coins 🎉",
+                    "body" => "You've been awarded $action->amount coins for your $action->name task. Keep up the good work and enjoy your rewards",
+                    "receiver_uid" => $uid
+                ]));
+            } catch (Throwable $e) {
+            }
+
             return $resp;
         }
     }
 }
 
-if(!function_exists('sendPublicNotification')){
-    function sendPublicNotification(PublicNotification $data){
+if (!function_exists('sendPublicNotification')) {
+    function sendPublicNotification(PublicNotification $data)
+    {
         $factory = (new Factory)->withServiceAccount(GOOGLE_APPLICATION_CREDENTIALS);
         $messaging = $factory->createMessaging();
 
@@ -91,45 +96,46 @@ if(!function_exists('sendPublicNotification')){
                 'status' => 1,
                 'data' => $data
             ]
-            );
+        );
     }
 }
 
-if(!function_exists('sendPersonalNotification')){
-    function sendPersonalNotification(PersonalNotification $data){
-        
+if (!function_exists('sendPersonalNotification')) {
+    function sendPersonalNotification(PersonalNotification $data)
+    {
+
         $factory = (new Factory)->withServiceAccount(GOOGLE_APPLICATION_CREDENTIALS);
         $messaging = $factory->createMessaging();
 
-        $user = User::where("uid",$data->receiver_uid)->get()->first();
+        $user = User::where("uid", $data->receiver_uid)->get()->first();
 
-        if(!is_null($user->token)){
-        $message = CloudMessage::withTarget('token', $user->token)
-            ->withNotification(['title' => $data->title, 'body' => $data->body])
-            ->withData([
-                'sender_uid'=>$data->sender_uid,
-                'receiver_uid'=>$data->receiver_uid,
-                'img_url' => $data->img_url,
-                'android_route' => $data->android_route
+        if (!is_null($user->token)) {
+            $message = CloudMessage::withTarget('token', $user->token)
+                ->withNotification(['title' => $data->title, 'body' => $data->body])
+                ->withData([
+                    'sender_uid' => $data->sender_uid,
+                    'receiver_uid' => $data->receiver_uid,
+                    'img_url' => $data->img_url,
+                    'android_route' => $data->android_route
+                ]);
+
+            $messaging->send($message);
+
+            PersonalNotification::create([
+                "title" => $data->title,
+                "body" => $data->body,
+                "img_url" => $data->img_url,
+                "android_route" => $data->android_route,
+                "sender_uid" => $data->sender_uid,
+                "receiver_uid" => $data->receiver_uid
             ]);
 
-        $messaging->send($message);
-
-        PersonalNotification::create([
-            "title" => $data->title,
-            "body" => $data->body,
-            "img_url" => $data->img_url,
-            "android_route" => $data->android_route,
-            "sender_uid"=>$data->sender_uid,
-            "receiver_uid"=>$data->receiver_uid
-        ]);
-
-        return response()->json(
-            [
-                'message' => "Notification Published",
-                'status' => 1,
-                'data' => $data
-            ]
+            return response()->json(
+                [
+                    'message' => "Notification Published",
+                    'status' => 1,
+                    'data' => $data
+                ]
             );
         }
     }

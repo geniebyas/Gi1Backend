@@ -34,20 +34,19 @@ class UserController extends Controller
     public function updateUser(Request $request)
     {
         $user = User::where('uid', $request->header('uid'))->get()->first();
-        if(!is_null($user->profile_pic) && $user->profile_pic != $request->profile_pic){
+        if (!is_null($user->profile_pic) && $user->profile_pic != $request->profile_pic) {
             $filePath = public_path("uploads/profiles/" . basename($user->profile_pic));
             if (file_exists($filePath)) {
                 unlink($filePath); // Delete the file
             }
         }
 
-        if(is_null($request->profile_pic) && !is_null($user->profile_pic)){
-            
+        if (is_null($request->profile_pic) && !is_null($user->profile_pic)) {
+
             $filePath = public_path("uploads/profiles/" . basename($user->profile_pic));
-        if (file_exists($filePath)) {
-            unlink($filePath); // Delete the file
-        }
-    
+            if (file_exists($filePath)) {
+                unlink($filePath); // Delete the file
+            }
         }
 
         $user->profile_pic = $request->profile_pic;
@@ -279,13 +278,16 @@ class UserController extends Controller
             $setting->refer_code = generateReferCode();
             $setting->referred_by = $request->input('referred_by');
             $setting->save();
-            addCoins($uid, 2, "You received welcome bonus for creating Gi1 account");
 
-            if (!is_null($setting->referred_by)) {
-                addCoins($setting->referred_by, 4, "$user->username used your refer code");
-                addCoins($uid, 5, "You got a coins for using refer code");
+            try {
+                addCoins($uid, 2, "You received welcome bonus for creating Gi1 account");
+
+                if (!is_null($setting->referred_by)) {
+                    addCoins($setting->referred_by, 4, "$user->username used your refer code");
+                    addCoins($uid, 5, "You got a coins for using refer code");
+                }
+            } catch (\Throwable $e) {
             }
-
 
             return response()->json([
                 'message' => 'Registration Successfully',
