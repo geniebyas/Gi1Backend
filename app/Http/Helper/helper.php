@@ -80,7 +80,11 @@ if (!function_exists('sendPublicNotification')) {
                 'android_route' => $data->android_route
             ]);
 
-        $messaging->send($message);
+        try {
+
+            $messaging->send($message);
+        } catch (Throwable $e) {
+        }
 
         PublicNotification::create([
             "title" => $data->title,
