@@ -20,6 +20,8 @@ return new class extends Migration
             'industry_discussions',
             'industry_replies',
             'industry_views',
+            'discussion_likes',
+            'reply_likes'
             // Add more table names as needed
         ];
 
