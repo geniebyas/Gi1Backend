@@ -29,7 +29,7 @@ class IndustryController extends Controller
 
     public function allActiveIndustries()
     {
-        $list = Industry::get();
+        $list = Industry::where('status',true)->get();
         if (count($list) > 0) {
             //users exists
             $response = [
