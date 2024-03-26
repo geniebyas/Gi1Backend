@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\UsersConnection;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
+use Throwable;
 
 class ConnectionsController extends Controller
 {
@@ -38,20 +39,28 @@ class ConnectionsController extends Controller
         $setting = $dest_user->settings;
         if ($setting->is_private) {
             $status = "pending";
+            try{
             sendPersonalNotification(new PersonalNotification([
                 "sender_uid"=>$user->uid,
                 "receiver_uid"=>$dest_uid,
                 "title"=>"new Connection Request",
                 "body" => "$user->username sent you a connection request",
             ]));
+        }catch(Throwable $e){
+
+        }
         } else {
             $status = "accepted";
+            try{
             sendPersonalNotification(new PersonalNotification([
                 "sender_uid"=>$user->uid,
                 "receiver_uid"=>$dest_uid,
                 "title"=>"new Connection",
                 "body" => "$user->username connected with you",
             ]));
+        }catch(Throwable $e){
+
+        }
         }
 
         // Check if a request already exists
@@ -190,12 +199,16 @@ class ConnectionsController extends Controller
             $connection->update();
             $username = User::where("uid",$connection->dest_uid)->get()->first()->username;
 
+            try{
             sendPersonalNotification(new PersonalNotification([
                 "sender_uid" => $connection->dest_uid,
                 "receiver_uid" => $connection->source_uid,
                 "title" => "Connection Request Accepted",
                 "body"=> $username . " accepted your connection request",
             ]));
+        }catch(Throwable $e){
+            
+        }
             
             return response()->json([
                 'message' => 'Request accepted successfully',
