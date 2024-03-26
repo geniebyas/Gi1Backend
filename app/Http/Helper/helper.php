@@ -118,9 +118,11 @@ if (!function_exists('sendPersonalNotification')) {
                     'img_url' => $data->img_url,
                     'android_route' => $data->android_route
                 ]);
+            try {
 
-            $messaging->send($message);
-
+                $messaging->send($message);
+            } catch (Throwable $e) {
+            }
             PersonalNotification::create([
                 "title" => $data->title,
                 "body" => $data->body,
