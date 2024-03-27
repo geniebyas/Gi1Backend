@@ -72,7 +72,7 @@ class UserController extends Controller
 
     public function getAllPublicUsers()
     {
-        $uids = UsersSetting::where('is_private', false)->where('phone',"!=",null)->get();
+        $uids = UsersSetting::where('is_private', false)->get();
         $users = array();
         if (!$uids->isEmpty()) {
             foreach ($uids as $uid) {

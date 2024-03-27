@@ -16,7 +16,9 @@ class SearchController extends Controller
     function globalSearch(Request $request,$query, $filter)
     {
 
-        $users = User::where('uid','!=',$request->header('uid'))
+        $users = User::
+        where('phone',"!=",null)
+        ->where('uid','!=',$request->header('uid'))
         ->where(function (Builder $queryBuilder) use ($query) {
                 $queryBuilder
                     ->where('name', 'LIKE', "%$query%")
