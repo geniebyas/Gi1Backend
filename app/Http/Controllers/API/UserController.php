@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Coins;
 use App\Models\User;
 use App\Models\UsersSetting;
 use GuzzleHttp\Client;
@@ -106,6 +107,21 @@ class UserController extends Controller
     public function checkUserExists($uid)
     {
         if (User::where('uid', $uid)->exists()) {
+            $user = User::where('uid', $uid)->first();
+
+              // Check if the user has a phone number (considered fully registered)
+        if ($user->phone !== null) {
+            date_default_timezone_set("Asia/Kolkata");
+            // Check if the user has performed the action within the last 24 hours
+            $actionId = 1; // Assuming the action ID for login
+            $past24Hours = now()->subHours(24);
+            $hasPerformedAction = Coins::where('action_id', $actionId)->where('created_at', '>=', $past24Hours)->exists();
+
+            if (!$hasPerformedAction) {
+                // Grant coins to the user
+                addCoins($uid,$actionId,"Congratulations! You've earned 24 coins for logging in today. Keep up the great work!");
+            }
+        }
             $response = [
                 'message' => 'User Found',
                 'status' => 1,
@@ -118,6 +134,7 @@ class UserController extends Controller
                 'data' => null
             ];
         }
+
         return response()->json($response, 200);
     }
 
