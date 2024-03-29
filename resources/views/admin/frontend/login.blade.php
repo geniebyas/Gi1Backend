@@ -28,13 +28,13 @@
 
       <div class="inputBox"> 
 
-       <input type="text" required> <i>Username</i> 
+       <input type="text" name="username" required> <i>Username</i> 
 
       </div> 
 
       <div class="inputBox"> 
 
-       <input type="password" required> <i>Password</i> 
+       <input type="password" name="password" required> <i>Password</i> 
 
       </div> 
 

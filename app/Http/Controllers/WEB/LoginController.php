@@ -11,7 +11,8 @@ class LoginController extends Controller
         return view('admin/frontend/login');        
     }
 
-    function login() {
-        
+    function login(Request $request) {
+        $username = $request->username;
+        $pass = $request->password;
     }
 }
