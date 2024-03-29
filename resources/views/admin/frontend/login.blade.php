@@ -20,13 +20,10 @@
 
    <div class="signin"> 
 
-    <div class="content"> 
+    < class="content"> 
 
      <h2>Gi1 Admin Login</h2>  
-
-     <div class="form"> 
-        
-        <form action="" method="POST">
+        <form action="" class="form" method="POST">
 
       <div class="inputBox"> 
 
@@ -51,8 +48,6 @@
       </div> 
         </form>
 
-
-     </div> 
 
     </div> 
 
