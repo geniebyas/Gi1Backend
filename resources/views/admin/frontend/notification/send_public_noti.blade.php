@@ -131,6 +131,7 @@ h1 {
     </style>
   </head>
   <body>
+    <div class="container">
     <div class="brand-logo"></div>
   <div class="brand-title">TWITTER</div>
   <div class="inputs">
@@ -145,7 +146,6 @@ h1 {
       <label for="exampleFormControlTextarea1" class="form-label">Notification Message</label>
       <textarea class="form-control" name="body" id="exampleFormControlTextarea1" rows="3" required></textarea>
     </div>
-    </div>
     <div class="mb-3">
         <input type="submit" name="send" value="Send Notification">
     </div>
@@ -154,7 +154,8 @@ h1 {
 
 
 </form>
-</diiv>
+</div>
+</div>
     
 
 
