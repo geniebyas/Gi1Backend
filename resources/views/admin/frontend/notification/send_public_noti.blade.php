@@ -42,14 +42,15 @@ body {
 }
 
 .brand-logo {
-  height: 100px;
-  width: 100px;
-  background: url("https://www.gi1superapp.com/images/websitelogo.png");
-  margin: auto;
-  border-radius: 50%;
-  box-sizing: border-box;
-  box-shadow: 7px 7px 10px #cbced1, -7px -7px 10px white;
+    height: 100px;
+    width: 100px;
+    background: url(https://www.gi1superapp.com/images/websitelogo.png) center/cover no-repeat;
+    margin: auto;
+    border-radius: 50%;
+    box-sizing: border-box;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Adjust the box shadow as needed */
 }
+
 
 .brand-title {
   margin-top: 10px;
@@ -144,7 +145,7 @@ h1 {
     </div>
     <div class="mb-3">
       <label for="exampleFormControlTextarea1" class="form-label">Notification Message</label>
-      <textarea class="form-control" name="body" id="exampleFormControlTextarea1" rows="3" required></textarea>
+      <textarea class="form-control" name="body" id="exampleFormControlTextarea1" rows="2" required></textarea>
     </div>
     <div class="mb-3">
         <input type="submit" name="send" value="Send Notification">
