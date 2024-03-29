@@ -11,7 +11,7 @@
     <title>Hello, world!</title>
   </head>
   <body>
-    <form action="{{url("/notification/send")}}" method="POST" class="form-m4">
+    <form action="{{url("/notification/send")}}" method="POST" class="form m4">
     @csrf
 
 <div class="mb-3">
