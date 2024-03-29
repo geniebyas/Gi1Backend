@@ -11,15 +11,15 @@
     <title>Hello, world!</title>
   </head>
   <body>
-    <form action="{{url("/notification/send")}}" method="POST">
+    <form action="{{url("/notification/send")}}" method="POST" class="form">
     @csrf
 
 <div class="mb-3">
-      <label for="exampleFormControlInput1" class="form-label">Email address</label>
+      <label for="exampleFormControlInput1" class="form-label">Notification Title</label>
       <input type="text" name="title" class="form-control" id="exampleFormControlInput1" required>
     </div>
     <div class="mb-3">
-      <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+      <label for="exampleFormControlTextarea1" class="form-label">Notification Message</label>
       <textarea class="form-control" name="body" id="exampleFormControlTextarea1" rows="3" required></textarea>
     </div>
     </div>
