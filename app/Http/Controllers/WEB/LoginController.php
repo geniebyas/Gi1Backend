@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WEB;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -14,5 +15,11 @@ class LoginController extends Controller
     function login(Request $request) {
         $username = $request->username;
         $pass = $request->password;
+
+        if(Admin::where('username', $username)->where('password', $pass)->exists()){
+            return view('admin/frontend/notification/send_public_noti');
+        }else{
+            return back();
+        }
     }
 }
