@@ -44,7 +44,7 @@ body {
 .brand-logo {
   height: 100px;
   width: 100px;
-  background: url("https://img.icons8.com/color/100/000000/twitter--v2.png");
+  background: url("https://www.gi1superapp.com/images/websitelogo.png");
   margin: auto;
   border-radius: 50%;
   box-sizing: border-box;
@@ -133,7 +133,7 @@ h1 {
   <body>
     <div class="container">
     <div class="brand-logo"></div>
-  <div class="brand-title">TWITTER</div>
+  <div class="brand-title">Gi1 Prime App</div>
   <div class="inputs">
     <form action="{{url("/notification/send")}}" method="POST" class="form">
     @csrf
