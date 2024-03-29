@@ -149,6 +149,7 @@ h1 {
     <div class="mb-3">
         <input type="submit" name="send" value="Send Notification">
     </div>
+    <div style="height: 100px"></div>
 
 
 
