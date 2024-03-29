@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\WEB\LoginController;
+use App\Http\Controllers\WEB\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[LoginController::class,'index']);
 Route::post('/',[LoginController::class,'login']);
+Route::get('/send-notification',[NotificationController::class,'index']);
+Route::post('/notification/send',[NotificationController::class,'send']);
 
 Route::get('/delete', function () {
     return view('admin/frontend/delete/delete_user_ac');
