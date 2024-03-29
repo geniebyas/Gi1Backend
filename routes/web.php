@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',[LoginController::class,'index']);
+Route::post('/',[LoginController::class,'login']);
 
 Route::get('/delete', function () {
     return view('admin/frontend/delete/delete_user_ac');

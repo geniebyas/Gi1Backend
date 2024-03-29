@@ -10,4 +10,8 @@ class LoginController extends Controller
     public function index()  {
         return view('admin/frontend/login');        
     }
+
+    function login() {
+        
+    }
 }
