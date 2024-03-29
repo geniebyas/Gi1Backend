@@ -16,6 +16,7 @@ use Kreait\Firebase\Messaging\CloudMessage;
 define("GOOGLE_APPLICATION_CREDENTIALS", __DIR__ . '/../Controllers/API/gi1-info-app-c9afc9a63f4b.json');
 
 
+
 if (!function_exists('p')) {
     function p($data)
     {
@@ -69,6 +70,8 @@ if (!function_exists('addCoins')) {
 if (!function_exists('sendPublicNotification')) {
     function sendPublicNotification(PublicNotification $data)
     {
+        date_default_timezone_set("Asia/Kolkata");
+
         $factory = (new Factory)->withServiceAccount(GOOGLE_APPLICATION_CREDENTIALS);
         $messaging = $factory->createMessaging();
 
