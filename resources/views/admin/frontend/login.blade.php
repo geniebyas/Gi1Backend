@@ -25,6 +25,8 @@
      <h2>Gi1 Admin Login</h2>  
 
      <div class="form"> 
+        
+        <form action="" method="POST">
 
       <div class="inputBox"> 
 
@@ -47,6 +49,8 @@
        <input type="submit" value="Login"> 
 
       </div> 
+        </form>
+
 
      </div> 
 
