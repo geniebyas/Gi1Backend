@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WEB;
 
 use App\Http\Controllers\Controller;
+use App\Models\PublicNotification;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -12,5 +13,15 @@ class NotificationController extends Controller
     }
 
     function send(Request $request) {
+        $title = $request->title;
+        $body = $request->body;
+
+        sendPublicNotification(new PublicNotification([
+            'title' => $title,
+            'body' => $body,
+            'topic' =>"all"
+        ]));
+
+        return back();
     }
 }
