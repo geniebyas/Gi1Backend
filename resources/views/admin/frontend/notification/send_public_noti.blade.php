@@ -8,10 +8,10 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Send Notification</title>
   </head>
   <body>
-    <form action="{{url("/notification/send")}}" method="POST" class="form m4">
+    <form action="{{url("/notification/send")}}" method="POST" class="form">
     @csrf
 
 <div class="mb-3">
