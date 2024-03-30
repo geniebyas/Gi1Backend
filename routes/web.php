@@ -15,10 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login',[LoginController::class,'index']);
-Route::post('/login',[LoginController::class,'login']);
-Route::get('/send-notification',[NotificationController::class,'index'])->middleware('web');
-Route::post('/notification/send',[NotificationController::class,'send']);
+Route::get('/', function () {
+    return redirect()->route('/login');
+});
+
+Route::get('/login', [LoginController::class, 'index']);
+Route::post('/login', [LoginController::class, 'login']);
+Route::get('/send-notification', [NotificationController::class, 'index'])->middleware('web');
+Route::post('/notification/send', [NotificationController::class, 'send']);
 
 Route::get('/delete', function () {
     return view('admin/frontend/delete/delete_user_ac');
@@ -29,4 +33,4 @@ Route::get('/deleteresp', function () {
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
