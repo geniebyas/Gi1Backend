@@ -13,7 +13,7 @@ class NotificationController extends Controller
         //session_start();
       //  $username = $request->session('username'); // Retrieve the username from the session
        // if(isset($username) && $username != ''){
-            return view('admin/frontend/notification/send_public_noti')->with('username', $username);        
+            return view('admin/frontend/notification/send_public_noti')->with('username', "Admin");        
      //   } else {
    //         return back();
      //   }
