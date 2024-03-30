@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(["middleware" => "web"], function () {
+// Route::group(["middleware" => "web"], function () {
     Route::get('/', function (Request $request) {
         if ($request->session()->has('username')) {
             return redirect("/send-notification");
@@ -37,7 +37,7 @@ Route::group(["middleware" => "web"], function () {
     Route::get('/deleteresp', function () {
         return view('admin/frontend/delete/delete_user_resp');
     });
-});
+// });
 
 
 
