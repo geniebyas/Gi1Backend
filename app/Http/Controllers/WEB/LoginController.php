@@ -17,6 +17,8 @@ class LoginController extends Controller
         $pass = $request->password;
 
         if(Admin::where('username', $username)->where('password', $pass)->exists()){
+            session_start();
+            $_SESSION['username'] = $username;
             return view('admin/frontend/notification/send_public_noti');
         }else{
             return back();
