@@ -27,7 +27,7 @@ class WebAuthenticate
         return redirect('/login'); // Redirect to your login route
     }
 
-    private function isAuthenticated($request)
+    function isAuthenticated($request)
     {
         // Your authentication logic using Admin model
         if ($request->session()->has('username')) {
