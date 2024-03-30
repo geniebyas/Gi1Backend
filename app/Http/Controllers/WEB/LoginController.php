@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\WEB;
 
 use App\Http\Controllers\Controller;
@@ -8,20 +7,21 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    public function index()  {
+    public function index()  
+    {
         return view('admin/frontend/login');        
     }
 
-    function login(Request $request) {
+    public function login(Request $request) 
+    {
         $username = $request->username;
         $pass = $request->password;
 
-        if(Admin::where('username', $username)->where('password', $pass)->exists()){
-            session_start();
-            $_SESSION['username'] = $username;
-            return view('admin/frontend/notification/send_public_noti');
-        }else{
-            return back();
+        if(Admin::where('username', $username)->where('password', $pass)->exists()) {
+            $request->session()->put('username', $username);
+            return redirect()->route('notification.send'); // Assuming your route name for sending notification is 'notification.send'
+        } else {
+            return back()->withInput()->withErrors(['loginError' => 'Invalid username or password']);
         }
     }
 }
