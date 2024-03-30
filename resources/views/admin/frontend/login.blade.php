@@ -43,11 +43,11 @@
        <input type="submit" value="Login"> 
 
       </div> 
-      @if ($errors->has('loginError'))
+     
+        </form>
+ @if ($errors->has('loginError'))
                         <div class="error-message">{{ $errors->first('loginError') }}</div>
                     @endif
-        </form>
-
 
     </div> 
 
