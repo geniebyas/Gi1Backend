@@ -33,7 +33,6 @@ body {
 .container {
   position: relative;
   width: 350px;
-  height: 500px;
   border-radius: 20px;
   padding: 40px;
   box-sizing: border-box;
@@ -151,7 +150,7 @@ h1 {
     <div class="mb-3">
         <input type="submit" name="send" value="Send Notification">
     </div>
-    <div style="height: 100px"></div>
+    <div style="height: 50px"></div>
 
 
 
