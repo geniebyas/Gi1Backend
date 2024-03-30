@@ -46,7 +46,7 @@
      
         </form>
  @if ($errors->has('loginError'))
-                        <div class="error-message">{{ $errors->first('loginError') }}</div>
+                        <h1 class="error-message">{{ $errors->first('loginError') }}</h1>
                     @endif
 
     </div> 
