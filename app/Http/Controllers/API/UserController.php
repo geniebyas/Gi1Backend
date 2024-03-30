@@ -115,7 +115,7 @@ class UserController extends Controller
             // Check if the user has performed the action within the last 24 hours
             $actionId = 1; // Assuming the action ID for login
             $past24Hours = now()->subHours(24);
-            $hasPerformedAction = Coins::where('action_id', $actionId)->where('created_at', '>=', $past24Hours)->exists();
+            $hasPerformedAction = Coins::where('uid',$uid)->where('action_id', $actionId)->where('created_at', '>=', $past24Hours)->exists();
 
             if (!$hasPerformedAction) {
                 // Grant coins to the user
