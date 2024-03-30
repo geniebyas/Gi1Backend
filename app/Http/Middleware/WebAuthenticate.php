@@ -19,6 +19,10 @@ class WebAuthenticate
         if ($this->isAuthenticated($request)) {
             return $next($request);
         }
+        // If the request is not authenticated and is not already going to the login page, redirect to the login page
+        if (!$request->is('login')) {
+            return redirect('/login');
+        }
 
         return redirect('/login'); // Redirect to your login route
     }
@@ -29,7 +33,7 @@ class WebAuthenticate
         if ($request->session()->has('username')) {
             $username = $request->session()->get('username');
             $password = $request->session()->get('password');
-            return Admin::where('username', $username)->where('password',$password)->exists();
+            return Admin::where('username', $username)->where('password', $password)->exists();
         }
         return false;
     }
