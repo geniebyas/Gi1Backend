@@ -9,10 +9,16 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    public function index() 
-    {
-        return view('admin/frontend/notification/send_public_noti'); // This method will only be accessible to authenticated users
+    public function index() {
+        session_start();
+        $username = session('username'); // Retrieve the username from the session
+        if(isset($username) && $username != ''){
+            return view('admin/frontend/notification/send_public_noti')->with('username', $username);        
+        } else {
+            return back();
+        }
     }
+    
 
     public function send(Request $request) 
     {
