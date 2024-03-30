@@ -19,7 +19,7 @@ class LoginController extends Controller
 
         if(Admin::where('username', $username)->where('password', $pass)->exists()) {
             $request->session()->put('username', $username);
-            return redirect()->route('notification.send'); // Assuming your route name for sending notification is 'notification.send'
+            return redirect('/send-notification'); // Assuming your route name for sending notification is 'notification.send'
         } else {
             return back()->withInput()->withErrors(['loginError' => 'Invalid username or password']);
         }

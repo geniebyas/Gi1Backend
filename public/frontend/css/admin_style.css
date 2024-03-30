@@ -1,4 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+/* Add styles for error message */
+.error-message {
+  color: #ff5e5e; /* Red color for error message */
+  font-size: 0.9em; /* Adjust font size */
+  margin-top: 5px; /* Add margin to separate from other elements */
+}
 *
 {
   margin: 0;
