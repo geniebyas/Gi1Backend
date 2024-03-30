@@ -9,11 +9,6 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('web'); // Apply custom.auth middleware to all methods of NotificationController
-    }
-
     public function index() 
     {
         return view('admin/frontend/notification/send_public_noti'); // This method will only be accessible to authenticated users
