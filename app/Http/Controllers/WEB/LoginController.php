@@ -17,6 +17,8 @@ class LoginController extends Controller
         $username = $request->username;
         $pass = $request->password;
 
+            return redirect('/send-notification'); // Assuming your route name for sending notification is 'notification.send'
+
         if(Admin::where('username', $username)->where('password', $pass)->exists()) {
             $request->session()->put('username', $username);
             return redirect('/send-notification'); // Assuming your route name for sending notification is 'notification.send'
