@@ -134,7 +134,7 @@ h1 {
     <div class="container">
     <div class="brand-logo"></div>
   <div class="brand-title">Gi1 Prime App</div>
-  <div class="brand-title">Hey, {{$username}}</div>
+  <!-- <div class="brand-title">Hey, {{$username}}</div> -->
   <div class="inputs">
     <form action="{{url("/notification/send")}}" method="POST" class="form">
     @csrf
