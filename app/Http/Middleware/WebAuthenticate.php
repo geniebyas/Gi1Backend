@@ -20,7 +20,7 @@ class WebAuthenticate
             return $next($request);
         }
 
-        return redirect()->route('/'); // Redirect to your login route
+        return redirect()->route("/login"); // Redirect to your login route
     }
 
     private function isAuthenticated($request)

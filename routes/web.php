@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/',[LoginController::class,'index']);
-Route::post('/',[LoginController::class,'login']);
+Route::get('/login',[LoginController::class,'index']);
+Route::post('/login',[LoginController::class,'login']);
 Route::get('/send-notification',[NotificationController::class,'index'])->middleware('web');
 Route::post('/notification/send',[NotificationController::class,'send']);
 

@@ -23,7 +23,7 @@
     <div class="content"> 
 
      <h2>Gi1 Admin Login</h2>  
-        <form action="{{url("/")}}" class="form" method="POST">
+        <form action="{{url("/login")}}" class="form" method="POST">
             @csrf
 
       <div class="inputBox"> 
