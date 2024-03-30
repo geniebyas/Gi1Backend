@@ -8,14 +8,15 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    public function index()  {
+    public function index() {
         session_start();
-        if($_SESSION['username'] != null && $_SESSION['username'] != ''){
-        return view('admin/frontend/notification/send_public_noti');        
-        }else{
+        if(isset($_SESSION['username']) && $_SESSION['username'] != ''){
+            return view('admin/frontend/notification/send_public_noti');        
+        } else {
             return back();
         }
     }
+    
 
     function send(Request $request) {
         $title = $request->title;
