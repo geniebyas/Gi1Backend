@@ -12,7 +12,7 @@ class FeedbackController extends Controller
 {
     public function getAllFeedback(Request $request)
     {
-        $categories = FeedbackQuestionCategory::where('status',true)->with('questions')->get();
+        $categories = FeedbackQuestionCategory::where('status',true)->with('questions')->inRandomOrder()->get();
 
         foreach ($categories as $category) {
             foreach ($category->questions as $q) {
