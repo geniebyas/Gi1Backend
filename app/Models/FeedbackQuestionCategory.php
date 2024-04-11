@@ -18,6 +18,10 @@ class FeedbackQuestionCategory extends Model
         'status' => 'boolean'
     ];
 
+    protected $hidden =[
+        'status'
+    ];
+
     // Define other properties and methods as needed
 
     public function questions()
