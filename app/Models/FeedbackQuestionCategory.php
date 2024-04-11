@@ -9,8 +9,13 @@ class FeedbackQuestionCategory extends Model
 
     protected $fillable = [
         'category_name',
-        'category_desc'
+        'category_desc',
+        'status'
         // Add other fillable fields as needed
+    ];
+
+    protected $casts = [
+        'status' => 'boolean'
     ];
 
     // Define other properties and methods as needed
