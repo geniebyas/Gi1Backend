@@ -22,6 +22,8 @@ class FeedbackUsersResponse extends Model
 
     protected $casts = [
         // Add casts for specific fields if needed
+        'response_boolean' => 'boolean',
+        'response_range' => 'integer'
     ];
 
     // Define other properties and methods as needed
