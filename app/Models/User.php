@@ -92,6 +92,10 @@ class User extends Model
         return $this->hasMany(UsersConnection::class, 'dest_uid', 'uid')->where('status', 'accepted');
     }
 
+    public function links(){
+        return $this->hasMany(UsersLinks::class,'uid','uid','uid');
+    }
+
     public function connectorsCount(){
         return UsersConnection::where('dest_uid',$this->uid)
         ->where('status','accepted')
@@ -114,7 +118,7 @@ class User extends Model
             ->where('status', 'pending')
             ->exists();
     }
-    
+
     /**
      * Check if the user is friends with the given user.
      */

@@ -12,13 +12,20 @@ class PublicNotification extends Model
     protected $fillable = [
         'title',
         'body',
+        'is_announcement',
+        'views',
         'topic',
         'img_url',
         'android_route',
     ];
 
+    protected $casts =[
+        'is_announcement'=>'boolean',
+        'views'=>'integer'
+    ];
 
 
 
-    
+
+
 }
