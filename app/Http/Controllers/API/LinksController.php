@@ -90,9 +90,8 @@ class LinksController extends Controller
     }
 
 
-    public function updateLink($request)
+    public function updateLink(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'link' => ['required'],
             'title' => ['required']
@@ -101,7 +100,6 @@ class LinksController extends Controller
             return response()->json($validator->messages(), 400);
         } else {
             try {
-
                 $link = UsersLinks::find($request->id);
                 if($link != null) {
                     $link->title = $request->title;
