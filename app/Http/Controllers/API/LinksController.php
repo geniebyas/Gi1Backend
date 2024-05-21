@@ -10,32 +10,33 @@ use Illuminate\Support\Facades\Validator;
 
 class LinksController extends Controller
 {
-    public function addLink(Request $request){
+    public function addLink(Request $request)
+    {
 
-        $validator = Validator::make($request->all(),[
-           'link'=>['required'],
-           'title'=>['required']
+        $validator = Validator::make($request->all(), [
+            'link' => ['required'],
+            'title' => ['required']
         ]);
-        if($validator->fails()){
-            return response()->json($validator->messages(),400);
-        }else{
-            try{
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        } else {
+            try {
                 $link = UsersLinks::create([
-                    'uid'=>$request->header('uid'),
-                    'link'=>$request->link,
-                    'title'=>$request->title,
-                    'clicks'=>0
+                    'uid' => $request->header('uid'),
+                    'link' => $request->link,
+                    'title' => $request->title,
+                    'clicks' => 0
                 ]);
-                if($link != null){
+                if ($link != null) {
                     return response()->json([
-                        "message"=>"Link created Successfully",
-                        "status"=>1,
-                        "data"=>"Success"
+                        "message" => "Link created Successfully",
+                        "status" => 1,
+                        "data" => "Success"
                     ]);
-                }else{
+                } else {
                     throw new Exception("Link Creation Failed");
                 }
-            }catch (Exception $ex){
+            } catch (Exception $ex) {
                 return response()->json(
                     [
                         'message' => $ex->getMessage(),
@@ -48,22 +49,23 @@ class LinksController extends Controller
         }
     }
 
-    public function registerLinkClick(int $id){
+    public function registerLinkClick(int $id)
+    {
         $link = UsersLinks::find($id);
-        if($link != null){
-            $link->clicks +=1;
+        if ($link != null) {
+            $link->clicks += 1;
             $link->update();
             return response()->json([
-                "message"=>"Click Registered",
-                "status"=>1,
-                "data"=>"Success"
+                "message" => "Click Registered",
+                "status" => 1,
+                "data" => "Success"
             ]);
-        }else{
+        } else {
 
             return response()->json([
-                "message"=>"Failed",
-                "status"=>0,
-                "data"=>"Failed"
+                "message" => "Failed",
+                "status" => 0,
+                "data" => "Failed"
             ]);
         }
     }
@@ -71,24 +73,61 @@ class LinksController extends Controller
     public function deleteLink(int $id)
     {
         $link = UsersLinks::find($id);
-        if($link != null){
+        if ($link != null) {
             $link->delete();
             return response()->json([
-                "message"=>"Deleted Link",
-                "status"=>1,
-                "data"=>"Success"
+                "message" => "Deleted Link",
+                "status" => 1,
+                "data" => "Success"
             ]);
-        }else{
+        } else {
             return response()->json([
-                "message"=>"Failed",
-                "status"=>0,
-                "data"=>"Failed"
+                "message" => "Failed",
+                "status" => 0,
+                "data" => "Failed"
             ]);
         }
     }
 
 
-    public function updateLink($request){
+    public function updateLink($request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'link' => ['required'],
+            'title' => ['required']
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        } else {
+            try {
+
+                $link = UsersLinks::find($request->id);
+                if($link != null) {
+                    $link->title = $request->title;
+                    $link->link = $request->link;
+                    $link->update();
+                    return response()->json([
+                        "message" => "Link Updated Successfully",
+                        "status" => 1,
+                        "data" => "Updated Link"
+                    ]);
+                }else{
+                    return response()->json([
+                        "message"=>"Failed",
+                        "status"=>0,
+                        "data"=>"Failed"
+                    ]);
+                }
+            } catch (Exception $ex) {
+                return response()->json([
+                    "message"=>$ex->getMessage(),
+                    "status"=>1,
+                    "data"=>"Updated Link"
+                ]);
+            }
+        }
+
 
     }
 }
