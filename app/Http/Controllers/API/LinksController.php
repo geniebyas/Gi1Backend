@@ -58,6 +58,32 @@ class LinksController extends Controller
                 "status"=>1,
                 "data"=>"Success"
             ]);
+        }else{
+
+            return response()->json([
+                "message"=>"Failed",
+                "status"=>0,
+                "data"=>"Failed"
+            ]);
+        }
+    }
+
+    public function deleteLink(int $id)
+    {
+        $link = UsersLinks::find($id);
+        if($link != null){
+            $link->delete();
+            return response()->json([
+                "message"=>"Deleted Link",
+                "status"=>1,
+                "data"=>"Success"
+            ]);
+        }else{
+            return response()->json([
+                "message"=>"Failed",
+                "status"=>0,
+                "data"=>"Failed"
+            ]);
         }
     }
 
