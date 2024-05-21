@@ -16,7 +16,7 @@ class LinksController extends Controller
            'link'=>['required'],
            'title'=>['required']
         ]);
-        if($validator->failes()){
+        if($validator->fails()){
             return response()->json($validator->messages(),400);
         }else{
             try{
