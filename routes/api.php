@@ -130,6 +130,7 @@ Route::group(['middleware' => "api"], (function () {
     Route::prefix('/links')->group(function (){
        Route::post('/add',[\App\Http\Controllers\API\LinksController::class,'addLink']);
        Route::post('/update',[\App\Http\Controllers\API\LinksController::class,'updateLink']);
+       Route::get('/registerclick/{id}',[\App\Http\Controllers\API\LinksController::class,'registerLinkClick']);
     });
 
 

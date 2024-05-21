@@ -46,9 +46,21 @@ class LinksController extends Controller
                 );
             }
         }
-
-
     }
+
+    public function registerLinkClick(int $id){
+        $link = UsersLinks::find($id);
+        if($link != null){
+            $link->clicks +=1;
+            $link->update();
+            return response()->json([
+                "message"=>"Click Registered",
+                "status"=>1,
+                "data"=>"Success"
+            ]);
+        }
+    }
+
 
     public function updateLink($request){
 
