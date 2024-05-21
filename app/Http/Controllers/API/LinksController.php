@@ -95,7 +95,7 @@ class LinksController extends Controller
         $validator = Validator::make($request->all(), [
             'link' => ['required'],
             'title' => ['required'],
-            'id'=>['required','exists:users_link']
+            'id'=>['required','exists:users_links']
         ]);
         if ($validator->fails()) {
             return response()->json($validator->messages(), 400);
