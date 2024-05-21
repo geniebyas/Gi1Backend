@@ -132,6 +132,7 @@ class ConnectionsController extends Controller
                 ->with(["connectors.sourceUser" => function ($query) {
                     $query->withCount('connections', 'connectors');
                 }])
+                ->with("links")
                 ->get()
                 ->first();
             $user->is_in_connections = UsersConnection::where("source_uid", $source_uid)->where("dest_uid", $uid)->where('status', 'accepted')->exists();
@@ -207,15 +208,15 @@ class ConnectionsController extends Controller
                 "body"=> $username . " accepted your connection request",
             ]));
         }catch(Throwable $e){
-            
+
         }
-            
+
             return response()->json([
                 'message' => 'Request accepted successfully',
                 'status' => 1,
                 'data' => "Request Accepted"
             ], 200);
-            
+
         } else {
             $connection->delete();
             return response()->json([
