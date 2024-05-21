@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class LinksController extends Controller
 {
-    public function addLink($request){
+    public function addLink(Request $request){
 
         $validator = Validator::make($request->all(),[
            'link'=>['required'],
