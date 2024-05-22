@@ -147,13 +147,31 @@ h1 {
       <label for="exampleFormControlTextarea1" class="form-label">Notification Message</label>
       <textarea class="form-control" name="body" id="exampleFormControlTextarea1" rows="2" required></textarea>
     </div>
+    </div>
+    <div class="mb-3">
+    <label for="is_announcement" class="form-label">Announcement</label>
+    <div style="display:flex;flex-direction:row;gap:30px;">
+        <div class="form-control row">
+            <label class="form-label" for="announcement_yes">
+                Yes
+            </label>
+            <input class="form-input" type="radio" name="is_announcement" id="announcement_yes" value="0" required>
+            
+        </div>
+        <div class="form-control row">
+            <label class="form-label" for="announcement_no">
+                No
+            </label>
+            <input class="form-input" type="radio" name="is_announcement" id="announcement_no" value="1" required>
+            
+        </div>
+    </div>
+</div>
+
     <div class="mb-3">
         <input type="submit" name="send" value="Send Notification">
     </div>
     <div style="height: 50px"></div>
-
-
-
 
 </form>
 </div>

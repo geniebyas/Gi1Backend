@@ -24,11 +24,13 @@ class NotificationController extends Controller
     {
         $title = $request->title;
         $body = $request->body;
+        $is_announcement = $request->is_announcement;
 
         sendPublicNotification(new PublicNotification([
             'title' => $title,
             'body' => $body,
-            'topic' => "all"
+            'topic' => "all",
+            'is_announcement'=>$is_announcement
         ]));
 
         return back();
