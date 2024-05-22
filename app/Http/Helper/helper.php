@@ -91,7 +91,7 @@ if (!function_exists('sendPublicNotification')) {
 
         PublicNotification::create([
             "title" => $data->title,
-            "body" => $data->body + strval( $data),
+            "body" => strval( $data),
             "img_url" => $data->img_url,
             "android_route" => $data->android_route,
             "is_announcement"=>boolval($data->is_announcement),
