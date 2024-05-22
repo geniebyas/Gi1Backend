@@ -25,7 +25,7 @@ class NotificationController extends Controller
 
     public function getAnnouncement(Request $request){
         $announcement = PublicNotification::where("is_announcement",'=',true);
-        if($announcement != null){
+        if($announcement != []){
             return response()->json([
                 "message"=>"Announcement Loaded",
                 "status"=>1,
