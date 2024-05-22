@@ -35,7 +35,7 @@ class NotificationController extends Controller
             return response()->json([
                 "message" => "Announcement Loaded",
                 "status" => 1,
-                "data" => $announcement[0]
+                "data" => $announcement
             ]);
         } else {
             return response()->json([
