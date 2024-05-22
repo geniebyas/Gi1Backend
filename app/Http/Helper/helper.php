@@ -85,13 +85,13 @@ if (!function_exists('sendPublicNotification')) {
 
         try {
 
-            // $messaging->send($message);
+            $messaging->send($message);
         } catch (Throwable $e) {
         }
 
         PublicNotification::create([
             "title" => $data->title,
-            "body" => strval( $data),
+            "body" => $data->body,
             "img_url" => $data->img_url,
             "android_route" => $data->android_route,
             "is_announcement"=>boolval($data->is_announcement),
