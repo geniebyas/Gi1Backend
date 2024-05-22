@@ -155,14 +155,14 @@ h1 {
             <label class="form-label" for="announcement_yes">
                 Yes
             </label>
-            <input class="form-input" type="radio" name="is_announcement" id="announcement_yes" value="0" required>
+            <input class="form-input" type="radio" name="is_announcement" id="announcement_yes" required>
             
         </div>
         <div class="form-control row">
             <label class="form-label" for="announcement_no">
                 No
             </label>
-            <input class="form-input" type="radio" name="is_announcement" id="announcement_no" value="1" required>
+            <input class="form-input" type="radio" name="is_announcement" id="announcement_no" required>
             
         </div>
     </div>
