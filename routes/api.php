@@ -123,7 +123,7 @@ Route::group(['middleware' => "api"], (function () {
     Route::prefix('/notification') -> group(function (){
         Route::post('/send',[NotificationController::class,'sendNotification']);
         Route::get('/all',[NotificationController::class,'getNotifications']);
-
+        Route::get('/announcement',[NotificationController::class,'getAnnouncement']);
     });
 
     //links

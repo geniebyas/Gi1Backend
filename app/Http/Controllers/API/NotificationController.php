@@ -11,7 +11,7 @@ class NotificationController extends Controller
     public function getNotifications(Request $request){
         $uid = $request->header('uid');
 
-        $publicNotifications = PublicNotification::get();
+        $publicNotifications = PublicNotification::where("is_announcement",true)->get();
         $personalNotifications = PersonalNotification::where("receiver_uid",$uid)->with('sender')->get();
         return response()->json([
             'message' => 'Notification Collected',
@@ -22,4 +22,22 @@ class NotificationController extends Controller
             ]
         ]);
     }
+
+    public function getAnnouncement(Request $request){
+        $announcement = PublicNotification::where("is_announcement",'=',true);
+        if($announcement != null){
+            return response()->json([
+                "message"=>"Announcement Loaded",
+                "status"=>1,
+                "data"=>$announcement
+            ]);
+        }else{
+            return response()->json([
+                "message"=>"No Announcement Found",
+                "status"=>0,
+                "data"=>null
+            ]);
+        }
+    }
+
 }
