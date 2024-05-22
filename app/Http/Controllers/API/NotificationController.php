@@ -24,12 +24,15 @@ class NotificationController extends Controller
     }
 
     public function getAnnouncement(Request $request){
-        $announcement = PublicNotification::where("is_announcement",true)->get();
-        if($announcement != []){
+        $announcement = PublicNotification::where("is_announcement", true)
+            ->orderBy('created_at', 'desc')
+            ->first();
+            
+                    if($announcement != []){
             return response()->json([
                 "message"=>"Announcement Loaded",
                 "status"=>1,
-                "data"=>$announcement
+                "data"=>$announcement[0]
             ]);
         }else{
             return response()->json([
