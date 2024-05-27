@@ -128,7 +128,9 @@ class IndustryController extends Controller
             $view->update();
         }
 
-        $industry = Industry::with(['discussions' => function ($query) {
+        $industry = Industry::
+        with('views.user')
+        ->with(['discussions' => function ($query) {
             $query->with('user')
                 ->with(['likes' => function ($query) {
                     $query->with('user');
