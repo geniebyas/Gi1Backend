@@ -19,6 +19,7 @@ use function is_int;
 final class CreateSessionCookie
 {
     private const FIVE_MINUTES = 'PT5M';
+
     private const TWO_WEEKS = 'P14D';
 
     private function __construct(

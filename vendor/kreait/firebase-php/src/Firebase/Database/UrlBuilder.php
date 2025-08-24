@@ -7,7 +7,6 @@ namespace Kreait\Firebase\Database;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Util;
 
-use function assert;
 use function http_build_query;
 use function in_array;
 use function preg_match;
@@ -81,9 +80,7 @@ final class UrlBuilder
         }
 
         $namespace = $matches['namespace'];
-        assert($namespace !== '');
         $host = $matches['host'];
-        assert($host !== '');
 
         $emulatorHost = Util::rtdbEmulatorHost();
 

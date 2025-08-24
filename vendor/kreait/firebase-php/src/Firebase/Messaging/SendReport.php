@@ -16,7 +16,9 @@ final class SendReport
      * @var array<array-key, scalar>|null
      */
     private ?array $result = null;
+
     private ?Message $message = null;
+
     private ?Throwable $error = null;
 
     private function __construct(private readonly MessageTarget $target)
@@ -62,10 +64,6 @@ final class SendReport
     public function messageTargetWasInvalid(): bool
     {
         $errorMessage = $this->error !== null ? $this->error->getMessage() : '';
-
-        if (!$this->messageWasInvalid()) {
-            return false;
-        }
 
         return preg_match('/((not.+valid)|invalid).+token/i', $errorMessage) === 1;
     }

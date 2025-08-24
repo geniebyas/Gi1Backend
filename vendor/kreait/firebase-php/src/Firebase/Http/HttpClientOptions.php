@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Http;
 
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\RequestOptions;
 use Kreait\Firebase\Exception\InvalidArgumentException;
+use Psr\Http\Message\RequestInterface;
 
 use function is_callable;
 
@@ -13,7 +15,7 @@ final class HttpClientOptions
 {
     /**
      * @param array<non-empty-string, mixed> $guzzleConfig
-     * @param list<array{middleware: callable, name: string}> $guzzleMiddlewares
+     * @param list<array{middleware: callable|callable-string, name: string}> $guzzleMiddlewares
      */
     private function __construct(
         private readonly array $guzzleConfig,
@@ -152,7 +154,7 @@ final class HttpClientOptions
     }
 
     /**
-     * @return list<array{middleware: callable, name: string}>
+     * @return list<array{middleware: callable|callable-string, name: string}>
      */
     public function guzzleMiddlewares(): array
     {
@@ -160,34 +162,43 @@ final class HttpClientOptions
     }
 
     /**
+     * @param callable|callable-string $middleware
      * @param non-empty-string|null $name
      */
-    public function withGuzzleMiddleware(callable $middleware, ?string $name = null): self
+    public function withGuzzleMiddleware(callable|string $middleware, ?string $name = null): self
     {
-        $middlewares = $this->guzzleMiddlewares;
-        $middlewares[] = ['middleware' => $middleware, 'name' => $name ?? ''];
-
-        return new self($this->guzzleConfig, $middlewares);
+        return $this->withGuzzleMiddlewares([
+            ['middleware' => $middleware, 'name' => $name ?? ''],
+        ]);
     }
 
     /**
      * @param list<array{
-     *     middleware: callable,
+     *     middleware: callable|callable-string,
      *     name: string
-     * }|callable> $middlewares
+     * }|callable|callable-string> $middlewares
      */
     public function withGuzzleMiddlewares(array $middlewares): self
     {
         $newMiddlewares = $this->guzzleMiddlewares;
 
-        foreach ($middlewares as $middleware) {
-            if (is_callable($middleware)) {
-                $middleware = ['middleware' => $middleware, 'name' => ''];
+        foreach ($middlewares as $definition) {
+            if (is_callable($definition)) {
+                $newMiddlewares[] = ['middleware' => $definition, 'name' => ''];
+                continue;
             }
 
-            $newMiddlewares[] = $middleware;
+            $newMiddlewares[] = $definition;
         }
 
         return new self($this->guzzleConfig, $newMiddlewares);
+    }
+
+    /**
+     * @param callable(RequestInterface, array<mixed>): PromiseInterface $handler
+     */
+    public function withGuzzleHandler(callable $handler): self
+    {
+        return $this->withGuzzleConfigOption('handler', $handler);
     }
 }

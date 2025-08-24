@@ -7,6 +7,191 @@ Please read about the future of the Firebase Admin PHP SDK on the
 
 ## [Unreleased]
 
+## [7.21.2] - 2025-08-15
+
+### Fixed
+
+* Re-added the `#[SensitiveParameter]` attribute because, while it's not supported in PHP 8.1, it can still be used
+  if placed in a standalone line above the variable or property.
+* Re-added support for JSON files with any file extension
+* With the introduction of Valinor, Service Account credentials were required to have more fields than necessary to
+  work with the SDK, although it only needs the client email, private key, and project ID. 
+
+## [7.21.1] - 2025-07-24
+
+### Fixed
+
+* Removed the `#[SensitiveParameter]` attribute because it's not supported in PHP 8.1.
+
+## [7.21.0] - 2025-07-23
+
+### Changed
+
+* This release introduces [Valinor](https://valinor.cuyz.io/) for type-safe object mapping. The first application is
+  mapping a given service account file, JSON, or array to the newly added internal `ServiceAccount` class, with more
+  to follow in future releases.
+
+## [7.20.0] - 2025-07-18
+
+### Added
+
+* You can now get a user by their federated identity provider (e.g. Google, Facebook, etc.) UID with
+  `Kreait\Firebase\Auth::getUserByProviderUid()`. ([#1000](https://github.com/kreait/firebase-php/pull/1000))
+  Since this method couldn't be added to the `Kreait\Firebase\Contract\Auth` interface without causing a breaking
+  change, a new transitional interface/contract named `Kreait\Firebase\Contract\Transitional\FederatedUserFetcher`
+  was added. This interface will be removed in the next major version of the SDK.
+  There are several ways to check if you can use the `getUserByProviderUid()` method:
+  ```php
+  use Kreait\Firebase\Contract\Transitional\FederatedUserFetcher;
+  use Kreait\Firebase\Factory;
+  
+  $auth = (new Factory())->createAuth();
+  // The return type is Kreait\Firebase\Contract\Auth, which doesn't have the method
+  
+  if (method_exists($auth, 'getUserByProviderUid')) {
+      $user = $auth->getUserByProviderUid('google.com', 'google-uid');
+  }
+
+  if ($auth instanceof \Kreait\Firebase\Auth) { // This is the implementation, not the interface
+      $user = $auth->getUserByProviderUid('google.com', 'google-uid');
+  }
+  
+  if ($auth instanceof FederatedUserFetcher) {
+      $user = $auth->getUserByProviderUid('google.com', 'google-uid');
+  }
+  ```
+* The new method `Kreait\Firebase\Factory::withDefaultCache()` allows you to set a default cache
+  implementation for the SDK. This is useful if you want to use one cache implementation for all components
+  that support caching.
+  ([Documentation](https://firebase-php.readthedocs.io/en/latest/setup.html#caching))
+
+### Deprecated
+
+* `Kreait\Firebase\Factory::getDebugInfo`
+
+## [7.19.0] - 2025-06-14
+
+### Added
+
+* You can now save on method call by passing a custom Firestore database name to
+  `Kreait\Firebase\Factory::createFirestore($databaseName)` instead of having to chain
+  ``::withFirestoreDatabase($databaseName)->createFirestore()``
+* It is now possible to set [live activity tokens](https://firebase.google.com/docs/cloud-messaging/ios/live-activity)
+  in Apns configs.
+* `Kreait\Firebase\Http\HttpClientOptions::withGuzzleMiddleware()` and
+  `Kreait\Firebase\Http\HttpClientOptions::withGuzzleMiddlewares()` now accept callable strings, in addition
+  to callables. ([#1004](https://github.com/kreait/firebase-php/pull/1004))
+
+### Deprecated
+
+* `Kreait\Firebase\Factory::withFirestoreDatabase()`
+
+## [7.18.0] - 2025-03-08
+
+### Added
+
+* It is now possible to configure multi factor authentication for a user.
+
+## [7.17.0] - 2025-02-22
+
+### Added
+
+* FCM Error responses with status code `502` are now caught and converted to `ServerUnavailable` exceptions.
+
+## [7.16.1] - 2025-01-20
+
+### Fixed
+
+* It wasn't possible to upgrade the SDK to a newer version because it required a `lcobucci/jwt` release that doesn't
+  support PHP 8.1 anymore. This was fixed by changing the version requirement from `^5.4.2` to `^5.3`.
+
+## [7.16.0] - 2024-11-17
+
+### Added
+
+* It is now possible to override the Guzzle HTTP handler by using the `HttpClientOptions::withGuzzleHandler()` method.
+  ([#956](https://github.com/kreait/firebase-php/pull/956))
+
+### Changed
+
+* The Messaging component doesn't rely on the `CloudMessage` class for message handling anymore. If you provide a
+  message as an array and it has an error, the Firebase API will report it. You can still use the `CloudMessage`
+  class as a message builder
+* Deprecated the `CloudMessage::withTarget()` method, use the new `toToken()`, `toTopic()` or `toCondition()` methods instead
+
+### Deprecated
+
+* `Kreait\Firebase\Messaging\CloudMessage::withTarget()` 
+* `Kreait\Firebase\Messaging\CloudMessage::withChangedTarget()` 
+* `Kreait\Firebase\Messaging\CloudMessage::target()`
+* `Kreait\Firebase\Messaging\CloudMessage::hasTarget()`
+
+## [7.15.0] - 2024-09-11
+
+### Added
+
+* Added support for [rollout parameter values](https://firebase.google.com/docs/reference/remote-config/rest/v1/RemoteConfig#RolloutValue)
+  in Remote Config Templates. 
+  ([#923](https://github.com/kreait/firebase-php/pull/923)), ([#927](https://github.com/kreait/firebase-php/pull/927))
+  * Please note that it's not (yet?) possible to create rollouts programmatically via the Firebase API. This means that 
+    you have to manually create a rollout in the Firebase console to be able to reference it in the Remote Config 
+    template.  Rollout IDs are named `rollout_<number>`, and you can find the ID in the URL after clicking on a rollout in the list.
+
+## [7.14.0] - 2024-08-21
+
+### Added
+
+* Added support for PHP 8.4.
+  * Please note: While the SDK supports PHP 8.4, not all dependencies support it. If you want to use the SDK with
+    PHP 8.4, you probably will need to ignore platform requirements when working with Composer, by setting the
+    [appropriate environment variables](https://getcomposer.org/doc/03-cli.md#composer-ignore-platform-req-or-composer-ignore-platform-reqs) 
+    or [`composer` CLI options]() when running `composer install/update/require`.
+
+### Deprecated
+
+* Firebase Dynamic Links is deprecated and should not be used in new projects. The service will shut down on 
+  August 25, 2025. The component will remain in the SDK until then, but as the Firebase service is deprecated,
+  this component is also deprecated.
+  ([Dynamic Links Deprecation FAQ](https://firebase.google.com/support/dynamic-links-faq))
+
+## [7.13.1] - 2024-07-02
+
+### Fixed
+
+* Requests to the FCM APIs will not use HTTP/2 if the environment doesn't support them
+  ([#888](https://github.com/kreait/firebase-php/pull/888), [#908](https://github.com/kreait/firebase-php/pull/908))
+
+## [7.13.0] - 2024-06-23
+
+### Changed
+
+* Service Account auto-discovery was done on instantiation of the Factory, causing it to fail when credentials weren't
+  ready yet. It will now be done the first time a component is to be instantiated.
+
+## [7.12.0] - 2024-05-26
+
+### Fixed
+
+* Fix `WebPushNotification` Shape
+  ([#895](https://github.com/kreait/firebase-php/pull/895))
+* Catch `Throwable` and let the exception converter handle details
+  ([#896](https://github.com/kreait/firebase-php/pull/896))
+
+## [7.11.0] - 2024-05-16
+
+### Added
+
+* It is now possible to get a Remote Config template by its version number.
+  ([#890](https://github.com/kreait/firebase-php/pull/890))
+
+## [7.10.0] - 2024-04-25
+
+### Changed
+
+* FCM Messages are now sent asynchronously using HTTP connection pooling with HTTP/2. This should improve performance 
+  when sending messages to many devices. 
+  ([#874](https://github.com/kreait/firebase-php/pull/874))
+
 ## [7.9.1] - 2023-12-04
 
 ### Changed
@@ -205,7 +390,23 @@ See **[UPGRADE-7.0](UPGRADE-7.0.md) for more details on the changes between 6.x 
 
 https://github.com/kreait/firebase-php/blob/6.9.6/CHANGELOG.md
 
-[Unreleased]: https://github.com/kreait/firebase-php/compare/7.9.1...7.x
+[Unreleased]: https://github.com/kreait/firebase-php/compare/7.21.2...7.x
+[7.21.2]: https://github.com/kreait/firebase-php/compare/7.21.1...7.21.2
+[7.21.1]: https://github.com/kreait/firebase-php/compare/7.21.0...7.21.1
+[7.21.0]: https://github.com/kreait/firebase-php/compare/7.20.0...7.21.0
+[7.20.0]: https://github.com/kreait/firebase-php/compare/7.19.0...7.20.0
+[7.19.0]: https://github.com/kreait/firebase-php/compare/7.18.0...7.19.0
+[7.18.0]: https://github.com/kreait/firebase-php/compare/7.17.0...7.18.0
+[7.17.0]: https://github.com/kreait/firebase-php/compare/7.16.1...7.17.0
+[7.16.1]: https://github.com/kreait/firebase-php/compare/7.16.0...7.16.1
+[7.16.0]: https://github.com/kreait/firebase-php/compare/7.15.0...7.16.0
+[7.15.0]: https://github.com/kreait/firebase-php/compare/7.14.0...7.15.0
+[7.14.0]: https://github.com/kreait/firebase-php/compare/7.13.1...7.14.0
+[7.13.1]: https://github.com/kreait/firebase-php/compare/7.13.0...7.13.1
+[7.13.0]: https://github.com/kreait/firebase-php/compare/7.12.0...7.13.0
+[7.12.0]: https://github.com/kreait/firebase-php/compare/7.11.0...7.12.0
+[7.11.0]: https://github.com/kreait/firebase-php/compare/7.10.0...7.11.0
+[7.10.0]: https://github.com/kreait/firebase-php/compare/7.9.1...7.10.0
 [7.9.1]: https://github.com/kreait/firebase-php/compare/7.9.0...7.9.1
 [7.9.0]: https://github.com/kreait/firebase-php/compare/7.8.0...7.9.0
 [7.8.0]: https://github.com/kreait/firebase-php/compare/7.7.0...7.8.0

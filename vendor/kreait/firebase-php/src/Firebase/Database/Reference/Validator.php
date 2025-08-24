@@ -22,7 +22,9 @@ use function trim;
 class Validator
 {
     final public const MAX_DEPTH = 32;
+
     final public const MAX_KEY_SIZE = 768;
+
     final public const INVALID_KEY_CHARS = '.$#[]';
 
     /**
@@ -84,7 +86,7 @@ class Validator
 
         $pattern = sprintf('/[%s]/', preg_quote(self::INVALID_KEY_CHARS, '/'));
 
-        if (preg_match($pattern, $key)) {
+        if (preg_match($pattern, $key) !== 0) {
             throw new InvalidArgumentException(sprintf(
                 'The child key "%s" contains one of the following invalid characters: "%s"',
                 $key,

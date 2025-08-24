@@ -47,7 +47,7 @@ class AppInstanceApiClient
                         'registration_tokens' => $tokenStrings,
                     ],
                 ])
-                ->then(static fn(ResponseInterface $response) => Json::decode((string) $response->getBody(), true))
+                ->then(static fn(ResponseInterface $response): mixed => Json::decode((string) $response->getBody(), true))
             ;
         }
 
@@ -65,7 +65,7 @@ class AppInstanceApiClient
                     foreach ($response['value']['results'] as $index => $tokenResult) {
                         $token = $tokenStrings[$index];
 
-                        if (empty($tokenResult)) {
+                        if ($tokenResult === []) {
                             $topicResults[$token] = 'OK';
 
                             continue;
@@ -114,7 +114,7 @@ class AppInstanceApiClient
                         'registration_tokens' => $tokenStrings,
                     ],
                 ])
-                ->then(static fn(ResponseInterface $response) => Json::decode((string) $response->getBody(), true))
+                ->then(static fn(ResponseInterface $response): mixed => Json::decode((string) $response->getBody(), true))
             ;
         }
 
@@ -132,7 +132,7 @@ class AppInstanceApiClient
                     foreach ($response['value']['results'] as $index => $tokenResult) {
                         $token = $tokenStrings[$index];
 
-                        if (empty($tokenResult)) {
+                        if ($tokenResult === []) {
                             $topicResults[$token] = 'OK';
 
                             continue;
@@ -165,12 +165,12 @@ class AppInstanceApiClient
     {
         return $this->client
             ->requestAsync('GET', '/iid/'.$registrationToken->value().'?details=true')
-            ->then(static function (ResponseInterface $response) use ($registrationToken) {
+            ->then(static function (ResponseInterface $response) use ($registrationToken): AppInstance {
                 $data = Json::decode((string) $response->getBody(), true);
 
                 return AppInstance::fromRawData($registrationToken, $data);
             })
-            ->otherwise(fn(Throwable $e) => Create::rejectionFor($this->errorHandler->convertException($e)))
+            ->otherwise(fn(Throwable $e): PromiseInterface => Create::rejectionFor($this->errorHandler->convertException($e)))
         ;
     }
 

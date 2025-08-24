@@ -26,6 +26,8 @@ use function sprintf;
  *     version?: RemoteConfigVersionShape,
  *     parameterGroups?: array<non-empty-string, RemoteConfigParameterGroupShape>
  * }
+ *
+ * @see https://firebase.google.com/docs/reference/remote-config/rest/v1/RemoteConfig
  */
 class Template implements JsonSerializable
 {
@@ -45,6 +47,7 @@ class Template implements JsonSerializable
      * @var list<Condition>
      */
     private array $conditions = [];
+
     private ?Version $version = null;
 
     private function __construct()
@@ -179,7 +182,7 @@ class Template implements JsonSerializable
     public function conditionNames(): array
     {
         return array_values(array_unique(
-            array_map(static fn(Condition $c) => $c->name(), $this->conditions),
+            array_map(static fn(Condition $c): string => $c->name(), $this->conditions),
         ));
     }
 
@@ -190,18 +193,29 @@ class Template implements JsonSerializable
     {
         $template = clone $this;
         $template->conditions = array_values(
-            array_filter($this->conditions, static fn(Condition $c) => $c->name() !== $name),
+            array_filter($this->conditions, static fn(Condition $c): bool => $c->name() !== $name),
         );
 
         return $template;
     }
 
+    /**
+     * @return array{
+     *      conditions: list<RemoteConfigConditionShape>|null,
+     *      parameters: array<non-empty-string, RemoteConfigParameterShape>|null,
+     *      parameterGroups: array<non-empty-string, RemoteConfigParameterGroupShape>|null
+     *  }
+     */
     public function jsonSerialize(): array
     {
+        $conditions = array_map(fn(Condition $c): array => $c->jsonSerialize(), $this->conditions);
+        $parameters = array_map(fn(Parameter $p): array => $p->jsonSerialize(), $this->parameters);
+        $parameterGroups = array_map(fn(ParameterGroup $p): array => $p->jsonSerialize(), $this->parameterGroups);
+
         return [
-            'conditions' => empty($this->conditions) ? null : array_values($this->conditions),
-            'parameters' => empty($this->parameters) ? null : $this->parameters,
-            'parameterGroups' => empty($this->parameterGroups) ? null : $this->parameterGroups,
+            'conditions' => $conditions !== [] ? $conditions : null,
+            'parameters' => $parameters !== [] ? $parameters : null,
+            'parameterGroups' => $parameterGroups !== [] ? $parameterGroups : null,
         ];
     }
 
@@ -213,7 +227,8 @@ class Template implements JsonSerializable
     {
         $condition = Condition::named($name)->withExpression($data['expression']);
 
-        if ($tagColor = $data['tagColor'] ?? null) {
+        $tagColor = $data['tagColor'] ?? null;
+        if ($tagColor !== null) {
             return $condition->withTagColor(new TagColor($tagColor));
         }
 
@@ -260,7 +275,7 @@ class Template implements JsonSerializable
 
     private function assertThatAllConditionalValuesAreValid(Parameter $parameter): void
     {
-        $conditionNames = array_map(static fn(Condition $c) => $c->name(), $this->conditions);
+        $conditionNames = array_map(static fn(Condition $c): string => $c->name(), $this->conditions);
 
         foreach ($parameter->conditionalValues() as $conditionalValue) {
             if (!in_array($conditionalValue->conditionName(), $conditionNames, true)) {

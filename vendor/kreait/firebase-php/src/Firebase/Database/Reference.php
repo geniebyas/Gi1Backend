@@ -24,8 +24,6 @@ use function trim;
 /**
  * A Reference represents a specific location in your database and can be used
  * for reading or writing data to that database location.
- *
- * @see https://firebase.google.com/docs/reference/js/firebase.database.Reference
  */
 class Reference implements Stringable
 {
@@ -39,7 +37,6 @@ class Reference implements Stringable
     public function __construct(
         UriInterface $uri,
         private readonly ApiClient $apiClient,
-        private readonly UrlBuilder $urlBuilder,
         private readonly Validator $validator = new Validator(),
     ) {
         $this->validator->validateUri($uri);
@@ -60,11 +57,9 @@ class Reference implements Stringable
     /**
      * The last part of the current path.
      *
-     * For example, "ada" is the key for https://sample-app.firebaseio.com/users/ada.
+     * For example, "ada" is the key for https://sample-app.firebaseio.example.com/users/ada.
      *
      * The key of the root Reference is null.
-     *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Reference#key
      */
     public function getKey(): ?string
     {
@@ -84,8 +79,6 @@ class Reference implements Stringable
     /**
      * The parent location of a Reference.
      *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Reference#parent
-     *
      * @throws OutOfRangeException if requested for the root Reference
      */
     public function getParent(): self
@@ -99,19 +92,16 @@ class Reference implements Stringable
         return new self(
             $this->uri->withPath('/'.ltrim($parentPath, '/')),
             $this->apiClient,
-            $this->urlBuilder,
             $this->validator,
         );
     }
 
     /**
      * The root location of a Reference.
-     *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Reference#root
      */
     public function getRoot(): self
     {
-        return new self($this->uri->withPath('/'), $this->apiClient, $this->urlBuilder, $this->validator);
+        return new self($this->uri->withPath('/'), $this->apiClient, $this->validator);
     }
 
     /**
@@ -119,8 +109,6 @@ class Reference implements Stringable
      *
      * The relative path can either be a simple child name (for example, "ada")
      * or a deeper slash-separated path (for example, "ada/name/first").
-     *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Reference#child
      *
      * @throws InvalidArgumentException if the path is invalid
      */
@@ -132,7 +120,6 @@ class Reference implements Stringable
             return new self(
                 $this->uri->withPath($childPath),
                 $this->apiClient,
-                $this->urlBuilder,
                 $this->validator,
             );
         } catch (\InvalidArgumentException $e) {
@@ -325,8 +312,6 @@ class Reference implements Stringable
      * list of items will be chronologically sorted. The keys are also designed to be
      * unguessable (they contain 72 random bits of entropy).
      *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Reference#push
-     *
      * @param mixed|null $value
      *
      * @throws DatabaseException if the API reported an error
@@ -338,15 +323,13 @@ class Reference implements Stringable
         $newKey = $this->apiClient->push($this->uri->getPath(), $value);
         $newPath = sprintf('%s/%s', $this->uri->getPath(), $newKey);
 
-        return new self($this->uri->withPath($newPath), $this->apiClient, $this->urlBuilder, $this->validator);
+        return new self($this->uri->withPath($newPath), $this->apiClient, $this->validator);
     }
 
     /**
      * Remove the data at this database location.
      *
      * Any data at child locations will also be deleted.
-     *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Reference#remove
      *
      * @throws DatabaseException if the API reported an error
      */
@@ -390,8 +373,6 @@ class Reference implements Stringable
      *
      * Passing null to {see update()} will remove the data at this location.
      *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Reference#update
-     *
      * @param array<mixed> $values
      *
      * @throws DatabaseException if the API reported an error
@@ -413,8 +394,6 @@ class Reference implements Stringable
      * Append '.json' to the URL when typed into a browser to download JSON formatted data.
      * If the location is secured (not publicly readable),
      * you will get a permission-denied error.
-     *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Reference#toString
      */
     public function getUri(): UriInterface
     {

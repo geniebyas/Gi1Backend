@@ -9,7 +9,6 @@ use Kreait\Firebase\Database\ApiClient;
 use Kreait\Firebase\Database\Reference;
 use Kreait\Firebase\Database\RuleSet;
 use Kreait\Firebase\Database\Transaction;
-use Kreait\Firebase\Database\UrlBuilder;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 
@@ -25,7 +24,6 @@ final class Database implements Contract\Database
     public function __construct(
         private readonly UriInterface $uri,
         private readonly ApiClient $client,
-        private readonly UrlBuilder $urlBuilder,
     ) {
     }
 
@@ -38,7 +36,7 @@ final class Database implements Contract\Database
         $path = '/'.ltrim($path, '/');
 
         try {
-            return new Reference($this->uri->withPath($path), $this->client, $this->urlBuilder);
+            return new Reference($this->uri->withPath($path), $this->client);
         } catch (\InvalidArgumentException $e) {
             throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
         }

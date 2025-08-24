@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\JWT\Action\VerifySessionCookie;
 
+use Beste\Clock\FrozenClock;
 use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -16,7 +17,6 @@ use Kreait\Firebase\JWT\SecureToken;
 use Kreait\Firebase\JWT\Signer\None;
 use Kreait\Firebase\JWT\Token\Parser;
 use Kreait\Firebase\JWT\Util;
-use Lcobucci\Clock\FrozenClock;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -40,9 +40,10 @@ use function is_string;
  */
 final class WithLcobucciJWT implements Handler
 {
-    private readonly ClockInterface $clock;
     private readonly Parser $parser;
+
     private Signer $signer;
+
     private readonly Validator $validator;
 
     /**
@@ -51,9 +52,8 @@ final class WithLcobucciJWT implements Handler
     public function __construct(
         private readonly string $projectId,
         private readonly Keys $keys,
-        ClockInterface $clock,
+        private readonly ClockInterface $clock,
     ) {
-        $this->clock = $clock;
         $this->parser = new Parser(new JoseEncoder());
 
         if (Util::authEmulatorHost() !== '') {
@@ -77,7 +77,7 @@ final class WithLcobucciJWT implements Handler
         }
 
         $key = $this->getKey($token);
-        $clock = new FrozenClock($this->clock->now());
+        $clock = FrozenClock::at($this->clock->now());
         $leeway = new DateInterval('PT'.$action->leewayInSeconds().'S');
         $errors = [];
         $constraints = [
@@ -150,7 +150,11 @@ final class WithLcobucciJWT implements Handler
             return '';
         }
 
-        throw SessionCookieVerificationFailed::withSessionCookieAndReasons($token->toString(), ["No public key matching the key ID '{$keyId}' was found to verify the signature of this session cookie."]);
+        if (is_string($keyId)) {
+            throw SessionCookieVerificationFailed::withSessionCookieAndReasons($token->toString(), ["No public key matching the key ID `{$keyId}` was found to verify the signature of this session cookie."]);
+        }
+
+        throw SessionCookieVerificationFailed::withSessionCookieAndReasons($token->toString(), ["The session cookie doesn't include a `kid` header."]);
     }
 
     private function assertUserAuthedAt(UnencryptedToken $token, DateTimeInterface $now): void

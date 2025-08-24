@@ -15,6 +15,7 @@ use Throwable;
 final class FailedToSignIn extends RuntimeException implements AuthException
 {
     private ?SignIn $action = null;
+
     private ?ResponseInterface $response = null;
 
     public static function withActionAndResponse(SignIn $action, ResponseInterface $response): self

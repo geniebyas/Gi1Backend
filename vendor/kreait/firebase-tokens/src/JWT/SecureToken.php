@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\JWT;
 
+use Kreait\Firebase\JWT\Contract\Token;
 use Stringable;
 
-final class SecureToken implements Contract\Token, Stringable
+final class SecureToken implements Token, Stringable
 {
     /**
      * @param array<string, mixed> $headers
      * @param array<string, mixed> $payload
      */
-    private function __construct(private readonly string $encodedString, private readonly array $headers, private readonly array $payload)
-    {
+    private function __construct(
+        private readonly string $encodedString,
+        private readonly array $headers,
+        private readonly array $payload,
+    ) {
     }
 
     public function __toString(): string

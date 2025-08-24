@@ -10,12 +10,8 @@ namespace Kreait\Firebase\RemoteConfig;
 enum ParameterValueType: string
 {
     case UNSPECIFIED = 'PARAMETER_VALUE_TYPE_UNSPECIFIED';
-
     case STRING = 'STRING';
-
     case BOOL = 'BOOLEAN';
-
     case NUMBER = 'NUMBER';
-
     case JSON = 'JSON';
 }

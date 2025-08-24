@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Http;
 
 use Beste\Json;
+use Closure;
 use Exception;
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Promise\Create;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Query;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -29,7 +31,7 @@ final class Middleware
      */
     public static function ensureJsonSuffix(): callable
     {
-        return static fn(callable $handler) => static function (RequestInterface $request, ?array $options = null) use ($handler) {
+        return static fn(callable $handler): Closure => static function (RequestInterface $request, ?array $options = null) use ($handler) {
             $uri = $request->getUri();
             $path = '/'.ltrim($uri->getPath(), '/');
 
@@ -38,7 +40,7 @@ final class Middleware
                 $request = $request->withUri($uri);
             }
 
-            return $handler($request, $options ?: []);
+            return $handler($request, $options);
         };
     }
 
@@ -47,21 +49,21 @@ final class Middleware
      */
     public static function addDatabaseAuthVariableOverride(?array $override): callable
     {
-        return static fn(callable $handler) => static function (RequestInterface $request, ?array $options = null) use ($handler, $override) {
+        return static fn(callable $handler): Closure => static function (RequestInterface $request, ?array $options = null) use ($handler, $override) {
             $uri = $request->getUri();
 
             $uri = $uri->withQuery(Query::build(
                 array_merge(Query::parse($uri->getQuery()), ['auth_variable_override' => Json::encode($override)]),
             ));
 
-            return $handler($request->withUri($uri), $options ?: []);
+            return $handler($request->withUri($uri), $options);
         };
     }
 
     public static function log(LoggerInterface $logger, MessageFormatter $formatter, string $logLevel, string $errorLogLevel): callable
     {
-        return static fn(callable $handler) => static fn($request, array $options) => $handler($request, $options)->then(
-            static function (ResponseInterface $response) use ($logger, $request, $formatter, $logLevel, $errorLogLevel) {
+        return static fn(callable $handler): Closure => static fn($request, array $options) => $handler($request, $options)->then(
+            static function (ResponseInterface $response) use ($logger, $request, $formatter, $logLevel, $errorLogLevel): ResponseInterface {
                 $message = $formatter->format($request, $response);
                 $messageLogLevel = $response->getStatusCode() >= StatusCode::STATUS_BAD_REQUEST ? $errorLogLevel : $logLevel;
 
@@ -69,7 +71,7 @@ final class Middleware
 
                 return $response;
             },
-            static function (Exception $reason) use ($logger, $request, $formatter, $errorLogLevel) {
+            static function (Exception $reason) use ($logger, $request, $formatter, $errorLogLevel): PromiseInterface {
                 $response = $reason instanceof RequestException ? $reason->getResponse() : null;
                 $message = $formatter->format($request, $response, $reason);
 

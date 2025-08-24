@@ -51,6 +51,7 @@ final class SignInResult
      * @var non-empty-string|null
      */
     private ?string $tenantId = null;
+
     private readonly Parser $parser;
 
     private function __construct()
@@ -92,22 +93,24 @@ final class SignInResult
      */
     public function firebaseUserId(): ?string
     {
-        if ($this->firebaseUserId) {
+        if ($this->firebaseUserId !== null) {
             return $this->firebaseUserId;
         }
 
-        if ($this->idToken) {
+        if ($this->idToken !== null) {
             $idToken = $this->parser->parse($this->idToken);
             assert($idToken instanceof UnencryptedToken);
 
             foreach (['sub', 'localId', 'user_id'] as $claim) {
-                if ($uid = $idToken->claims()->get($claim, false)) {
+                $uid = $idToken->claims()->get($claim, false);
+                if (is_string($uid) && $uid !== '') {
                     return $this->firebaseUserId = $uid;
                 }
             }
         }
 
-        if ($localId = $this->data['localId'] ?? null) {
+        $localId = $this->data['localId'] ?? null;
+        if (is_string($localId) && $localId !== '') {
             return $this->firebaseUserId = $localId;
         }
 
@@ -119,11 +122,11 @@ final class SignInResult
      */
     public function firebaseTenantId(): ?string
     {
-        if ($this->tenantId) {
+        if ($this->tenantId !== null) {
             return $this->tenantId;
         }
 
-        if ($this->idToken) {
+        if ($this->idToken !== null) {
             $idToken = $this->parser->parse($this->idToken);
             assert($idToken instanceof UnencryptedToken);
 
@@ -180,10 +183,10 @@ final class SignInResult
     {
         return [
             'token_type' => 'Bearer',
-            'access_token' => $this->accessToken(),
+            'access_token' => $this->accessToken,
             'id_token' => $this->idToken,
-            'refresh_token' => $this->refreshToken(),
-            'expires_in' => $this->ttl(),
+            'refresh_token' => $this->refreshToken,
+            'expires_in' => $this->ttl,
         ];
     }
 }

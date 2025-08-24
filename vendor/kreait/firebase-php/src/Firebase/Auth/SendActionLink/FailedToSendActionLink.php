@@ -14,6 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 final class FailedToSendActionLink extends RuntimeException implements AuthException
 {
     private ?SendActionLink $action = null;
+
     private ?ResponseInterface $response = null;
 
     public static function withActionAndResponse(SendActionLink $action, ResponseInterface $response): self

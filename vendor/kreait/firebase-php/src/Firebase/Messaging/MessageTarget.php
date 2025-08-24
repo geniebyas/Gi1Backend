@@ -11,13 +11,16 @@ use function mb_strtolower;
 final class MessageTarget
 {
     public const CONDITION = 'condition';
+
     public const TOKEN = 'token';
+
     public const TOPIC = 'topic';
 
     /**
      * @internal
      */
     public const UNKNOWN = 'unknown';
+
     public const TYPES = [
         self::CONDITION, self::TOKEN, self::TOPIC, self::UNKNOWN,
     ];
@@ -48,7 +51,7 @@ final class MessageTarget
             self::CONDITION => Condition::fromValue($value)->value(),
             self::TOKEN => RegistrationToken::fromValue($value)->value(),
             self::TOPIC => Topic::fromValue($value)->value(),
-            self::UNKNOWN => $value,
+            default => self::UNKNOWN,
         };
 
         return new self($targetType, $targetValue);

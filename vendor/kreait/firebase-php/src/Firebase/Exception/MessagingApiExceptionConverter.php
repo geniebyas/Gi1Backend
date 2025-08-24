@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Exception;
 
 use Beste\Clock\SystemClock;
+use DateInterval;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use GuzzleHttp\Exception\RequestException;
@@ -30,6 +31,7 @@ use function is_numeric;
 class MessagingApiExceptionConverter
 {
     private readonly ErrorResponseParser $responseParser;
+
     private readonly ClockInterface $clock;
 
     public function __construct(?ClockInterface $clock = null)
@@ -64,23 +66,23 @@ class MessagingApiExceptionConverter
 
         switch ($code) {
             case StatusCode::STATUS_BAD_REQUEST:
-                $convertedError = new InvalidMessage($message);
+                $convertedError = new InvalidMessage($message, previous: $previous);
 
                 break;
 
             case StatusCode::STATUS_UNAUTHORIZED:
             case StatusCode::STATUS_FORBIDDEN:
-                $convertedError = new AuthenticationError($message);
+                $convertedError = new AuthenticationError($message, previous: $previous);
 
                 break;
 
             case StatusCode::STATUS_NOT_FOUND:
-                $convertedError = new NotFound($message);
+                $convertedError = new NotFound($message, previous: $previous);
 
                 break;
 
             case StatusCode::STATUS_TOO_MANY_REQUESTS:
-                $convertedError = new QuotaExceeded($message);
+                $convertedError = new QuotaExceeded($message, previous: $previous);
                 $retryAfter = $this->getRetryAfter($response);
 
                 if ($retryAfter !== null) {
@@ -90,12 +92,31 @@ class MessagingApiExceptionConverter
                 break;
 
             case StatusCode::STATUS_INTERNAL_SERVER_ERROR:
-                $convertedError = new ServerError($message);
+                $convertedError = new ServerError($message, previous: $previous);
+
+                break;
+
+            case StatusCode::STATUS_BAD_GATEWAY:
+                $contentType = mb_strtolower($response->getHeaderLine('Content-Type'));
+                $retryAfter = $this->getRetryAfter($response);
+
+                if (!str_contains($contentType, 'json')) {
+                    // Adding 30 seconds as a fallback retry after because the HTML Response suggests it
+                    // See https://github.com/kreait/firebase-php/issues/988
+                    $retryAfter ??= ($this->clock->now()->add(new DateInterval('PT30S')));
+                    $message = 'The server encountered a temporary error and could not complete your request.';
+                }
+
+                $convertedError = new ServerUnavailable($message, previous: $previous);
+
+                if ($retryAfter !== null) {
+                    $convertedError = $convertedError->withRetryAfter($retryAfter);
+                }
 
                 break;
 
             case StatusCode::STATUS_SERVICE_UNAVAILABLE:
-                $convertedError = new ServerUnavailable($message);
+                $convertedError = new ServerUnavailable($message, previous: $previous);
                 $retryAfter = $this->getRetryAfter($response);
 
                 if ($retryAfter !== null) {
@@ -126,9 +147,9 @@ class MessagingApiExceptionConverter
 
     private function getRetryAfter(ResponseInterface $response): ?DateTimeImmutable
     {
-        $retryAfter = $response->getHeader('Retry-After')[0] ?? null;
+        $retryAfter = $response->getHeaderLine('Retry-After');
 
-        if (!$retryAfter) {
+        if ($retryAfter === '') {
             return null;
         }
 

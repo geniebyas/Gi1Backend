@@ -13,6 +13,7 @@ use UnexpectedValueException;
 final class FailedToShortenLongDynamicLink extends RuntimeException
 {
     private ?ShortenLongDynamicLink $action = null;
+
     private ?ResponseInterface $response = null;
 
     public static function withActionAndResponse(ShortenLongDynamicLink $action, ResponseInterface $response): self

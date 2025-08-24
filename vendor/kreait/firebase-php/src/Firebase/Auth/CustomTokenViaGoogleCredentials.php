@@ -21,6 +21,7 @@ use Stringable;
 final class CustomTokenViaGoogleCredentials
 {
     private readonly JoseEncoder $encoder;
+
     private readonly Parser $parser;
 
     public function __construct(private readonly SignBlobInterface $signer, private readonly ?string $tenantId = null)

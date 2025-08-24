@@ -20,11 +20,8 @@ use Throwable;
  */
 class DatabaseApiExceptionConverter
 {
-    private readonly ErrorResponseParser $responseParser;
-
-    public function __construct()
+    public function __construct(private readonly ErrorResponseParser $responseParser)
     {
-        $this->responseParser = new ErrorResponseParser();
     }
 
     public function convertException(Throwable $exception): DatabaseException

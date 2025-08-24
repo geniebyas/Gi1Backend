@@ -15,16 +15,27 @@ use function sprintf;
 class TagColor implements Stringable
 {
     final public const BLUE = 'BLUE';
+
     final public const BROWN = 'BROWN';
+
     final public const CYAN = 'CYAN';
+
     final public const DEEP_ORANGE = 'DEEP_ORANGE';
+
     final public const GREEN = 'GREEN';
+
     final public const INDIGO = 'INDIGO';
+
     final public const LIME = 'LIME';
+
     final public const ORANGE = 'ORANGE';
+
     final public const PINK = 'PINK';
+
     final public const PURPLE = 'PURPLE';
+
     final public const TEAL = 'TEAL';
+
     final public const VALID_COLORS = [
         self::BLUE, self::BROWN, self::CYAN, self::DEEP_ORANGE, self::GREEN, self::INDIGO, self::LIME,
         self::ORANGE, self::PINK, self::PURPLE, self::TEAL,

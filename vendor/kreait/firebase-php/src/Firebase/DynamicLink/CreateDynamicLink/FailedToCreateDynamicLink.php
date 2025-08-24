@@ -13,6 +13,7 @@ use UnexpectedValueException;
 final class FailedToCreateDynamicLink extends RuntimeException
 {
     private ?CreateDynamicLink $action = null;
+
     private ?ResponseInterface $response = null;
 
     public static function withActionAndResponse(CreateDynamicLink $action, ResponseInterface $response): self

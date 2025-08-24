@@ -33,8 +33,6 @@ use Stringable;
  * Just as with a Reference, you can receive data from a Query by using the
  * {@see getSnapshot()} or {@see getValue()} method. You will only receive
  * Snapshots for the subset of the data that matches your query.
- *
- * @see https://firebase.google.com/docs/reference/js/firebase.database.Query
  */
 class Query implements Stringable
 {
@@ -42,6 +40,7 @@ class Query implements Stringable
      * @var Filter[]
      */
     private array $filters = [];
+
     private ?Sorter $sorter = null;
 
     /**
@@ -63,8 +62,6 @@ class Query implements Stringable
 
     /**
      * Returns a Reference to the Query's location.
-     *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Query#ref
      */
     public function getReference(): Reference
     {
@@ -117,8 +114,6 @@ class Query implements Stringable
      * The ending point is inclusive, so children with exactly
      * the specified value will be included in the query.
      *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Query#endAt
-     *
      * @param scalar $value
      */
     public function endAt($value): self
@@ -128,8 +123,6 @@ class Query implements Stringable
 
     /**
      * Creates a Query with the specified ending point (exclusive).
-     *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Query#endbefore
      *
      * @param scalar $value
      */
@@ -141,8 +134,6 @@ class Query implements Stringable
     /**
      * Creates a Query which includes children which match the specified value.
      *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Query#equalTo
-     *
      * @param scalar $value
      */
     public function equalTo($value): self
@@ -152,8 +143,6 @@ class Query implements Stringable
 
     /**
      * Creates a Query with the specified starting point (inclusive).
-     *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Query#startAt
      *
      * @param scalar $value
      */
@@ -165,8 +154,6 @@ class Query implements Stringable
     /**
      * Creates a Query with the specified starting point (exclusive).
      *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Query#startafter
-     *
      * @param scalar $value
      */
     public function startAfter($value): self
@@ -176,8 +163,6 @@ class Query implements Stringable
 
     /**
      * Generates a new Query limited to the first specific number of children.
-     *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Query#limitToFirst
      */
     public function limitToFirst(int $limit): self
     {
@@ -186,8 +171,6 @@ class Query implements Stringable
 
     /**
      * Generates a new Query object limited to the last specific number of children.
-     *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Query#limitToLast
      */
     public function limitToLast(int $limit): self
     {
@@ -199,8 +182,6 @@ class Query implements Stringable
      *
      * Queries can only order by one key at a time. Calling orderBy*() multiple times on
      * the same query is an error.
-     *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Query#orderByChild
      *
      * @throws UnsupportedQuery if the query is already ordered
      */
@@ -217,8 +198,6 @@ class Query implements Stringable
      * Queries can only order by one key at a time. Calling orderBy*() multiple times on
      * the same query is an error.
      *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Query#orderByKey
-     *
      * @throws UnsupportedQuery if the query is already ordered
      */
     public function orderByKey(): self
@@ -234,8 +213,6 @@ class Query implements Stringable
      *
      * Queries can only order by one key at a time. Calling orderBy*() multiple times on
      * the same query is an error.
-     *
-     * @see https://firebase.google.com/docs/reference/js/firebase.database.Query#orderByValue
      *
      * @throws UnsupportedQuery if the query is already ordered
      */

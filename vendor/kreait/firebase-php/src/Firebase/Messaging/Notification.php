@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Messaging;
 
 use JsonSerializable;
-use Kreait\Firebase\Exception\InvalidArgumentException;
 
 use function array_filter;
 
@@ -18,9 +17,6 @@ use function array_filter;
  */
 final class Notification implements JsonSerializable
 {
-    /**
-     * @throws InvalidArgumentException if both title and body are null
-     */
     private function __construct(
         private ?string $title = null,
         private ?string $body = null,
@@ -28,9 +24,6 @@ final class Notification implements JsonSerializable
     ) {
     }
 
-    /**
-     * @throws InvalidArgumentException if both title and body are null
-     */
     public static function create(?string $title = null, ?string $body = null, ?string $imageUrl = null): self
     {
         return new self($title, $body, $imageUrl);
@@ -42,8 +35,6 @@ final class Notification implements JsonSerializable
      *     body?: string,
      *     image?: string
      * } $data
-     *
-     * @throws InvalidArgumentException if both title and body are null
      */
     public static function fromArray(array $data): self
     {
@@ -99,6 +90,6 @@ final class Notification implements JsonSerializable
             'title' => $this->title,
             'body' => $this->body,
             'image' => $this->imageUrl,
-        ], static fn($value) => $value !== null);
+        ], static fn($value): bool => $value !== null);
     }
 }

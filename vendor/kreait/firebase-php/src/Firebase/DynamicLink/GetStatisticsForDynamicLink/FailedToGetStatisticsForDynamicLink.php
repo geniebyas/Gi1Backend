@@ -12,6 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 final class FailedToGetStatisticsForDynamicLink extends RuntimeException
 {
     private ?GetStatisticsForDynamicLink $action = null;
+
     private ?ResponseInterface $response = null;
 
     public static function withActionAndResponse(GetStatisticsForDynamicLink $action, ResponseInterface $response): self
