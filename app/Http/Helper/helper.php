@@ -42,7 +42,7 @@ if (!function_exists('addCoins')) {
         $client = new Client();
         if ($uid != null && $action_id != null) {
 
-            $resp = $client->request('POST', "http://api.gi1superverse.com/api/coins/add", [
+            $resp = $client->request('POST', "https://api.gi1superverse.com/api/coins/add", [
                 'headers' => [
                     'uid' => $uid
                 ],
