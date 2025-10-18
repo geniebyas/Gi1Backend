@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 //test
-Route::get("/git-deploy",[AuthController::class,'gitDeploy']);
+Route::post("/git-deploy",[AuthController::class,'gitDeploy']);
 
 
 //user
