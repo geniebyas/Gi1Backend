@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
+use Symfony\Component\Process\Process;
 
 class AuthController extends Controller
 {
@@ -65,5 +67,58 @@ class AuthController extends Controller
             ];
             return $response()->json($response);
         }
+    }
+
+     public function gitDeploy(Request $request)
+    {
+        // ✅ 1. Verify GitHub signature
+        $signature = $request->header('X-Hub-Signature-256');
+        $secret = env('GITHUB_WEBHOOK_SECRET');
+
+        $payload = $request->getContent();
+        $hash = 'sha256=' . hash_hmac('sha256', $payload, $secret);
+
+        if (!hash_equals($hash, $signature)) {
+            Log::warning('Git Deploy: Invalid signature attempt.');
+            abort(403, 'Invalid signature');
+        }
+
+        // ✅ 2. Determine environment
+        $environment = app()->environment(); // e.g., 'local', 'production', 'staging'
+        $isDev = in_array($environment, ['local', 'development', 'staging']);
+
+        // ✅ 3. Build commands
+        $basePath = escapeshellarg(base_path());
+
+        $composerCommand = $isDev
+            ? 'composer install -o' // include dev dependencies
+            : 'composer install --no-dev -o'; // production mode
+
+        $commands = [
+            "cd $basePath",
+            "git fetch --all",
+            "git reset --hard origin/main",
+            "git pull origin main",
+            $composerCommand,
+            "php artisan config:clear",
+            "php artisan cache:clear",
+            "php artisan optimize:clear",
+            // "php artisan migrate --force",  // optional if you use migrations
+            "php artisan optimize",
+        ];
+
+        // ✅ 4. Execute deployment
+        $process = new Process(['bash', '-c', implode(' && ', $commands)]);
+        $process->setTimeout(300); // 5 minutes max
+        $process->run();
+
+        $output = $process->getOutput() . $process->getErrorOutput();
+        Log::info("Git Deploy ({$environment}) Output:\n" . $output);
+
+        // ✅ 5. Return JSON response
+        return response()->json([
+            'message' => "Deployment completed successfully for [$environment] environment.",
+            'output'  => $output,
+        ]);
     }
 }

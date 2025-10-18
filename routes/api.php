@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CoinsController;
 use App\Http\Controllers\API\ConnectionsController;
 use App\Http\Controllers\API\FeedbackController;
@@ -29,9 +30,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 //test
-Route::get("/test", function () {
-    p("test called");
-});
+Route::get("/git-deploy",[AuthController::class,'gitDeploy']);
 
 
 //user
@@ -132,6 +131,16 @@ Route::group(['middleware' => "api"], (function () {
        Route::post('/update',[\App\Http\Controllers\API\LinksController::class,'updateLink']);
        Route::get('/delete/{id}',[\App\Http\Controllers\API\LinksController::class,'deleteLink']);
        Route::get('/registerclick/{id}',[\App\Http\Controllers\API\LinksController::class,'registerLinkClick']);
+    });
+
+    //cdsm
+    Route::prefix('/cdsm')->group(function (){
+        Route::post('/add',[\App\Http\Controllers\API\CDSMController::class,'addPost']);
+        Route::get('/all',[\App\Http\Controllers\API\CDSMController::class,'getPosts']);
+        Route::get('/analytics/{id}',[\App\Http\Controllers\API\CDSMController::class,'loadAnalytics']);
+        Route::get('/toggle-like/{id}',[\App\Http\Controllers\API\CDSMController::class,'toggleLike']);
+        Route::get('/my-posts',[\App\Http\Controllers\API\CDSMController::class,'myPosts']);
+        Route::get('/delete/{id}',[\App\Http\Controllers\API\CDSMController::class,'deletePost']);
     });
 
 

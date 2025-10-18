@@ -1,0 +1,157 @@
+<?php
+
+namespace App\Http\Controllers\API;
+
+use App\Http\Controllers\Controller;
+use App\Models\CDSMPost as Post;
+use App\Models\CDSMPost;
+use App\Models\CDSMPostLikes as PostLike;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+class CDSMController extends Controller
+{
+    public function addPost(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'img' => 'nullable|image',
+            'category' => 'required',
+            'caption' => 'nullable',
+            'location' => 'nullable',
+            'description' => 'nullable',
+            'tags' => 'nullable'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->first(),
+                'status' => false,
+                'data' => $validator->errors()
+            ]);
+        }
+
+        $post = new CDSMPost();
+        $post->img = $request->file('img')->store('uploades/posts','public');
+        $post->category = $request->category;
+        $post->caption = $request->caption;
+        $post->location = $request->location;
+        $post->description = $request->description;
+        $post->tags = $request->tags;
+        $post->uid = $request->header('uid');
+        $post->save();
+        return response()->json([
+            'message' => 'Post Added Successfully',
+            'status' => true,
+            'data' => $post
+        ]);
+    }
+
+    public function getPosts()
+    {
+        // we want to fetch random 30 posts only
+        $posts = CDSMPost::where('is_active', true)
+            ->with(['user', 'comments', 'likes', 'interested'])
+            ->inRandomOrder()
+            ->limit(30)
+            ->get();
+
+        return response()->json([
+            'message' => 'Posts Loaded Successfully',
+            'status' => true,
+            'data' => $posts
+        ]);
+    }
+
+    public function loadAnalytics(Request $request,$id)
+    {
+        $post = CDSMPost::find($id)
+        ->with(['user', 'comments', 'likes', 'interested']);
+        $post->views = $post->views + 1;
+        $post->update();
+        return response()->json([
+            'message' => 'Analytics Loaded Successfully',
+            'status' => true,
+            'data' => $post
+        ]);
+    }
+
+    public function toggleLike(Request $request, $id)
+    {
+        $uid = $request->header('uid');
+
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json([
+                'message' => 'Post not found',
+                'status' => false,
+                'data' => null
+            ]);
+        }
+
+        // find existing like/dislike record for this user & post
+        $like = PostLike::where('post_id', $id)
+            ->where('uid', $uid)
+            ->first();
+
+        if ($like) {
+            // toggle the boolean is_liked field
+            $like->is_liked = !$like->is_liked;
+            $like->save();
+
+            return response()->json([
+                'message' => $like->is_liked ? 'Like Added Successfully' : 'Like Removed Successfully',
+                'status' => true,
+                'data' => $like
+            ]);
+        } else {
+            // create a new like (is_liked = true)
+            $like = new PostLike();
+            $like->post_id = $id;
+            $like->uid = $uid;
+            $like->is_liked = true;
+            $like->save();
+
+            return response()->json([
+                'message' => 'Like Added Successfully',
+                'status' => true,
+                'data' => $like
+            ]);
+        }
+    }
+
+    public function myPosts(Request $request)
+    {
+        $uid = $request->header('uid');
+        $posts = CDSMPost::where('uid', $uid)
+            ->where('is_active', true)
+            ->with(['comments', 'likes', 'interested'])->get();
+        return response()->json([
+            'message' => 'Posts fetched successfully',
+            'status' => true,
+            'data' => $posts
+        ]);
+    }
+
+    public function deletePost(Request $request, $id)
+    {
+        $post = CDSMPost::find($id);
+        if (!$post) {
+            return response()->json([
+                'message' => 'Post not found',
+                'status' => false,
+                'data' => null
+            ]);
+        }
+
+        $post->is_active = false;
+        $post->save();
+
+        return response()->json([
+            'message' => 'Post deleted successfully',
+            'status' => true,
+            'data' => $post
+        ]);
+    }
+
+
+
+}
