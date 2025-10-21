@@ -82,7 +82,7 @@ class AuthController extends Controller
 
         if (!hash_equals($hash, $signature)) {
             Log::warning('Git Deploy: Invalid signature attempt.');
-            abort(403, 'Invalid signature');
+            abort(403,$hash);
         }
 
         // ✅ 2. Determine environment
