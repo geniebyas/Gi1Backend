@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\API;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
@@ -44,23 +45,24 @@ class AuthController extends Controller
             'data' => $success,
             'message' => 'User Registered Successfully'
         ];
-        return $response()->json($response,200);
+        return $response()->json($response, 200);
     }
 
-    public function login(Request $req){
-        if(Auth::attempt(['email' => $req->email,'password' => $req->password])){
+    public function login(Request $req)
+    {
+        if (Auth::attempt(['email' => $req->email, 'password' => $req->password])) {
             $user = Auth::user();
 
-        // $success['token'] = $user->createToken('Gi1InfoApp')->accessToken;
-        $success['name'] = $user->name;
+            // $success['token'] = $user->createToken('Gi1InfoApp')->accessToken;
+            $success['name'] = $user->name;
 
-        $response = [
-            'success' => true,
-            'data' => $success,
-            'message' => 'User Login Successfully'
-        ];
-        return $response()->json($response,200);
-        }else{
+            $response = [
+                'success' => true,
+                'data' => $success,
+                'message' => 'User Login Successfully'
+            ];
+            return $response()->json($response, 200);
+        } else {
             $response = [
                 'success' => false,
                 'message' => "Unauthorised"
@@ -69,7 +71,7 @@ class AuthController extends Controller
         }
     }
 
-     public function gitDeploy(Request $request)
+    public function gitDeploy(Request $request)
     {
         // ✅ 1. Verify GitHub signature
         $signature = $request->header('X-Hub-Signature-256');
