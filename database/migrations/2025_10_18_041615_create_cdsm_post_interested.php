@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('cdsm_post_interested', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("post_id")->constrained("cdsm_post")->onDelete("cascade");
-            $table->foreignId("uid")->constrained("users")->onDelete("cascade");
+            $table->unsignedBigInteger("post_id");
+            $table->foreign("post_id")->references("id")->on("cdsm_post")->onDelete("cascade");
+            $table->string("uid");
+            $table->foreign("uid")->references("uid")->on("users")->onDelete("cascade");
             $table->timestamps();
         });
     }

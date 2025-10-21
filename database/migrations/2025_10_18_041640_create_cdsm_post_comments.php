@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('cdsm_post_comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId("post_id")->constrained("cdsm_post")->onDelete("cascade");
-            $table->foreignId("uid")->constrained("users")->onDelete("cascade");
+            $table->string("uid");
+            $table->foreign("uid")->references("uid")->on("users")->onDelete("cascade");
             $table->string("comment")->nullable();
             $table->integer("likes")->nullable();
+            $table->boolean("is_active")->default(true);
             $table->timestamps();
         });
     }

@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('cdsm_post_likes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("post_id")->constrained("cdsm_post")->onDelete("cascade");
-            $table->foreignId("uid")->constrained("users")->onDelete("cascade"); // Assuming you have ar
+            $table->unsignedBigInteger("post_id");
+            $table->string("uid");
+            $table->foreign("post_id")->references("id")->on("cdsm_post")->onDelete("cascade");
+            $table->foreign("uid")->references("uid")->on("users")->onDelete("cascade"); // Assuming you have ar
             $table->boolean("is_liked")->default(true);
             $table->timestamps();
         });

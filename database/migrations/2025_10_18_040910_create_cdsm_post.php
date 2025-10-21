@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string("tags")->nullable();
             $table->integer("views")->nullable();
             $table->boolean("is_active")->default(true);
-            $table->foreignId("uid")->constrained("users","uid")->onDelete("cascade");
+            $table->string("uid");
+            $table->foreign("uid")->references("uid")->on("users")->onDelete("cascade");
             $table->timestamps();
         });
     }
