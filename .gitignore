@@ -7,7 +7,7 @@
 /vendor/*
 !/vendor/kreait
 !/vendor/firebase
-# .env
+.env
 .env.backup
 .env.production
 .phpunit.result.cache
