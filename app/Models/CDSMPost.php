@@ -21,19 +21,19 @@ class CDSMPost extends Model
     ];
 
     public function user(){
-        return $this->belongsTo('User');
+        return $this->belongsTo(User::class);
     }
 
     public function comments(){
-        return $this->hasMany('CDSMPostComments');
+        return $this->hasMany(CDSMPostComments::class);
     }
 
     public function likes(){
-        return $this->hasMany('CDSMPostLikes');
+        return $this->hasMany(CDSMPostLikes::class);
     }
 
     public function interested(){
-        return $this->hasMany('CDSMPostInterested');
+        return $this->hasMany(CDSMPostInterested::class);
     }
 
 

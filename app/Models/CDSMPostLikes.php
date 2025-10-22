@@ -13,10 +13,10 @@ class CDSMPostLikes extends Model
         'is_liked'
     ];
     public function user(){
-        return $this->belongsTo('User');
+        return $this->belongsTo(User::class);
     }
 
     public function post(){
-        return $this->belongsTo('CDSMPost');
+        return $this->belongsTo(CDSMPost::class);
     }
 }
