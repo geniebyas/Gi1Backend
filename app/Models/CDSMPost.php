@@ -20,6 +20,10 @@ class CDSMPost extends Model
         'uid'
     ];
 
+    protected $casts = [
+        'is_active'=>"boolean"
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, "uid");

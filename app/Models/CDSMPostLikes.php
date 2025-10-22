@@ -12,6 +12,10 @@ class CDSMPostLikes extends Model
         'uid',
         'is_liked'
     ];
+
+    protected $casts = [
+        'is_liked'=>"boolean"
+    ];
     public function user(){
         return $this->belongsTo(User::class,"uid");
     }
