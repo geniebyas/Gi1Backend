@@ -20,21 +20,23 @@ class CDSMPost extends Model
         'uid'
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class,"uid");
+    public function user()
+    {
+        return $this->belongsTo(User::class, "uid");
     }
 
-    public function comments(){
-        return $this->hasMany(CDSMPostComments::class);
+    public function comments()
+    {
+        return $this->hasMany(CDSMPostComments::class, "post_id", "id");
     }
 
-    public function likes(){
-        return $this->hasMany(CDSMPostLikes::class);
+    public function likes()
+    {
+        return $this->hasMany(CDSMPostLikes::class, 'post_id', 'id');
     }
 
-    public function interested(){
-        return $this->hasMany(CDSMPostInterested::class);
+    public function interested()
+    {
+        return $this->hasMany(CDSMPostInterested::class, 'post_id', 'id');
     }
-
-
 }
