@@ -65,6 +65,13 @@ class CDSMController extends Controller
     {
         $post = CDSMPost::find($id)
         ->with(['user', 'comments', 'likes', 'interested']);
+        if($post == null){
+            return response()->json([
+                'message' => 'Post not found',
+                'status' => 0,
+                'data' => null
+            ]);
+        }
         $post->views = $post->views + 1;
         $post->update();
         return response()->json([
