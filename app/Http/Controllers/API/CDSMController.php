@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\CDSMPost as Post;
 use App\Models\CDSMPost;
+use App\Models\CDSMPostComments;
 use App\Models\CDSMPostLikes as PostLike;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -42,6 +43,59 @@ class CDSMController extends Controller
             'message' => 'Post Added Successfully',
             'status' => 1,
             'data' => $post
+        ]);
+    }
+    public function addComment(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'comment' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->first(),
+                'status' => 0,
+                'data' => $validator->errors()
+            ]);
+        }
+
+        $post = CDSMPost::find($id);
+        if (!$post) {
+            return response()->json([
+                'message' => 'Post not found',
+                'status' => 0,
+                'data' => null
+            ]);
+        }
+        $comment = new CDSMPostComments();
+        $comment->post_id = $id;
+        $comment->uid = $request->header('uid');
+        $comment->comment = $request->comment;
+        $comment->likes = 0;
+        $comment->save();
+        return response()->json([
+            'message' => 'Comment Added Successfully',
+            'status' => 1,
+            'data' => $comment
+        ]);
+
+    }
+
+    public function commentLike(Request $request, $id)
+    {
+        $comment = CDSMPostComments::find($id);
+        if (!$comment) {
+            return response()->json([
+                'message' => 'Comment not found',
+                'status' => 0,
+                'data' => null
+            ]);
+        }
+        $comment->likes = $comment->likes + 1;
+        $comment->save();
+        return response()->json([
+            'message' => 'Comment Liked Successfully',
+            'status' => 1,
+            'data' => $comment
         ]);
     }
 

@@ -138,6 +138,8 @@ Route::group(['middleware' => "api"], (function () {
     //cdsm
     Route::prefix('/cdsm')->group(function (){
         Route::post('/add',[\App\Http\Controllers\API\CDSMController::class,'addPost']);
+        Route::post('/comment/{id}',[\App\Http\Controllers\API\CDSMController::class,'addComment']);
+        Route::get('/comment-like/{id}',[\App\Http\Controllers\API\CDSMController::class,'commentLike']);
         Route::get('/all',[\App\Http\Controllers\API\CDSMController::class,'getPosts']);
         Route::get('/analytics/{id}',[\App\Http\Controllers\API\CDSMController::class,'loadAnalytics']);
         Route::get('/toggle-like/{id}',[\App\Http\Controllers\API\CDSMController::class,'toggleLike']);
