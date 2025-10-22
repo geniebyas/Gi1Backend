@@ -98,8 +98,8 @@ class AuthController extends Controller
 
         $commands = [
             "cd $basePath",
-            "git fetch --all",
-            "git reset --hard origin/main",
+            // "git fetch --all",
+            // "git reset --hard origin/main",
             "git pull origin main",
             $composerCommand,
             "php artisan config:clear",
