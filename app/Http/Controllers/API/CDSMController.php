@@ -61,10 +61,11 @@ class CDSMController extends Controller
         ]);
     }
 
-    public function loadAnalytics(Request $request,$id)
+    public function loadAnalytics($id)
     {
         $post = CDSMPost::find($id)
         ->with(['user', 'comments', 'likes', 'interested']);
+
         if($post == null){
             return response()->json([
                 'message' => 'Post not found',
