@@ -63,8 +63,7 @@ class CDSMController extends Controller
 
     public function loadAnalytics($id)
     {
-        $post = CDSMPost::find($id)
-        ->with(['user', 'comments', 'likes', 'interested']);
+            $post = CDSMPost::with(['user', 'comments', 'likes', 'interested'])->find($id);
 
         if($post == null){
             return response()->json([
