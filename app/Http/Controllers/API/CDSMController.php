@@ -30,7 +30,7 @@ class CDSMController extends Controller
         }
 
         $post = new CDSMPost();
-        $post->img = $request->file('img')->store('uploades/posts','public');
+        $post->img = $request->file('img')->store('posts','public');
         $post->category = $request->category;
         $post->caption = $request->caption;
         $post->location = $request->location;
