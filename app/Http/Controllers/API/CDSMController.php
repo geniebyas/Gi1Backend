@@ -24,7 +24,7 @@ class CDSMController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'message' => $validator->errors()->first(),
-                'status' => false,
+                'status' => 0,
                 'data' => $validator->errors()
             ]);
         }
@@ -40,7 +40,7 @@ class CDSMController extends Controller
         $post->save();
         return response()->json([
             'message' => 'Post Added Successfully',
-            'status' => true,
+            'status' => 1,
             'data' => $post
         ]);
     }
@@ -56,7 +56,7 @@ class CDSMController extends Controller
 
         return response()->json([
             'message' => 'Posts Loaded Successfully',
-            'status' => true,
+            'status' => 1,
             'data' => $posts
         ]);
     }
@@ -69,7 +69,7 @@ class CDSMController extends Controller
         $post->update();
         return response()->json([
             'message' => 'Analytics Loaded Successfully',
-            'status' => true,
+            'status' => 0,
             'data' => $post
         ]);
     }
@@ -82,7 +82,7 @@ class CDSMController extends Controller
         if (!$post) {
             return response()->json([
                 'message' => 'Post not found',
-                'status' => false,
+                'status' => 0,
                 'data' => null
             ]);
         }
@@ -99,7 +99,7 @@ class CDSMController extends Controller
 
             return response()->json([
                 'message' => $like->is_liked ? 'Like Added Successfully' : 'Like Removed Successfully',
-                'status' => true,
+                'status' => 1,
                 'data' => $like
             ]);
         } else {
@@ -112,7 +112,7 @@ class CDSMController extends Controller
 
             return response()->json([
                 'message' => 'Like Added Successfully',
-                'status' => true,
+                'status' => 1,
                 'data' => $like
             ]);
         }
@@ -126,7 +126,7 @@ class CDSMController extends Controller
             ->with(['comments', 'likes', 'interested'])->get();
         return response()->json([
             'message' => 'Posts fetched successfully',
-            'status' => true,
+            'status' => 1,
             'data' => $posts
         ]);
     }
@@ -137,7 +137,7 @@ class CDSMController extends Controller
         if (!$post) {
             return response()->json([
                 'message' => 'Post not found',
-                'status' => false,
+                'status' => 0,
                 'data' => null
             ]);
         }
@@ -147,7 +147,7 @@ class CDSMController extends Controller
 
         return response()->json([
             'message' => 'Post deleted successfully',
-            'status' => true,
+            'status' => 1,
             'data' => $post
         ]);
     }
