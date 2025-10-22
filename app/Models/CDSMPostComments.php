@@ -17,7 +17,7 @@ class CDSMPostComments extends Model
         return $this->belongsTo(User::class,"uid");
     }
     public function post(){
-        return $this->belongsTo(CDSMPost::class,"post_id");
+        return $this->belongsTo(CDSMPost::class,"post_id","id");
     }
 
 }
