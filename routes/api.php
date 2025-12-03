@@ -52,9 +52,10 @@ Route::group(['middleware' => "api"], (function () {
     //users
     Route::prefix('user')->group(function () {
         Route::post('/register', [UserController::class, 'store']);
+        Route::post('/login', [UserController::class, 'login']);
         Route::post('/registration', [UserController::class, 'update']);
         Route::get('/publicusers', [UserController::class, 'getAllPublicUsers']);
-        Route::get('/{uid}', [UserController::class, 'show']);
+        Route::get('/get-user/{uid}', [UserController::class, 'show']);
         Route::post('/deleteuserac', [UserController::class, 'destroy']);
         Route::get('/checkuserexists/{uid}', [UserController::class, 'checkUserExists']);
         Route::get('/isuniqueuser/{username}',[UserController::class,'isuniqueuser']);

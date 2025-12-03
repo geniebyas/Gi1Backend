@@ -99,9 +99,7 @@ class UserController extends Controller
             return response()->json($response, 204);
         }
     }
-    public function index()
-    {
-    }
+    public function index() {}
 
 
     public function checkUserExists($uid)
@@ -109,19 +107,19 @@ class UserController extends Controller
         if (User::where('uid', $uid)->exists()) {
             $user = User::where('uid', $uid)->first();
 
-              // Check if the user has a phone number (considered fully registered)
-        if ($user->phone !== null) {
-            date_default_timezone_set("Asia/Kolkata");
-            // Check if the user has performed the action within the last 24 hours
-            $actionId = 1; // Assuming the action ID for login
-            $past24Hours = now()->subHours(24);
-            $hasPerformedAction = Coins::where('uid',$uid)->where('action_id', $actionId)->where('created_at', '>=', $past24Hours)->exists();
+            // Check if the user has a phone number (considered fully registered)
+            if ($user->phone !== null) {
+                date_default_timezone_set("Asia/Kolkata");
+                // Check if the user has performed the action within the last 24 hours
+                $actionId = 1; // Assuming the action ID for login
+                $past24Hours = now()->subHours(24);
+                $hasPerformedAction = Coins::where('uid', $uid)->where('action_id', $actionId)->where('created_at', '>=', $past24Hours)->exists();
 
-            if (!$hasPerformedAction) {
-                // Grant coins to the user
-                addCoins($uid,$actionId,"Congratulations! You've earned 24 coins for logging in today. Keep up the great work!");
+                if (!$hasPerformedAction) {
+                    // Grant coins to the user
+                    addCoins($uid, $actionId, "Congratulations! You've earned 24 coins for logging in today. Keep up the great work!");
+                }
             }
-        }
             $response = [
                 'message' => 'User Found',
                 'status' => 1,
@@ -173,7 +171,7 @@ class UserController extends Controller
             'username' => ['required', 'unique:users,username'],
             'name' => 'required',
             'email' => ['required', 'email', 'unique:users,email'],
-            'uid' => ['required', 'unique:users,uid']
+            'password' => 'required|min:8',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->messages(), 400);
@@ -182,12 +180,15 @@ class UserController extends Controller
             try {
                 $ex = null;
                 $request['password'] = Hash::make($request->password);
+
+                // generate uid
+                $uid = uniqid('user_');
                 $user = User::create([
                     'username' => $request->username,
                     'email' => $request->email,
                     'password' => $request->password,
                     'name' => $request->name,
-                    'uid' => $request->uid
+                    'uid' => $uid
                 ]);
                 DB::commit();
             } catch (\Throwable $th) {
@@ -201,7 +202,7 @@ class UserController extends Controller
                     [
                         "message" => "Signup successfully",
                         "status" => 1,
-                        "data" => "success"
+                        "data" => $user
                     ],
                     200
                 );
@@ -222,10 +223,10 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show(Request $request, $uid)
     {
 
-        $user = User::where('uid', $request->uid)->get()->first();
+        $user = User::where('uid', $uid)->get()->first();
         if (is_null($user)) {
             $response = [
                 'message' => 'User Not Found',
@@ -358,5 +359,37 @@ class UserController extends Controller
             }
         }
         return response()->json($response, $responseCode);
+    }
+
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => ['required', 'email'],
+            'password' => 'required|min:8',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        } else {
+            $user = User::where('email', $request->email)->get()->first();
+            if (is_null($user) || !Hash::check($request->password, $user->password)) {
+                return response()->json(
+                    [
+                        "message" => "Invalid credentials",
+                        "status" => 0,
+                        "data" => null
+                    ],
+                    401
+                );
+            } else {
+                return response()->json(
+                    [
+                        "message" => "Login successfully",
+                        "status" => 1,
+                        "data" => $user
+                    ],
+                    200
+                );
+            }
+        }
     }
 }
