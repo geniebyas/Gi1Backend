@@ -197,12 +197,16 @@ class UserController extends Controller
                 $user = null;
                 $ex = $th;
             }
+
+            $user = User::where('uid', $uid)->get()->first();
+
             if ($user != null) {
                 return response()->json(
                     [
                         "message" => "Signup successfully",
                         "status" => 1,
-                        "data" => $user
+                        "data" => $user,
+                        "uid" => $uid
                     ],
                     200
                 );
