@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('video_saves', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('video_id');
-            $table->unsignedBigInteger('uid');
+            $table->string('uid');
             $table->foreign('video_id')->references('id')->on('video')->onDelete('cascade');
             $table->foreign('uid')->references('uid')->on('users')->onDelete('cascade');
             $table->timestamps();

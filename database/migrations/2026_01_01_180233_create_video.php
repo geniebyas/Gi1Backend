@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('url');
             $table->string('thumbnail')->nullable();
-            $table->unsignedBigInteger('uid');
+            $table->string('uid');
             $table->foreign('uid')->references('uid')->on('users')->onDelete('cascade');
             $table->integer('views')->default(0);
             $table->boolean('is_active')->default(true);
