@@ -17,8 +17,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('url');
             $table->string('thumbnail')->nullable();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('uid');
+            $table->foreign('uid')->references('uid')->on('users')->onDelete('cascade');
             $table->integer('views')->default(0);
             $table->boolean('is_active')->default(true);
             $table->boolean('is_featured')->default(false);
