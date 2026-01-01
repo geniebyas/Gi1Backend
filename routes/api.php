@@ -11,6 +11,7 @@ use App\Http\Controllers\API\LeaderBoardController;
 use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\SettingController;
+use App\Http\Controllers\API\VideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -148,6 +149,17 @@ Route::group(['middleware' => "api"], (function () {
         Route::get('/delete/{id}',[\App\Http\Controllers\API\CDSMController::class,'deletePost']);
     });
 
-
+    //videos
+    Route::prefix('/videos')->group(function (){
+        Route::post('/add',[VideoController::class,'addVideo']);
+        Route::post('/update/{id}',[VideoController::class,'updateVideo']);
+        Route::get('/all',[VideoController::class,'getVideos']);
+        Route::get('/get/{id}',[VideoController::class,'getVideo']);
+        Route::get('/delete/{id}',[VideoController::class,'deleteVideo']);
+        Route::get('/toggle-like/{id}',[VideoController::class,'toggleLike']);
+        Route::get('/analytics/{id}',[VideoController::class,'loadAnalytics']);
+        Route::post('/comment/{id}',[VideoController::class,'addComment']);
+        Route::get('/save/{id}',[VideoController::class,'saveVideo']);
+    });
 
 }));

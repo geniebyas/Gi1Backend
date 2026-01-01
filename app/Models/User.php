@@ -132,4 +132,16 @@ class User extends Model
 
 
 
+    public function videoSaves(){
+        return $this->hasMany(VideoSave::class,'uid');
+    }
+
+    public function videoLikes(){
+        return $this->hasMany(VideoLike::class,'uid');
+    }
+    public function videoComments(){
+        return $this->hasMany(VideoComment::class,'uid');
+    }
+
+
 }
