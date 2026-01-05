@@ -15,7 +15,7 @@ class ConnectionsController extends Controller
     function getUserConnections(Request $request)
     {
         $uid = $request->header('uid');
-        $user = User::with('connections')->where('uid', $uid)->first();
+        $user = User::with(['connections','connections.dest_user','connections.source_user','connectors','connectors.source_user','connectors.dest_user'])->where('uid', $uid)->first();
 
         return response()->json(
             [
