@@ -163,3 +163,5 @@ Route::group(['middleware' => "api"], (function () {
     });
 
 }));
+
+Route::post('/auth/admin/login',[AuthController::class,'adminLogin']);

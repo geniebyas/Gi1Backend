@@ -123,4 +123,38 @@ class AuthController extends Controller
             'output'  => $output,
         ]);
     }
+
+    public function adminLogin(Request $request)
+    {
+        $validator = FacadesValidator::make($request->all(), [
+        'uid' => 'required'
+    ]);
+    if ($validator->fails()) {
+        $response = [
+            'success' => false,
+            'message' => $validator->messages()
+        ];
+        return response()->json($response, 400);
+    }
+    $adminUid = env('ADMIN_UID');
+    if ($request->uid === $adminUid) {
+        $response = [
+            'success' => true,
+            'message' => 'Admin Login Successful',
+            'user' => [
+                'name' => 'Administrator',
+                'email' => 'info@gi1superverse.com',
+                'uid' => $adminUid,
+                'is_admin' => true
+            ]
+        ];
+        return response()->json($response, 200);
+    } else {
+        $response = [
+            'success' => false,
+            'message' => 'Unauthorised'
+        ];
+        return response()->json($response, 401);
+    }
+    }
 }
