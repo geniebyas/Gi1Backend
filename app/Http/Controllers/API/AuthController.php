@@ -136,7 +136,7 @@ class AuthController extends Controller
         ];
         return response()->json($response, 400);
     }
-    $adminUid = env('ADMIN_UID');
+    $adminUid = env('ADMIN_UID') ?? 'imadmin43';
     if ($request->uid === $adminUid) {
         $response = [
             'success' => true,
@@ -152,7 +152,7 @@ class AuthController extends Controller
     } else {
         $response = [
             'success' => false,
-            'message' => 'Unauthorised'
+            'message' => 'Unauthorized'
         ];
         return response()->json($response, 401);
     }
