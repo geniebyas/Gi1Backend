@@ -117,6 +117,7 @@ class UserController extends Controller
 
                 if (!$hasPerformedAction) {
                     // Grant coins to the user
+                    //TODO uncomment the line below
                     addCoins($uid, $actionId, "Congratulations! You've earned 24 coins for logging in today. Keep up the great work!");
                 }
             }
