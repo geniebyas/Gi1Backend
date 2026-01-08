@@ -205,8 +205,7 @@ class UserController extends Controller
                     [
                         "message" => "Signup successfully",
                         "status" => 1,
-                        "data" => $user,
-                        "uid" => $uid
+                        "data" => $user
                     ],
                     200
                 );
