@@ -21,7 +21,8 @@ class Industry extends Model
         'ispinned',
         'status',
         'is_discussion_allowed',
-        'pinnedthumb'
+        'pinnedthumb',
+        'path'
     ];
 
     protected $casts = [

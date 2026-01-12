@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('ispinned')->dafault(false);
             $table->boolean('status')->default(true);
             $table->string('pinnedthumb');
+            $table->string('path')->nullable();
             $table->timestamps();
         });
     }

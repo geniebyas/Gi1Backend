@@ -54,60 +54,43 @@ class IndustryController extends Controller
      */
     public function create(Request $request)
     {
-        $uid = $request->header('uid');
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'type' => 'required|string',
+            'thumbnail' => 'required|file|mimes:jpeg,png,jpg,gif,svg',
+            'pinnedthumb' => 'required|file|mimes:jpeg,png,jpg,gif,svg',
+            'is_discussion_allowed' => 'required|boolean',
+            'file' => 'nullable|file|mimes:jpeg,pdf',
+            'path' => 'nullable|string'
+    ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->first(),
+                'status' => 0,
+                'data' =>null
+            ]);
+        }
+
         $industry = new Industry();
-        $client = new Client();
+        $industry->name = $request->name;
+        $industry->description = $request->description;
+        $industry->type = $request->type;
+        $industry->is_discussion_allowed = $request->is_discussion_allowed;
+        $industry->status = true;
+        $industry->ispinned = false;
+        $industry->thumbnail = $request->file('thumbnail')->store('industry/thumbnails','public');
+        $industry->pinnedthumb = $request->file('pinnedthumb')->store('industry/thumbnails','public');
+        if($request->hasFile('file')){
+            $industry->file = $request->file('file')->store('industry/files','public');
+        }
 
-        $resp = $client->request('POST', "https://api.gi1superapp.com/api/file/upload", [
-            'headers' => [
-                'uid' => $uid
-            ],
-            'multipart' => [
-                'dir' => $request->dir,
-                'name' => $request->name,
-                'contents' => Psr7\Utils::tryFopen($request->file($request->name)->path(), 'r'),
-                'filename' => $request->name . ".png"
-            ]
-        ]);
-
+        $industry->save();
         return response()->json([
-            'message' => $resp
+            'message' => 'Industry Created Successfully',
+            'status' => 1,
+            'data' => $industry
         ]);
-
-
-
-
-        // if(!is_null($industry))
-        // DB::beginTransaction();
-        //     try {
-        //         // Industry::create($industry);
-        //         DB::commit();
-        //     } catch (\Throwable $th) {
-        //         //throw $th;
-        //         DB::rollBack();
-        //         $industry = null;
-        //         $e = $th;
-        //     }
-        //     if ($industry != null) {
-        //         return response()->json(
-        //             [
-        //                 "message" => "Industry Added successfully",
-        //                 "status" => 1,
-        //                 "data" => $industry
-        //             ],
-        //             200
-        //         );
-        //     } else {
-        //         return response()->json(
-        //             [
-        //                 'message' => "Error Occured" . $e->getMessage() ,
-        //                 'status' => 0,
-        //                 'data' =>$request->all()
-        //             ],
-        //             500
-        //         );
-        //     }
-        p($request->all());
     }
 
     public function getIndustryItem(Request $request, $id)
@@ -316,7 +299,7 @@ class IndustryController extends Controller
                     "title" => "Like in $industry->name Discussion",
                     "body" => "$user->username liked your reply in $industry->name"
                 ]));
-            
+
             }
         }
      return response()->json([
@@ -324,6 +307,6 @@ class IndustryController extends Controller
             'status' => 1,
             'data' => true
         ]);
-       
+
     }
 }
