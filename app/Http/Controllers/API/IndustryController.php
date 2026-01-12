@@ -11,12 +11,9 @@ use App\Models\IndustryReplyLike;
 use App\Models\IndustryView;
 use App\Models\PersonalNotification;
 use App\Models\User;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Laravel\Sanctum\PersonalAccessToken;
 
 class IndustryController extends Controller
 {
@@ -76,6 +73,7 @@ class IndustryController extends Controller
         $industry->is_discussion_allowed = $request->is_discussion_allowed;
         $industry->status = true;
         $industry->ispinned = false;
+        Log::info($request->all());
         $industry->thumbnail = $request->file('thumbnail')->store('industry/thumbnails','public');
         $industry->pinnedthumb = $request->file('pinnedthumb')->store('industry/thumbnails','public');
         if($request->hasFile('file')){
