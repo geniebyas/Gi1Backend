@@ -20,7 +20,7 @@ class ProtectRoute
         $uid = $request->header('uid');
         $user = User::where('uid', $uid)->get()->first();
         $path = $request->path();
-        if (str_contains($path, "checkuserexists") || str_contains($path, "register") || str_contains($path, "isuniqueuser") || str_contains($path,"git-deploy") || str_contains($path,"login")) {
+        if (str_contains($path, "checkuserexists") || str_contains($path, "register") || str_contains($path, "isuniqueuser") || str_contains($path,"git-deploy") || str_contains($path,"login") || str_contains($path,"registration") || str_contains($path,"publicusers") || str_contains($path,"admin") ) {
 
             return $next($request);
         } else if (is_null($user)) {
