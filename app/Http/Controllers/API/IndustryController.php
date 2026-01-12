@@ -196,14 +196,10 @@ class IndustryController extends Controller
             $response = [
                 'message' => count($list) . ' industries found',
                 'status' => 1,
-                'data' => null
+                'data' => []
             ];
         }
-        return response()->json([
-            'message' => 'Industries Loaded Successfully',
-            'status' => 1,
-            'data' => $response
-    ]);
+        return response()->json($response);
     }
 
     public function analytics()
