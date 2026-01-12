@@ -23,9 +23,6 @@ class IndustryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-    }
 
     public function allActiveIndustries()
     {
@@ -63,7 +60,7 @@ class IndustryController extends Controller
             'is_discussion_allowed' => 'required|boolean',
             'file' => 'nullable|file|mimes:jpeg,pdf',
             'path' => 'nullable|string'
-    ]);
+        ]);
         if ($validator->fails()) {
             return response()->json([
                 'message' => $validator->errors()->first(),
@@ -92,6 +89,147 @@ class IndustryController extends Controller
             'data' => $industry
         ]);
     }
+
+    public function show(Request $request, $id)
+    {
+        $industry = Industry::with(['views.user','discussions.user','discussions.likes.user','discussions.replies.user','discussions.replies.likes.user'])->find($id);
+        if ($industry != null) {
+            return response()->json(
+                [
+                    'message' => 'Industry loaded Successfully',
+                    'status' => 1,
+                    'data' => $industry
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'message' => 'Some Error Occurred',
+                    'status' => 0,
+                    'data' => "Error Detected"
+                ],
+                500
+            );
+        }
+    }
+
+    public function edit(Request $request, $id)
+    {
+        $industry = Industry::find($id);
+        if ($industry != null) {
+
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'description' => 'required|string',
+                'type' => 'required|string',
+                'status' => 'required|boolean',
+                'thumbnail' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg',
+                'pinnedthumb' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg',
+                'is_discussion_allowed' => 'required|boolean',
+                'file' => 'nullable|file|mimes:jpeg,pdf',
+                'path' => 'nullable|string'
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => $validator->errors()->first(),
+                    'status' => 0,
+                    'data' =>null
+                ]);
+            }
+            $industry->name = $request->name;
+            $industry->description = $request->description;
+            $industry->type = $request->type;
+            $industry->is_discussion_allowed = $request->is_discussion_allowed;
+            $industry->status = true;
+
+            if ($request->hasFile('thumbnail')) {
+                if($industry->thumbnail != null){
+                    //delete old file
+                    unlink(storage_path('app/public/'.$industry->thumbnail));
+                }
+                $industry->thumbnail = $request->file('thumbnail')->store('industry/thumbnails','public');
+            }
+            if ($request->hasFile('pinnedthumb')) {
+                if($industry->pinnedthumb != null){
+                    //delete old file
+                    unlink(storage_path('app/public/'.$industry->pinnedthumb));
+                }
+                $industry->pinnedthumb = $request->file('pinnedthumb')->store('industry/thumbnails','public');
+            }
+            if($request->hasFile('file')){
+                if($industry->file != null){
+                    //delete old file
+                    unlink(storage_path('app/public/'.$industry->file));
+                }
+                $industry->file = $request->file('file')->store('industry/files','public
+                ');
+            }
+            $industry->save();
+            return response()->json([
+                'message' => 'Industry Updated Successfully',
+                'status' => 1,
+                'data' => $industry
+            ]);
+        }else {
+            return response()->json(
+                [
+                    'message' => 'Some Error Occurred',
+                    'status' => 0,
+                    'data' => "Error Detected"
+                ],
+                500
+            );
+        }
+    }
+
+    public function getAllIndustries()
+    {
+        $list = Industry::all();
+        if (count($list) > 0) {
+            //users exists
+            $response = [
+                'message' => count($list) . ' industries found',
+                'status' => 1,
+                'data' => $list
+            ];
+        } else {
+            $response = [
+                'message' => count($list) . ' industries found',
+                'status' => 1,
+                'data' => null
+            ];
+        }
+        return response()->json([
+            'message' => 'Industries Loaded Successfully',
+            'status' => 1,
+            'data' => $response
+    ]);
+    }
+
+    public function analytics()
+    {
+        $total_industries = Industry::count();
+        $total_views = IndustryView::count();
+        $total_discussions = IndustryDiscussion::count();
+        $total_replies = IndustryReply::count();
+        $top_5_viewed_industry = Industry::withCount('views')->orderBy('views_count', 'desc')->limit(5)->get();
+        $top_5_liked_discussion = IndustryDiscussion::withCount('likes')->orderBy('likes_count', 'desc')->limit(5)->get();
+
+        return response()->json([
+            'message' => 'Analytics Loaded Successfully',
+            'status' => 1,
+            'data' => [
+                'total_industries' => $total_industries,
+                'total_views' => $total_views,
+                'total_discussions' => $total_discussions,
+                'total_replies' => $total_replies,
+                'top_5_viewed_industry' => $top_5_viewed_industry,
+                'top_5_liked_discussion' => $top_5_liked_discussion
+            ]
+        ]);
+    }
+
+
 
     public function getIndustryItem(Request $request, $id)
     {
@@ -270,8 +408,6 @@ class IndustryController extends Controller
             'data' => true
         ]);
     }
-
-
 
     public function replyLike(Request $request, $reply_id)
     {

@@ -74,7 +74,6 @@ Route::group(['middleware' => "api"], (function () {
 
     //industry
     Route::prefix('industry')->group(function () {
-        Route::post('/add', [IndustryController::class, 'create']);
         Route::get('/active', [IndustryController::class, 'allActiveIndustries']);
         Route::get('/industryitem/{id}',[IndustryController::class,'getIndustryItem']);
         Route::post('/adddiscussion',[IndustryController::class,'addDiscussion']);
@@ -160,6 +159,17 @@ Route::group(['middleware' => "api"], (function () {
         Route::get('/analytics/{id}',[VideoController::class,'loadAnalytics']);
         Route::post('/comment/{id}',[VideoController::class,'addComment']);
         Route::get('/save/{id}',[VideoController::class,'saveVideo']);
+    });
+
+    //admin
+    Route::prefix('/admin')->group(function (){
+        Route::prefix('/industry')->group(function (){
+            Route::post('/add',[IndustryController::class,'create']);
+            Route::post('/update/{id}',[IndustryController::class,'edit']);
+            Route::get('/all',[IndustryController::class,'getAllIndustries']);
+            Route::get('/show/{id}',[IndustryController::class,'show']);
+            Route::get('/analytics/{id}',[IndustryController::class,'analytics']);
+        });
     });
 
 }));
