@@ -147,19 +147,16 @@ Route::group(['middleware' => "api"], (function () {
 
     //videos
     Route::prefix('/videos')->group(function () {
-        Route::post('/add', [VideoController::class, 'addVideo']);
-        Route::post('/update/{id}', [VideoController::class, 'updateVideo']);
         Route::get('/all', [VideoController::class, 'getVideos']);
         Route::get('/get/{id}', [VideoController::class, 'getVideo']);
-        Route::get('/delete/{id}', [VideoController::class, 'deleteVideo']);
         Route::get('/toggle-like/{id}', [VideoController::class, 'toggleLike']);
-        Route::get('/analytics/{id}', [VideoController::class, 'loadAnalytics']);
         Route::post('/comment/{id}', [VideoController::class, 'addComment']);
         Route::get('/save/{id}', [VideoController::class, 'saveVideo']);
     });
 
     //admin
     Route::prefix('/admin')->group(function () {
+        //industry
         Route::prefix('/industry')->group(function () {
             Route::post('/add', [IndustryController::class, 'create']);
             Route::post('/update/{id}', [IndustryController::class, 'edit']);
@@ -167,10 +164,23 @@ Route::group(['middleware' => "api"], (function () {
             Route::get('/analytics', [IndustryController::class, 'analytics']);
             Route::get('/show/{id}', [IndustryController::class, 'show']);
         });
+        //notification
         Route::prefix('/notification')->group(function () {
             Route::post('/send', [NotificationController::class, 'sendNotification']);
             Route::get('/all', [NotificationController::class, 'getNotifications']);
             Route::get('/announcement', [NotificationController::class, 'getAnnouncement']);
+        });
+        //videos
+        Route::prefix('/videos')->group(function () {
+            Route::post('/add', [VideoController::class, 'addVideo']);
+            Route::post('/update/{id}', [VideoController::class, 'updateVideo']);
+            Route::get('/all', [VideoController::class, 'getVideos']);
+            Route::get('/get/{id}', [VideoController::class, 'getVideo']);
+            Route::get('/delete/{id}', [VideoController::class, 'deleteVideo']);
+            Route::get('/toggle-like/{id}', [VideoController::class, 'toggleLike']);
+            Route::get('/analytics/{id}', [VideoController::class, 'loadAnalytics']);
+            Route::post('/comment/{id}', [VideoController::class, 'addComment']);
+            Route::get('/save/{id}', [VideoController::class, 'saveVideo']);
         });
     });
 }));
