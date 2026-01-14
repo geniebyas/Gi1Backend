@@ -24,7 +24,7 @@ class IndustryController extends Controller
     public function allActiveIndustries()
     {
         $list = Industry::where('status',true)
-        ->where('type','in',['top','main'])
+        ->whereIn('type',['top','main'])
         ->get();
         if (count($list) > 0) {
             //users exists
