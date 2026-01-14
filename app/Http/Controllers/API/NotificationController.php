@@ -76,7 +76,7 @@ class NotificationController extends Controller
             'body' => $body,
             'topic' => "all",
             'is_announcement'=>$is_announcement,
-            'img_url' => $img_url,
+            'img_url' => "https://api.gi1superverse.com/storage/" . $img_url,
             'android_route' => $android_route
         ]));
         return response()->json([

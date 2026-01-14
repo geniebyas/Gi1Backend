@@ -76,13 +76,13 @@ if (!function_exists('sendPublicNotification')) {
         $messaging = $factory->createMessaging();
 
         $message = CloudMessage::withTarget('topic', $data->topic)
-            ->withNotification(['title' => $data->title, 'body' => $data->body])
+            ->withNotification(['title' => $data->title, 'body' => $data->body,'imageUrl' => $data->img_url])
             ->withData([
                 'img_url' => $data->img_url,
                 'topic' => $data->topic,
                 'android_route' => $data->android_route
             ]);
-
+    
         try {
 
             $messaging->send($message);
