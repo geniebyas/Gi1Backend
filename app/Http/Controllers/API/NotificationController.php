@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PersonalNotification;
 use App\Models\PublicNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class NotificationController extends Controller
 {
@@ -45,4 +46,36 @@ class NotificationController extends Controller
             ]);
         }
     }
+
+    public function sendNotification(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
+            'is_announcement' => 'required|boolean'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->first(),
+                'status' => 0
+            ]);
+        }
+
+        $title = $request->title;
+        $body = $request->body;
+        $is_announcement = $request->is_announcement;
+
+        sendPublicNotification(new PublicNotification([
+            'title' => $title,
+            'body' => $body,
+            'topic' => "all",
+            'is_announcement'=>$is_announcement
+        ]));
+        return response()->json([
+            'message' => 'Notification Sent',
+            'status' => 1
+        ]);
+    }
+
 }
