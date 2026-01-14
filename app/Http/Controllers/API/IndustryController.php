@@ -73,6 +73,7 @@ class IndustryController extends Controller
         $industry->type = $request->type;
         $industry->is_discussion_allowed = $request->is_discussion_allowed;
         $industry->status = true;
+        $industry->path = $request->path ?? null;
         $industry->ispinned = false;
         Log::info($request->all());
         $industry->thumbnail = $request->file('thumbnail')->store('industry/thumbnails','public');
@@ -141,6 +142,7 @@ class IndustryController extends Controller
             $industry->type = $request->type;
             $industry->is_discussion_allowed = $request->is_discussion_allowed;
             $industry->status = $request->status;
+            $industry->path = $request->path ?? $industry->path;
             $industry->ispinned = $request->ispinned ?? $industry->ispinned;
 
             if ($request->hasFile('thumbnail')) {
