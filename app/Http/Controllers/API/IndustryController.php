@@ -48,6 +48,8 @@ class IndustryController extends Controller
      */
     public function create(Request $request)
     {
+        Log::info('FILES', $_FILES);
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'required|string',
