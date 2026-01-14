@@ -17,11 +17,11 @@ class ProtectRoute
     public function handle(Request $request, Closure $next): Response
     {
         date_default_timezone_set("Asia/Kolkata");
-        $uid = $request->header('uid');
+        $uid = $request->header('uid') ?? $request->header('Uid');
         $user = User::where('uid', $uid)->get()->first();
         $path = $request->path();
         if (str_contains($path, "checkuserexists") || str_contains($path, "register") || str_contains($path, "isuniqueuser") || str_contains($path,"git-deploy") || str_contains($path,"login") || str_contains($path,"registration") || str_contains($path,"publicusers") || str_contains($path,"admin") ) {
-
+            $request->headers()->set('uid', $uid);
             return $next($request);
         } else if (is_null($user)) {
             $response = [
