@@ -167,6 +167,11 @@ Route::group(['middleware' => "api"], (function () {
             Route::get('/analytics', [IndustryController::class, 'analytics']);
             Route::get('/show/{id}', [IndustryController::class, 'show']);
         });
+        Route::prefix('/notification')->group(function () {
+            Route::post('/send', [NotificationController::class, 'sendNotification']);
+            Route::get('/all', [NotificationController::class, 'getNotifications']);
+            Route::get('/announcement', [NotificationController::class, 'getAnnouncement']);
+        });
     });
 }));
 
