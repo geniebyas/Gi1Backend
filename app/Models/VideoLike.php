@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class VideoLike extends Model
 {
+    protected $table = 'video_likes';
     protected $fillable = [
         'video_id',
         'uid',

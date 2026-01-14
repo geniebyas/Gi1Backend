@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class VideoComment extends Model
 {
+    protected $table = 'video_comments';
     protected $fillable = [
         'video_id',
         'uid',
