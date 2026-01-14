@@ -45,11 +45,11 @@ class VideoController extends Controller
     }
     public function getVideos()
     {
-        $videos = Video::with('user')->where('is_active', true)->get();
+        $videos = Video::with(['user', 'comments.user', 'likes.user', 'saves'])->where('is_active', true)->get();
         return response()->json([
             'message' => 'Videos retrieved successfully',
             'data' => $videos,
-            'true' => true,
+            'status' => 1,
         ]);
     }
     public function getVideo(Request $request, $id)
@@ -61,13 +61,13 @@ class VideoController extends Controller
             return response()->json([
                 'message' => 'Video retrieved successfully',
                 'data' => $video,
-                'true' => true,
+                'true' => 1,
             ]);
         } else {
             return response()->json([
                 'message' => 'Video not found',
                 'data' => null,
-                'true' => false,
+                'true' => 0,
             ]);
         }
     }
@@ -163,13 +163,13 @@ class VideoController extends Controller
             return response()->json([
                 'message' => 'Video like status toggled successfully',
                 'data' => $like,
-                'true' => true,
+                'status' => 1,
             ]);
         } else {
             return response()->json([
                 'message' => 'Video not found',
                 'data' => null,
-                'true' => false,
+                'status' => 0,
             ]);
         }
         }
@@ -217,13 +217,13 @@ class VideoController extends Controller
             return response()->json([
                 'message' => 'Comment added successfully',
                 'data' => $comment,
-                'true' => true,
+                'status' => 1,
             ]);
         } else {
             return response()->json([
                 'message' => 'Video not found',
                 'data' => null,
-                'true' => false,
+                'status' => 0,
             ]);
         }
     }
@@ -248,16 +248,16 @@ class VideoController extends Controller
             return response()->json([
                 'message' => 'Video saved successfully',
                 'data' => $save,
-                'true' => true,
+                'status' => 1,
             ]);
         } else {
             return response()->json([
                 'message' => 'Video not found',
                 'data' => null,
-                'true' => false,
+                'status' => 0,
             ]);
         }
     }
-    
+
 
 }
