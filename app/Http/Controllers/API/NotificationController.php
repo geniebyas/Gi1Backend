@@ -52,7 +52,9 @@ class NotificationController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'body' => 'required|string',
-            'is_announcement' => 'required|boolean'
+            'is_announcement' => 'required|boolean',
+            'img_url' => 'nullable|image',
+            'android_route' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -65,12 +67,17 @@ class NotificationController extends Controller
         $title = $request->title;
         $body = $request->body;
         $is_announcement = $request->is_announcement;
+        $img_url = $request->file('img_url') ? $request->file('img_url')->store('notifications','public') : null;
+        $android_route = $request->android_route;
+
 
         sendPublicNotification(new PublicNotification([
             'title' => $title,
             'body' => $body,
             'topic' => "all",
-            'is_announcement'=>$is_announcement
+            'is_announcement'=>$is_announcement,
+            'img_url' => $img_url,
+            'android_route' => $android_route
         ]));
         return response()->json([
             'message' => 'Notification Sent',
