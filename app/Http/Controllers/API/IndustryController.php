@@ -121,6 +121,7 @@ class IndustryController extends Controller
                 'description' => 'required|string',
                 'type' => 'required|string',
                 'status' => 'required|boolean',
+                'ispinned' => 'nullable|boolean',
                 'thumbnail' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg',
                 'pinnedthumb' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg',
                 'is_discussion_allowed' => 'required|boolean',
@@ -138,7 +139,8 @@ class IndustryController extends Controller
             $industry->description = $request->description;
             $industry->type = $request->type;
             $industry->is_discussion_allowed = $request->is_discussion_allowed;
-            $industry->status = true;
+            $industry->status = $request->status;
+            $industry->ispinned = $request->ispinned ?? $industry->ispinned;
 
             if ($request->hasFile('thumbnail')) {
                 if($industry->thumbnail != null){
@@ -200,7 +202,7 @@ class IndustryController extends Controller
         return response()->json($response);
     }
 
-    public function analytics()
+    public function analytics(Request $request)
     {
         $total_industries = Industry::count();
         $total_views = IndustryView::count();
@@ -222,8 +224,6 @@ class IndustryController extends Controller
             ]
         ]);
     }
-
-
 
     public function getIndustryItem(Request $request, $id)
     {
