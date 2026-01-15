@@ -54,7 +54,7 @@ class VideoController extends Controller
     }
     public function getVideo(Request $request, $id)
     {
-        $video = Video::with('user')->where('id', $id)->first();
+        $video = Video::with(['user', 'comments.user', 'likes.user', 'saves'])->where('id', $id)->first();
         if ($video != null) {
             $video->views = $video->views + 1;
             $video->update();
