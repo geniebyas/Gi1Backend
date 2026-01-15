@@ -21,6 +21,7 @@ class Video extends Model
 
     protected $casts = [
         'is_featured' => 'boolean',
+        'is_active' => 'boolean'
     ];
     public function comments()
     {

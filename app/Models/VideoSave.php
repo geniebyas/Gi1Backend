@@ -14,9 +14,6 @@ class VideoSave extends Model
         'updated_at',
     ];
 
-    protected $casts = [
-        'is_featured' => 'boolean',
-    ];
     public function video()
     {
         return $this->belongsTo(Video::class, 'video_id', 'id');

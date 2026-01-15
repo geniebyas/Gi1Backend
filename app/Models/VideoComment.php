@@ -10,13 +10,14 @@ class VideoComment extends Model
     protected $fillable = [
         'video_id',
         'uid',
+        'is_active',
         'comment',
         'created_at',
         'updated_at',
     ];
 
     protected $casts = [
-        'is_featured' => 'boolean',
+        'is_active' => 'boolean',
     ];
     public function video()
     {

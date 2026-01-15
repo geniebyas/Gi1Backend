@@ -14,6 +14,9 @@ class VideoLike extends Model
         'created_at',
         'updated_at',
     ];
+    protected $casts = [
+        'is_liked' => 'boolean',
+    ];
 
     public function video()
     {
