@@ -61,13 +61,13 @@ class VideoController extends Controller
             return response()->json([
                 'message' => 'Video retrieved successfully',
                 'data' => $video,
-                'true' => 1,
+                'status' => 1,
             ]);
         } else {
             return response()->json([
                 'message' => 'Video not found',
                 'data' => null,
-                'true' => 0,
+                'status' => 0,
             ]);
         }
     }
