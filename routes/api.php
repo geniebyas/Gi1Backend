@@ -8,6 +8,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\IndustryController;
 use App\Http\Controllers\API\FileUploadController;
 use App\Http\Controllers\API\LeaderBoardController;
+use App\Http\Controllers\API\NewsController;
 use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\SettingController;
@@ -154,6 +155,17 @@ Route::group(['middleware' => "api"], (function () {
         Route::get('/save/{id}', [VideoController::class, 'saveVideo']);
     });
 
+    //news
+    Route::prefix('/news')->group(function () {
+        Route::get('/all', [NewsController::class, 'getAllNews']);
+        Route::get('/p/{slug}', [NewsController::class, 'getNewsBySlug']);
+        Route::get('/get/{id}', [NewsController::class, 'getNewsById']);
+        Route::post('/analytics/{id}', [NewsController::class, 'pushAnalytics']);
+        Route::get('/like/{id}', [NewsController::class, 'likeNews']);
+    });
+
+
+
     //admin
     Route::prefix('/admin')->group(function () {
         //industry
@@ -181,6 +193,18 @@ Route::group(['middleware' => "api"], (function () {
             Route::get('/analytics/{id}', [VideoController::class, 'loadAnalytics']);
             Route::post('/comment/{id}', [VideoController::class, 'addComment']);
             Route::get('/save/{id}', [VideoController::class, 'saveVideo']);
+        });
+
+        //news
+        Route::prefix('/news')->group(function () {
+            Route::post('/add', [NewsController::class, 'addNews']);
+            Route::get('/all', [NewsController::class, 'getAllNews']);
+            Route::get('/p/{slug}', [NewsController::class, 'getNewsBySlug']);
+            Route::post('/update/{id}', [NewsController::class, 'updateNews']);
+            Route::get('/get/{id}', [NewsController::class, 'getNewsById']);
+            Route::get('/analytics', [NewsController::class, 'newsAnalyticsSummary']);
+            Route::get('/analytics/detail/{newsId}', [NewsController::class, 'newsAnalyticsDetail']);
+            Route::get('/like/{id}', [NewsController::class, 'likeNews']);
         });
     });
 }));
