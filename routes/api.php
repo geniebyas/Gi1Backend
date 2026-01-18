@@ -162,6 +162,8 @@ Route::group(['middleware' => "api"], (function () {
         Route::get('/get/{id}', [NewsController::class, 'getNewsById']);
         Route::post('/analytics/{id}', [NewsController::class, 'pushAnalytics']);
         Route::get('/like/{id}', [NewsController::class, 'likeNews']);
+        Route::post('/news/track-share/{id}', [NewsController::class, 'trackShare']);
+        Route::post('/news/track-analytics/{id}', [NewsController::class, 'pushAnalytics']);
     });
 
 
@@ -204,7 +206,6 @@ Route::group(['middleware' => "api"], (function () {
             Route::get('/get/{id}', [NewsController::class, 'getNewsById']);
             Route::get('/analytics', [NewsController::class, 'newsAnalyticsSummary']);
             Route::get('/analytics/detail/{newsId}', [NewsController::class, 'newsAnalyticsDetail']);
-            Route::get('/like/{id}', [NewsController::class, 'likeNews']);
         });
     });
 }));

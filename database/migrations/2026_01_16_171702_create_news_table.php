@@ -24,6 +24,13 @@ return new class extends Migration
             $table->integer("likes")->default(0);
             $table->string("slug")->unique();
             $table->string("tags")->nullable();
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->string('meta_keywords')->nullable();
+            $table->json('content_json')->nullable();
+            $table->longText('content_html')->nullable();
+            $table->integer('reading_time')->default(0);
+            $table->integer('shares_count')->default(0);
             $table->timestamps();
         });
     }

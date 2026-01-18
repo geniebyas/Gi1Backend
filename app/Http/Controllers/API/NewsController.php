@@ -17,11 +17,16 @@ class NewsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
             'img' => 'nullable|image|max:5120', // max 5MB
             'tags' => 'nullable',
             'category' => 'required|string|max:100',
             'is_featured' => 'boolean',
+            'content_json' => 'nullable|json',
+            'content_html' => 'nullable|string',
+            'reading_time' => 'nullable|integer',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -33,13 +38,20 @@ class NewsController extends Controller
 
         $news = new News();
         $news->title = $request->input('title');
-        $news->content = $request->input('content');
         $news->uid = $request->header('uid');
         $news->category = $request->input('category');
         $news->is_featured = $request->input('is_featured', false);
         $news->tags = $request->input('tags', null);
         $news->img_url = $request->file('img') != null ? $request->file('img')->store('news_images', 'public') : null;
         $news->slug = $this->generateSlug($news->title);
+        $news->meta_title = $request->input('meta_title');
+        $news->meta_description = $request->input('meta_description');
+        $news->meta_keywords = $request->input('meta_keywords');
+        $news->content_json = $request->input('content_json');
+        $news->content_html = $request->input('content_html');
+        $news->reading_time = $request->input('reading_time');
+        $news->shares_count = 0;
+        $news->is_active = true;
         $news->save();
         return response()->json([
             'message' => 'News Added Successfully',
@@ -83,6 +95,14 @@ class NewsController extends Controller
     {
         $news = News::where('slug', $slug)->first();
 
+        $recommendedNews = News::where('category', $news->category)
+            ->where('id', '!=', $news->id)
+            ->inRandomOrder()
+            ->limit(5)
+            ->get();
+
+            $news->recommended = $recommendedNews;
+
         if (!$news) {
             return response()->json([
                 'message' => 'News Not Found',
@@ -102,12 +122,17 @@ class NewsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|string|max:255',
-            'content' => 'sometimes|required|string',
             'img' => 'nullable|image|max:5120', // max 5MB
             'tags' => 'nullable',
             'category' => 'sometimes|required|string|max:100',
             'is_featured' => 'boolean',
             'is_active' => 'boolean',
+            'content_json' => 'nullable|json',
+            'content_html' => 'nullable|string',
+            'reading_time' => 'nullable|integer',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -130,9 +155,6 @@ class NewsController extends Controller
             $news->title = $request->input('title');
             $news->slug = $this->generateSlug($news->title);
         }
-        if ($request->has('content')) {
-            $news->content = $request->input('content');
-        }
         if ($request->has('category')) {
             $news->category = $request->input('category');
             $news->slug = $this->generateSlug($news->title);
@@ -150,6 +172,29 @@ class NewsController extends Controller
         if ($request->file('img') != null) {
             $news->img_url = $request->file('img')->store('news_images', 'public');
         }
+        if ($request->has('meta_title')) {
+            $news->meta_title = $request->input('meta_title');
+        }
+        if ($request->has('meta_description')) {
+            $news->meta_description = $request->input('meta_description');
+        }
+        if ($request->has('meta_keywords')) {
+            $news->meta_keywords = $request->input('meta_keywords');
+        }
+        if ($request->has('content_json')) {
+            $news->content_json = $request->input('content_json');
+        }
+        if ($request->has('content_html')) {
+            $news->content_html = $request->input('content_html');
+        }
+        if ($request->has('reading_time')) {
+            $news->reading_time = $request->input('reading_time');
+        }
+        if ($request->has('shares_count')) {
+            $news->shares_count = $request->input('shares_count');
+        }
+
+
 
         $news->save();
 
@@ -413,6 +458,41 @@ class NewsController extends Controller
                     ->get(),
             ];
         });
+    }
+
+    public function trackShare(Request $request, $newsId){
+        $news = News::find($newsId);
+
+        if (!$news) {
+            return response()->json([
+                'message' => 'News Not Found',
+                'status'  => false,
+                'data'    => null
+            ], 404);
+        }
+
+        $sharePlatform = $request->input('share_platform');
+
+        // Update shares_count
+        $news->shares_count += 1;
+        $news->save();
+
+        // Record share analytics
+        $analyticsData = [
+            'news_id'          => $news->id,
+            'ip_address'       => $request->ip(),
+            'user_agent'       => $request->userAgent(),
+            'share_platform'   => $sharePlatform,
+            'is_unique'        => false, // Shares are not counted as unique views
+        ];
+
+        $news->analytics()->create($analyticsData);
+
+        return response()->json([
+            'message' => 'Share Tracked Successfully',
+            'status'  => true,
+            'data'    => ['shares_count' => $news->shares_count]
+        ]);
     }
 
 

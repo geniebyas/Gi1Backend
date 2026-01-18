@@ -10,7 +10,6 @@ class News extends Model
 
     protected $fillable = [
         'title',
-        'content',
         'uid',
         'img_url',
         'is_active',
@@ -19,6 +18,13 @@ class News extends Model
         'likes',
         'slug',
         'tags',
+        'meta_title',
+    'meta_description',
+    'meta_keywords',
+    'content_json', // Store EditorJS JSON
+    'content_html', // Rendered HTML for quick display
+    'reading_time', // Calculated reading time in minutes
+    'shares_count', // Track social shares
     ];
 
     protected $casts = [

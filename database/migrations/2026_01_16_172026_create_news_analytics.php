@@ -30,6 +30,9 @@ return new class extends Migration
             $table->string("utm_source")->nullable();
             $table->string("utm_medium")->nullable();
             $table->string("utm_campaign")->nullable();
+            $table->string('share_platform')->nullable(); // facebook, twitter, etc.
+            $table->integer('time_spent')->nullable(); // seconds
+            $table->integer('scroll_depth')->nullable(); // percentage
             $table->timestamps();
         });
 
