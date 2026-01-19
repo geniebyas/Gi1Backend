@@ -285,7 +285,7 @@ class NewsController extends Controller
         // ----------------------------------
         // Unique View (per day, per news)
         // ----------------------------------
-        $isUnique = !DB::table('analytics')
+        $isUnique = !DB::table('news_analytics')
             ->where('news_id', $news->id)
             ->where('ip_address', $ipAddress)
             ->whereDate('created_at', now()->toDateString())
