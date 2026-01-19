@@ -489,6 +489,16 @@ class NewsController extends Controller
         ]);
     }
 
+    private function analyticsCacheKey($prefix, $params)
+    {
+        $key = $prefix;
+        foreach ($params as $param => $value) {
+            if ($value !== null) {
+                $key .= "_{$param}:" . str_replace(' ', '_', $value);
+            }
+        }
+        return $key;
+    }
 
 
 
