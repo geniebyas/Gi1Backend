@@ -125,7 +125,6 @@ class NewsController extends Controller
             'category' => 'sometimes|required|string|max:100',
             'is_featured' => 'boolean',
             'is_active' => 'boolean',
-            'content_json' => 'nullable|json',
             'content_html' => 'nullable|string',
             'reading_time' => 'nullable|integer',
             'meta_title' => 'nullable|string|max:255',
@@ -178,9 +177,6 @@ class NewsController extends Controller
         }
         if ($request->has('meta_keywords')) {
             $news->meta_keywords = $request->input('meta_keywords');
-        }
-        if ($request->has('content_json')) {
-            $news->content_json = $request->input('content_json');
         }
         if ($request->has('content_html')) {
             $news->content_html = $request->input('content_html');
