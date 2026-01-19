@@ -251,8 +251,11 @@ class NewsController extends Controller
         // ----------------------------------
         // Geo Location
         // ----------------------------------
-        $location = geoip($ipAddress);
-
+        try{
+            $location = geoip($ipAddress);
+        } catch (\Exception $e) {
+            $location = null;
+        }
         // ----------------------------------
         // Unique View (per day, per news)
         // ----------------------------------
