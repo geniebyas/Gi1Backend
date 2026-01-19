@@ -238,7 +238,7 @@ class NewsController extends Controller
         // Core Request Info
         // ----------------------------------
         $ipAddress = $request->ip();
-        $userAgent = $request->userAgent();
+        $userAgent = $request->userAgent() ?? 'unknown';
         $sessionId = $request->session_id;
 
         // ----------------------------------
