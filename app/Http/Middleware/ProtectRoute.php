@@ -20,7 +20,7 @@ class ProtectRoute
         $uid = $request->header('uid') ?? $request->header('Uid');
         $user = User::where('uid', $uid)->get()->first();
         $path = $request->path();
-        if(str_contains($path,"news/all") || str_contains($path,"news/get/") || str_contains($path,"news/p/")){
+        if(str_contains($path,"news/all") || str_contains($path,"news/get/") || str_contains($path,"news/p/") || str_contains($path,"news/analytics") || str_contains($path,"news/track-share") || str_contains($path,"news/like")){
             return $next($request);
         }
         if (str_contains($path, "checkuserexists") || str_contains($path, "register") || str_contains($path, "isuniqueuser") || str_contains($path,"git-deploy") || str_contains($path,"login") || str_contains($path,"registration") || str_contains($path,"publicusers") || str_contains($path,"admin") ) {
