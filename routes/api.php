@@ -160,10 +160,10 @@ Route::group(['middleware' => "api"], (function () {
         Route::get('/all', [NewsController::class, 'getAllNews']);
         Route::get('/p/{slug}', [NewsController::class, 'getNewsBySlug']);
         Route::get('/get/{id}', [NewsController::class, 'getNewsById']);
-        Route::post('/analytics/{id}', [NewsController::class, 'pushAnalytics']);
+        Route::post('/analytics/{newsId}', [NewsController::class, 'pushAnalytics']);
         Route::get('/like/{id}', [NewsController::class, 'likeNews']);
-        Route::post('/news/track-share/{id}', [NewsController::class, 'trackShare']);
-        Route::post('/news/track-analytics/{id}', [NewsController::class, 'pushAnalytics']);
+        Route::post('/news/track-share/{newsId}', [NewsController::class, 'trackShare']);
+        Route::post('/news/track-analytics/{newsId}', [NewsController::class, 'pushAnalytics']);
     });
 
 
