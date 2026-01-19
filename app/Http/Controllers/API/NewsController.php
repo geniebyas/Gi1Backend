@@ -237,7 +237,7 @@ class NewsController extends Controller
         // ----------------------------------
         $ipAddress = $request->ip();
         $userAgent = $request->userAgent();
-        $sessionId = $request->session()->getId();
+        $sessionId = $request->header('Session-Id', Str::uuid());
 
         // ----------------------------------
         // Device Detection
