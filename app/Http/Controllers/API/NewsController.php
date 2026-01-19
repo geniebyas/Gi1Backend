@@ -21,7 +21,6 @@ class NewsController extends Controller
             'tags' => 'nullable',
             'category' => 'required|string|max:100',
             'is_featured' => 'boolean',
-            'content_json' => 'nullable|json',
             'content_html' => 'nullable|string',
             'reading_time' => 'nullable|integer',
             'meta_title' => 'nullable|string|max:255',
@@ -47,7 +46,6 @@ class NewsController extends Controller
         $news->meta_title = $request->input('meta_title');
         $news->meta_description = $request->input('meta_description');
         $news->meta_keywords = $request->input('meta_keywords');
-        $news->content_json = $request->input('content_json');
         $news->content_html = $request->input('content_html');
         $news->reading_time = $request->input('reading_time');
         $news->shares_count = 0;

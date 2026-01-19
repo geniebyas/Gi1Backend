@@ -136,7 +136,7 @@ class AuthController extends Controller
         ];
         return response()->json($response, 400);
     }
-    $adminUid = env('ADMIN_UID') ?? 'imadmin43';
+    $adminUid = env('ADMIN_UID') ?? 'user_693a97bbce0eb';
     if ($request->uid === $adminUid) {
         $response = [
             'success' => true,
