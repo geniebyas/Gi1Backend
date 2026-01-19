@@ -4,12 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\News;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use IP2Location\Database;
 use Jenssegers\Agent\Agent;
+use Illuminate\Http\Request;
+
 
 class NewsController extends Controller
 {
@@ -99,7 +101,7 @@ class NewsController extends Controller
             ->limit(5)
             ->get();
 
-            $news->recommended = $recommendedNews;
+        $news->recommended = $recommendedNews;
 
         if (!$news) {
             return response()->json([
@@ -251,11 +253,35 @@ class NewsController extends Controller
         // ----------------------------------
         // Geo Location
         // ----------------------------------
-        try{
-            $location = geoip($ipAddress);
-        } catch (\Exception $e) {
+        $location = null;
+
+        try {
+            // Ignore localhost / private IPs (best practice)
+            if (!filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                $location = null;
+            } else {
+                $ip2location = new Database(
+                    storage_path('app/IP2LOCATION-LITE-DB9.BIN'),
+                    Database::FILE_IO
+                );
+
+                $record = $ip2location->lookup($ipAddress, Database::ALL);
+
+                $location = (object) [
+                    'country'   => $record['countryName']   ?? null,
+                    'region'    => $record['regionName']    ?? null,
+                    'city'      => $record['cityName']      ?? null,
+                    'latitude'  => $record['latitude']      ?? null,
+                    'longitude' => $record['longitude']     ?? null,
+                    'zipcode'   => $record['zipCode']       ?? null,
+                ];
+            }
+        } catch (\Throwable $e) {
+            // Fail silently — analytics must NEVER break request flow
             $location = null;
         }
+
+
         // ----------------------------------
         // Unique View (per day, per news)
         // ----------------------------------
@@ -457,7 +483,8 @@ class NewsController extends Controller
         });
     }
 
-    public function trackShare(Request $request, $newsId){
+    public function trackShare(Request $request, $newsId)
+    {
         $news = News::find($newsId);
 
         if (!$news) {

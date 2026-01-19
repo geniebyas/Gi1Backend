@@ -6,8 +6,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "geoip2/geoip2": "*",
+        "geoip2/geoip2": "^3.3",
         "guzzlehttp/guzzle": "^7.9",
+        "ip2location/ip2location-php": "^9.8",
         "jenssegers/agent": "^2.6",
         "kreait/firebase-php": "^7.15",
         "laravel/breeze": "^2.3",
