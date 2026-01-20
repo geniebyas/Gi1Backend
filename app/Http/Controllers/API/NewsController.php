@@ -262,7 +262,7 @@ class NewsController extends Controller
                 $location = null;
             } else {
                 $ip2location = new Database(
-                    storage_path('app/IP2LOCATION-LITE-DB3.BIN'),
+                    storage_path('app/IP2LOCATION-LITE-DB9.BIN'),
                     Database::FILE_IO
                 );
 
