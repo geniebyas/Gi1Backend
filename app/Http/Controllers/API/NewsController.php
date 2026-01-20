@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\News;
+use GPBMetadata\Google\Api\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -11,7 +12,7 @@ use Illuminate\Support\Str;
 use IP2Location\Database;
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log as FacadesLog;
 
 class NewsController extends Controller
 {
@@ -279,6 +280,7 @@ class NewsController extends Controller
         } catch (\Throwable $e) {
             // Fail silently — analytics must NEVER break request flow
             $location = null;
+            FacadesLog::error("IP2Location Error: " . $e->getMessage());
         }
 
 
@@ -315,9 +317,10 @@ class NewsController extends Controller
             'is_unique'        => $isUnique,
 
             // UTM Parameters (optional but correct)
-            'utm_source'       => $request->query('utm_source'),
-            'utm_medium'       => $request->query('utm_medium'),
-            'utm_campaign'     => $request->query('utm_campaign'),
+            'utm_source'       => $request->input('utm_source'),
+            'utm_medium'       => $request->input('utm_medium'),
+            'utm_campaign'     => $request->input('utm_campaign'),
+
         ];
 
         $news->analytics()->create($analyticsData);
