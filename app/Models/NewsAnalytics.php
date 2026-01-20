@@ -27,6 +27,10 @@ class NewsAnalytics extends Model
         'utm_campaign',
     ];
 
+    protected $casts = [
+        'is_unique' => 'boolean',
+    ];
+
     public function news()
     {
         return $this->belongsTo(News::class, 'news_id');

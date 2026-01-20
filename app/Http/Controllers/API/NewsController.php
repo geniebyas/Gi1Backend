@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use IP2Location\Database;
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log as FacadesLog;
 
 class NewsController extends Controller
@@ -437,8 +438,14 @@ class NewsController extends Controller
 
             $news = News::findOrFail($newsId);
 
-            $start = $request->query('start_date', now()->subDays(7));
-            $end   = $request->query('end_date', now());
+            $start = $request->query('start_date')
+                ? Carbon::parse($request->query('start_date'))->startOfDay()
+                : now()->subDays(7)->startOfDay();
+
+            $end = $request->query('end_date')
+                ? Carbon::parse($request->query('end_date'))->endOfDay()
+                : now()->endOfDay();
+
 
             $baseQuery = DB::table('news_analytics')
                 ->where('news_id', $newsId)
