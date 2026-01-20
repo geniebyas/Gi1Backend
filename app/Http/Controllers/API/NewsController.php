@@ -362,7 +362,7 @@ class NewsController extends Controller
             'city'       => $request->query('city'),
         ];
 
-        $cacheKey = $this->analyticsCacheKey('news_analytics_summary', $params);
+        $cacheKey = self::analyticsCacheKey('news_analytics_summary', $params);
 
         return Cache::remember($cacheKey, now()->addMinutes(3), function () use ($request) {
 
@@ -519,7 +519,7 @@ class NewsController extends Controller
         ]);
     }
 
-    private function analyticsCacheKey($prefix, $params)
+    public static function analyticsCacheKey($prefix, $params)
     {
         $key = $prefix;
         foreach ($params as $param => $value) {
