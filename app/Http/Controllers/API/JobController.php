@@ -48,8 +48,7 @@ class JobController extends Controller
         $jobData = $request->only(['name', 'description', 'experience', 'salary', 'skills', 'location', 'company', 'website', 'type', 'created_by']);
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
-            $filename = time() . '_' . $file->getExtension();
-            $filePath = $file->storeAs('public/job_banners', $filename);
+            $filePath = $file->store('public/job_banners');
             $jobData['banner'] = str_replace('public/', '', $filePath);
         }
         $job = \App\Models\JobMst::create($jobData);
@@ -110,8 +109,7 @@ class JobController extends Controller
                 Storage::delete('public/'.$job->banner);
             }
             $file = $request->file('banner');
-            $filename = time() . '_' . $file->getExtension();
-            $filePath = $file->storeAs('public/job_banners', $filename);
+            $filePath = $file->store('public/job_banners');
             $jobData['banner'] = str_replace('public/', '', $filePath);
         }
         $job->merge($jobData);
@@ -171,8 +169,7 @@ class JobController extends Controller
         $applicationData['status'] = 'pending';
         if ($request->hasFile('resume')) {
             $file = $request->file('resume');
-            $filename = time() . '_' . $file->getExtension();
-            $filePath = $file->storeAs('public/job_resumes', $filename);
+            $filePath = $file->store('public/job_resumes');
             $applicationData['resume'] = str_replace('public/', '', $filePath);
         }
         $application = \App\Models\JobApplication::create($applicationData);
