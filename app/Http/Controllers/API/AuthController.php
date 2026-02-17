@@ -127,43 +127,43 @@ class AuthController extends Controller
     public function adminLogin(Request $request)
     {
         $validator = FacadesValidator::make($request->all(), [
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
-    if ($validator->fails()) {
-        $response = [
-            'success' => false,
-            'message' => $validator->messages()
-        ];
-        return response()->json($response);
-    }
-    $admin = User::where('email', $request->email)->first();
-    if (!$admin || !password_verify($request->password, $admin->password)) {
-        $response = [
-            'success' => false,
-            'message' => 'Invalid credentials'
-        ];
-        return response()->json($response);
-    }
-    $adminUid = env('ADMIN_UID') ?? 'user_693a97bbce0eb';
-    if ($admin->uid === $adminUid) {
-        $response = [
-            'success' => true,
-            'message' => 'Admin Login Successful',
-            'user' => [
-                'name' => 'Administrator',
-                'email' => 'info@gi1superverse.com',
-                'uid' => $adminUid,
-                'is_admin' => true
-            ]
-        ];
-        return response()->json($response, 200);
-    } else {
-        $response = [
-            'success' => false,
-            'message' => 'Unauthorized'
-        ];
-        return response()->json($response, 401);
-    }
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        if ($validator->fails()) {
+            $response = [
+                'success' => false,
+                'message' => $validator->messages()
+            ];
+            return response()->json($response);
+        }
+        $admin = User::where('email', $request->email)->first();
+        if (!$admin || !password_verify($request->password, $admin->password)) {
+            $response = [
+                'success' => false,
+                'message' => 'Invalid credentials'
+            ];
+            return response()->json($response);
+        }
+        $adminUid = env('ADMIN_UID') ?? 'user_693a97bbce0eb';
+        if ($admin->uid === $adminUid) {
+            $response = [
+                'success' => true,
+                'message' => 'Admin Login Successful',
+                'user' => [
+                    'name' => 'Administrator',
+                    'email' => 'info@gi1superverse.com',
+                    'uid' => $adminUid,
+                    'is_admin' => true
+                ]
+            ];
+            return response()->json($response, 200);
+        } else {
+            $response = [
+                'success' => false,
+                'message' => 'Unauthorized'
+            ];
+            return response()->json($response, 401);
+        }
     }
 }
