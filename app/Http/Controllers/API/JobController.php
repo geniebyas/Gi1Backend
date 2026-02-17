@@ -33,7 +33,7 @@ class JobController extends Controller
             'location' => 'nullable|string',
             'company' => 'nullable|string',
             'website' => 'nullable|url',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp',
             'type' => 'required',
             'created_by' => 'required'
         ]);
@@ -242,6 +242,6 @@ class JobController extends Controller
             'message'=>'Job application updated successfully'
         ]);
     }
-    
+
 
 }
