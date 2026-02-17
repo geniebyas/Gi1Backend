@@ -30,7 +30,7 @@ class ProtectRoute
         'registration',
         'publicusers',
         'admin',
-        'api/jobs/all/',
+        'api/jobs/all',
         'api/jobs/get/',
         'api/jobs/apply/'
     ];
