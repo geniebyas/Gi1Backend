@@ -31,7 +31,7 @@ class ProtectRoute
         'publicusers',
         'admin',
         'api/jobs/all',
-        'api/jobs/get/',
+        'api/jobs/get',
         'api/jobs/apply/'
     ];
 
@@ -41,8 +41,11 @@ class ProtectRoute
         $uid = $request->header('uid') ?? $request->header('Uid');
         $user = User::where('uid', $uid)->get()->first();
         $path = $request->path();
-        if(in_array($path, $this->publicRoutes)){
-            return $next($request);
+        //check if path is start with these public routes
+        foreach ($this->publicRoutes as $publicRoute) {
+            if (str_starts_with($path, $publicRoute)) {
+                return $next($request);
+            }
         }
         if (str_contains($path, "checkuserexists") || str_contains($path, "register") || str_contains($path, "isuniqueuser") || str_contains($path,"git-deploy") || str_contains($path,"login") || str_contains($path,"registration") || str_contains($path,"publicusers") || str_contains($path,"admin") ) {
             $request->headers->set('uid', $uid);
