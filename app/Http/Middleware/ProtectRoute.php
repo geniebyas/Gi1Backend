@@ -43,7 +43,7 @@ class ProtectRoute
         $path = $request->path();
         //check if path is start with these public routes
         foreach ($this->publicRoutes as $publicRoute) {
-            if (str_starts_with($path, $publicRoute)) {
+            if (str_starts_with($path, $publicRoute) || str_contains($path, $publicRoute)) {
                 return $next($request);
             }
         }
