@@ -127,17 +127,26 @@ class AuthController extends Controller
     public function adminLogin(Request $request)
     {
         $validator = FacadesValidator::make($request->all(), [
-        'uid' => 'required'
+        'email' => 'required|email',
+        'password' => 'required',
     ]);
     if ($validator->fails()) {
         $response = [
             'success' => false,
             'message' => $validator->messages()
         ];
-        return response()->json($response, 400);
+        return response()->json($response);
+    }
+    $admin = User::where('email', $request->email)->first();
+    if (!$admin || !password_verify($request->password, $admin->password)) {
+        $response = [
+            'success' => false,
+            'message' => 'Invalid credentials'
+        ];
+        return response()->json($response);
     }
     $adminUid = env('ADMIN_UID') ?? 'user_693a97bbce0eb';
-    if ($request->uid === $adminUid) {
+    if ($admin->uid === $adminUid) {
         $response = [
             'success' => true,
             'message' => 'Admin Login Successful',
