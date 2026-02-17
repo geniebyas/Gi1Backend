@@ -24,4 +24,5 @@ class JobMst extends Model
     ];
 
     public function creator() { return $this->belongsTo(User::class, 'created_by', 'uid'); }
+    public function applications() { return $this->hasMany(JobApplication::class, 'job_id', 'id'); }
 }
