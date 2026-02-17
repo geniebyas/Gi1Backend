@@ -14,13 +14,34 @@ class ProtectRoute
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
+
+    public $publicRoutes = [
+        'news/all',
+        'news/get/',
+        'news/p/',
+        'news/analytics',
+        'news/track-share',
+        'news/like',
+        'checkuserexists',
+        'register',
+        'isuniqueuser',
+        'git-deploy',
+        'login',
+        'registration',
+        'publicusers',
+        'admin',
+        'api/jobs/all',
+        'api/jobs/get/',
+        'api/jobs/apply/'
+    ];
+
     public function handle(Request $request, Closure $next): Response
     {
         date_default_timezone_set("Asia/Kolkata");
         $uid = $request->header('uid') ?? $request->header('Uid');
         $user = User::where('uid', $uid)->get()->first();
         $path = $request->path();
-        if(str_contains($path,"news/all") || str_contains($path,"news/get/") || str_contains($path,"news/p/") || str_contains($path,"news/analytics") || str_contains($path,"news/track-share") || str_contains($path,"news/like")){
+        if(in_array($path, $this->publicRoutes)){
             return $next($request);
         }
         if (str_contains($path, "checkuserexists") || str_contains($path, "register") || str_contains($path, "isuniqueuser") || str_contains($path,"git-deploy") || str_contains($path,"login") || str_contains($path,"registration") || str_contains($path,"publicusers") || str_contains($path,"admin") ) {
