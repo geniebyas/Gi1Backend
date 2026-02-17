@@ -176,7 +176,7 @@ Route::group(['middleware' => "api"], (function () {
 
 
     //admin
-    Route::prefix('/admin')->group(function () { 
+    Route::prefix('/admin')->group(function () {
         //industry
         Route::prefix('/industry')->group(function () {
             Route::post('/add', [IndustryController::class, 'create']);
@@ -217,7 +217,7 @@ Route::group(['middleware' => "api"], (function () {
 
         //Jobs
         Route::prefix('/jobs')->group(function () {
-            Route::post('/add', [JobController::class, 'addJob']);
+            Route::post('/add', [JobController::class, 'createJob']);
             Route::get('/all', [JobController::class, 'getAllJobs']);
             Route::get('/get/{id}', [JobController::class, 'getJob']);
             Route::post('/update/{id}', [JobController::class, 'updateJob']);
