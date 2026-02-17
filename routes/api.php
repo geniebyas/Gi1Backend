@@ -7,6 +7,7 @@ use App\Http\Controllers\API\FeedbackController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\IndustryController;
 use App\Http\Controllers\API\FileUploadController;
+use App\Http\Controllers\API\JobController;
 use App\Http\Controllers\API\LeaderBoardController;
 use App\Http\Controllers\API\NewsController;
 use App\Http\Controllers\API\NotificationController;
@@ -166,10 +167,16 @@ Route::group(['middleware' => "api"], (function () {
         Route::post('/news/track-analytics/{newsId}', [NewsController::class, 'pushAnalytics']);
     });
 
+    //jobs
+    Route::prefix('/jobs')->group(function () {
+        Route::get('/all', [JobController::class, 'getAllJobs']);
+        Route::get('/get/{id}', [JobController::class, 'getJob']);
+        Route::post('/apply/{id}', [JobController::class, 'applyJob']);
+    });
 
 
     //admin
-    Route::prefix('/admin')->group(function () {
+    Route::prefix('/admin')->group(function () { 
         //industry
         Route::prefix('/industry')->group(function () {
             Route::post('/add', [IndustryController::class, 'create']);
@@ -206,6 +213,17 @@ Route::group(['middleware' => "api"], (function () {
             Route::get('/get/{id}', [NewsController::class, 'getNewsById']);
             Route::get('/analytics', [NewsController::class, 'newsAnalyticsSummary']);
             Route::get('/analytics/detail/{newsId}', [NewsController::class, 'newsAnalyticsDetail']);
+        });
+
+        //Jobs
+        Route::prefix('/jobs')->group(function () {
+            Route::post('/add', [JobController::class, 'addJob']);
+            Route::get('/all', [JobController::class, 'getAllJobs']);
+            Route::get('/get/{id}', [JobController::class, 'getJob']);
+            Route::post('/update/{id}', [JobController::class, 'updateJob']);
+            Route::get('/delete/{id}', [JobController::class, 'deleteJob']);
+            Route::get('/get-applications/{jobId}', [JobController::class, 'getJobApplications']);
+            Route::post('/update-application/{id}', [JobController::class, 'updateJobApplication']);
         });
     });
 }));
