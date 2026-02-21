@@ -540,8 +540,6 @@ class NewsController extends Controller
         return $key;
     }
 
-
-
     private function generateSlug($title)
     {
         $slug = Str::slug($title);
