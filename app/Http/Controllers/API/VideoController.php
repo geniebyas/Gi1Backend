@@ -46,7 +46,12 @@ class VideoController extends Controller
     public function getVideos(Request $request)
     {
         $isActive = $request->query('is_active', 1);
-        $videos = Video::with(['user', 'comments.user', 'likes.user', 'saves'])->where('is_active', $isActive == 1)->get();
+        $videos = Video::with(['user', 'comments.user', 'likes.user', 'saves']);
+        if ($isActive == 1) {
+            $videos = $videos->where('is_active', $isActive == 1)->get();
+        } else {
+            $videos = $videos->get();
+        }
         return response()->json([
             'message' => 'Videos retrieved successfully',
             'data' => $videos,
