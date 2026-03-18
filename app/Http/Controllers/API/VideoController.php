@@ -23,7 +23,7 @@ class VideoController extends Controller
             'is_featured' => 'nullable|boolean',
         ]);
 
-        $user = User::where('uid',$request->header('uid'))->first();
+        $user = User::where('uid', $request->header('uid'))->first();
 
         // Create a new video record
         $video = Video::create([
@@ -43,9 +43,10 @@ class VideoController extends Controller
             'true' => true,
         ]);
     }
-    public function getVideos()
+    public function getVideos(Request $request)
     {
-        $videos = Video::with(['user', 'comments.user', 'likes.user', 'saves'])->where('is_active', true)->get();
+        $isActive = $request->query('is_active', true);
+        $videos = Video::with(['user', 'comments.user', 'likes.user', 'saves'])->where('is_active', $isActive)->get();
         return response()->json([
             'message' => 'Videos retrieved successfully',
             'data' => $videos,
@@ -148,7 +149,7 @@ class VideoController extends Controller
     {
         $video = Video::where('id', $id)->first();
         if ($video != null) {
-            $user = User::where('uid',$request->header('uid'))->first();
+            $user = User::where('uid', $request->header('uid'))->first();
             $like = VideoLike::where('video_id', $id)->where('uid', $user->uid)->first();
             if ($like != null) {
                 $like->is_liked = !$like->is_liked;
@@ -172,7 +173,7 @@ class VideoController extends Controller
                 'status' => 0,
             ]);
         }
-        }
+    }
     public function loadAnalytics(Request $request, $id)
     {
         $video = Video::where('id', $id)->first();
@@ -205,7 +206,7 @@ class VideoController extends Controller
                 'comment' => 'required|string',
             ]);
 
-            $user = User::where('uid',$request->header('uid'))->first();
+            $user = User::where('uid', $request->header('uid'))->first();
 
             // Create a new comment
             $comment = VideoComment::create([
@@ -231,7 +232,7 @@ class VideoController extends Controller
     {
         $video = Video::where('id', $id)->first();
         if ($video != null) {
-            $user = User::where('uid',$request->header('uid'))->first();
+            $user = User::where('uid', $request->header('uid'))->first();
             // Check if the video is already saved
             $existingSave = $user->videoSaves()->where('video_id', $id)->first();
             if ($existingSave) {
@@ -258,6 +259,4 @@ class VideoController extends Controller
             ]);
         }
     }
-
-
 }
