@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('fitness_videos_likes', function (Blueprint $table) {
             $table->id();
-            $table->string('video_id');
+            $table->unsignedBigInteger('video_id');
             $table->foreign('video_id')->references('id')->on('fitness_videos')->onDelete('cascade');
             $table->string('user_id');
             $table->foreign('user_id')->references('uid')->on('users')->onDelete('cascade');
