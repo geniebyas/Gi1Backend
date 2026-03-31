@@ -26,4 +26,9 @@ class FitnessVideo extends Model
     public function category()
     {        return $this->belongsTo(FitnessCategory::class, 'category_id', 'id');
     }
+
+    public function likes()
+    {
+        return $this->hasMany(FitnessVideoLike::class, 'fitness_video_id', 'id');
+    }
 }
