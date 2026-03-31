@@ -269,7 +269,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'phone' => 'required|string|max:255',
             'dob' => 'required',
-            'gender' => 'required|in:Male,Female',
+            'gender' => 'required|in:Male,Female,Others',
             'city' => 'required|string|max:255',
             'bio' => 'nullable|string|max:255',
             'profile_pic' => 'nullable|string|max:255',
@@ -280,7 +280,7 @@ class UserController extends Controller
             return response()->json([
                 'message' => $validator->errors()->first(),
                 'status' => 0,
-                'data' => $validator->errors()->first()
+                'data' => $validator->errors()
             ]);
         }
         $user = User::where('uid', $uid)->get()->first();
@@ -318,14 +318,14 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'Registration Successfully',
                 'status' => 1,
-                'data' => strval($user)
-            ], 200);
+                'data' => $res
+            ]);
         } catch (Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage(),
                 'status' => 0,
-                'data' => ''
-            ], 500);
+                'data' => null
+            ]);
         }
     }
 
