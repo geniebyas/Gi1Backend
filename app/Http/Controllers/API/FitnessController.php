@@ -452,7 +452,7 @@ class FitnessController extends Controller
             'instagram' => 'nullable|string',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
             'status' => 'required|string',
-            'rating' => 'nullable|integer',
+            'rating' => 'nullable',
             'views' => 'nullable|integer',
         ]);
         if ($validator->fails()) {
