@@ -142,7 +142,7 @@ class IndustryController extends Controller
             $industry->type = $request->type;
             $industry->is_discussion_allowed = $request->is_discussion_allowed;
             $industry->status = $request->status;
-            $industry->path = $request->path ?? $industry->path;
+            $industry->path = $request->path;
             $industry->ispinned = $request->ispinned ?? $industry->ispinned;
 
             if ($request->hasFile('thumbnail')) {

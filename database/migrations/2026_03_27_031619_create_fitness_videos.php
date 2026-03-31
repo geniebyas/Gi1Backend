@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('fitness_videos', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
+            $table->text('description');
             $table->string('video_url');
             $table->string('status');
             $table->string('created_by');
