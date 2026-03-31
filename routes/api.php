@@ -7,6 +7,7 @@ use App\Http\Controllers\API\FeedbackController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\IndustryController;
 use App\Http\Controllers\API\FileUploadController;
+use App\Http\Controllers\API\FitnessController;
 use App\Http\Controllers\API\JobController;
 use App\Http\Controllers\API\LeaderBoardController;
 use App\Http\Controllers\API\NewsController;
@@ -174,6 +175,36 @@ Route::group(['middleware' => "api"], (function () {
         Route::post('/apply/{id}', [JobController::class, 'applyJob']);
     });
 
+    //Fitness
+    Route::prefix('/fitness')->group(function () {
+        Route::prefix('category')->group(function () {
+            Route::get('/all', [FitnessController::class, 'getFitnessCategories']);
+            Route::get('/get/{id}', [FitnessController::class, 'getFitnessCategoryById']);
+        });
+        Route::prefix('video')->group(function () {
+            Route::post('/add', [FitnessController::class, 'createFitnessVideo']);
+            Route::post('/update/{id}', [FitnessController::class, 'updateFitnessVideo']);
+            Route::get('/delete/{id}', [FitnessController::class, 'toggleFitnessVideo']);
+            Route::get('/all', [FitnessController::class, 'getFitnessVideos']);
+            Route::get('/get/{id}', [FitnessController::class, 'getFitnessVideoById']);
+            Route::get('/like/{id}', [FitnessController::class, 'toggleFitnessVideoLike']);
+        });
+        Route::prefix('tip')->group(function () {
+            Route::post('/add', [FitnessController::class, 'createFitnessTip']);
+            Route::post('/update/{id}', [FitnessController::class, 'updateFitnessTip']);
+            Route::get('/delete/{id}', [FitnessController::class, 'toggleFitnessTip']);
+            Route::get('/all', [FitnessController::class, 'getFitnessTips']);
+            Route::get('/get/{id}', [FitnessController::class, 'getFitnessTipById']);
+        });
+        Route::prefix('gym')->group(function () {
+            Route::post('/add', [FitnessController::class, 'createFitnessGym']);
+            Route::post('/update/{id}', [FitnessController::class, 'updateFitnessGym']);
+            Route::get('/delete/{id}', [FitnessController::class, 'toggleFitnessGym']);
+            Route::get('/all', [FitnessController::class, 'getFitnessGyms']);
+            Route::get('/get/{id}', [FitnessController::class, 'getFitnessGymById']);
+        });
+    });
+
 
     //admin
     Route::prefix('/admin')->group(function () {
@@ -224,6 +255,39 @@ Route::group(['middleware' => "api"], (function () {
             Route::get('/delete/{id}', [JobController::class, 'deleteJob']);
             Route::get('/get-applications/{jobId}', [JobController::class, 'getJobApplications']);
             Route::post('/update-application/{id}', [JobController::class, 'updateJobApplication']);
+        });
+
+        //Fitness
+        Route::prefix('/fitness')->group(function () {
+            Route::prefix('category')->group(function () {
+                Route::post('/add', [FitnessController::class, 'createFitnessCategory']);
+                Route::post('/update/{id}', [FitnessController::class, 'updateFitnessCategory']);
+                Route::get('/delete/{id}', [FitnessController::class, 'toggleFitnessCategory']);
+                Route::get('/all', [FitnessController::class, 'getFitnessCategories']);
+                Route::get('/get/{id}', [FitnessController::class, 'getFitnessCategoryById']);
+            });
+            Route::prefix('video')->group(function () {
+                Route::post('/add', [FitnessController::class, 'createFitnessVideo']);
+                Route::post('/update/{id}', [FitnessController::class, 'updateFitnessVideo']);
+                Route::get('/delete/{id}', [FitnessController::class, 'toggleFitnessVideo']);
+                Route::get('/all', [FitnessController::class, 'getFitnessVideos']);
+                Route::get('/get/{id}', [FitnessController::class, 'getFitnessVideoById']);
+                Route::get('/like/{id}', [FitnessController::class, 'toggleFitnessVideoLike']);
+            });
+            Route::prefix('tip')->group(function () {
+                Route::post('/add', [FitnessController::class, 'createFitnessTip']);
+                Route::post('/update/{id}', [FitnessController::class, 'updateFitnessTip']);
+                Route::get('/delete/{id}', [FitnessController::class, 'toggleFitnessTip']);
+                Route::get('/all', [FitnessController::class, 'getFitnessTips']);
+                Route::get('/get/{id}', [FitnessController::class, 'getFitnessTipById']);
+            });
+            Route::prefix('gym')->group(function () {
+                Route::post('/add', [FitnessController::class, 'createFitnessGym']);
+                Route::post('/update/{id}', [FitnessController::class, 'updateFitnessGym']);
+                Route::get('/delete/{id}', [FitnessController::class, 'toggleFitnessGym']);
+                Route::get('/all', [FitnessController::class, 'getFitnessGyms']);
+                Route::get('/get/{id}', [FitnessController::class, 'getFitnessGymById']);
+            });
         });
     });
 }));
