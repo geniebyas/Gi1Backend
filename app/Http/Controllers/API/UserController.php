@@ -175,7 +175,11 @@ class UserController extends Controller
             'password' => 'required|min:8',
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->messages(), 400);
+            return response()->json([
+                    'message' => $validator->errors()->first(),
+                    'status' => 0,
+                    'data' => null
+                ]);
         } else {
             DB::beginTransaction();
             try {
@@ -277,7 +281,7 @@ class UserController extends Controller
                 'message' => $validator->errors()->first(),
                 'status' => 0,
                 'data' => $validator->errors()->first()
-            ], 422);
+            ]);
         }
         $user = User::where('uid', $uid)->get()->first();
         if (!$user) {
@@ -372,7 +376,11 @@ class UserController extends Controller
             'password' => 'required|min:8',
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->messages(), 400);
+            return response()->json([
+                'message' => $validator->errors()->first(),
+                'status' => 0,
+                'data' => null
+            ]);
         } else {
             $user = User::where('email', $request->email)->get()->first();
             if (is_null($user) || !Hash::check($request->password, $user->password)) {

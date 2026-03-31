@@ -179,9 +179,8 @@ class IndustryController extends Controller
                     'message' => 'Some Error Occurred',
                     'status' => 0,
                     'data' => "Error Detected"
-                ],
-                500
-            );
+                ]
+                            );
         }
     }
 
