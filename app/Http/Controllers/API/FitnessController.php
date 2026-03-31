@@ -179,7 +179,7 @@ class FitnessController extends Controller
             'data' => $fitnessVideo
         ]);
     }
-    //get all fitness videos status and category filter
+    //get all fitness videos status and category filter and user filter
     public function getFitnessVideos(Request $request)
     {
         $query = FitnessVideo::query();
@@ -188,6 +188,9 @@ class FitnessController extends Controller
         }
         if ($request->has('category_id')) {
             $query->where('category_id', $request->category_id);
+        }
+        if ($request->has('user_id')) {
+            $query->where('created_by', $request->user_id);
         }
         $fitnessVideos = $query->with(['user', 'category', 'likes'])->get();
         return response()->json([
@@ -321,6 +324,9 @@ class FitnessController extends Controller
         }
         if ($request->has('category_id')) {
             $query->where('category_id', $request->category_id);
+        }
+        if ($request->has('user_id')) {
+            $query->where('created_by', $request->user_id);
         }
         $fitnessTips = $query->with(['user', 'category'])->get();
         return response()->json([
@@ -489,6 +495,10 @@ class FitnessController extends Controller
         if ($request->has('status')) {
             $query->where('status', $request->status);
         }
+        if ($request->has('user_id')) {
+            $query->where('created_by', $request->user_id);
+        }
+
         $fitnessGyms = $query->get();
         return response()->json([
             'status' => 1,
